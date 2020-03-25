@@ -16,6 +16,15 @@
     <Filter Include="SophiaGL\thirdparty\glfw">
       <UniqueIdentifier>{1aeb8137-abcd-4209-b30c-71074d2a2eca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SophiaGL\core">
+      <UniqueIdentifier>{340a0ed4-1094-4b19-a912-9538f8b167c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SophiaGL\core\log">
+      <UniqueIdentifier>{55b741c1-3858-403d-a28e-1a0429e39f66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SophiaGL\shader">
+      <UniqueIdentifier>{9722234b-8d3a-4ea5-8cd6-35a2bdfa6240}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SophiaGL\test\main.cpp">
@@ -23,6 +32,18 @@
     </ClCompile>
     <ClCompile Include="..\..\SophiaGL\thirdparty\glad\src\glad.c">
       <Filter>SophiaGL\thirdparty\glad</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\core\log\s3Log.cpp">
+      <Filter>SophiaGL\core\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\core\log\s3LogFile.cpp">
+      <Filter>SophiaGL\core\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\core\log\s3LogHTML.cpp">
+      <Filter>SophiaGL\core\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\core\s3Settings.cpp">
+      <Filter>SophiaGL\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +58,18 @@
     </ClInclude>
     <ClInclude Include="..\..\SophiaGL\thirdparty\glfw\include\glfw3.h">
       <Filter>SophiaGL\thirdparty\glfw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\core\log\s3Log.h">
+      <Filter>SophiaGL\core\log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\core\log\s3LogFile.h">
+      <Filter>SophiaGL\core\log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\core\log\s3LogHTML.h">
+      <Filter>SophiaGL\core\log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\core\s3Settings.h">
+      <Filter>SophiaGL\core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

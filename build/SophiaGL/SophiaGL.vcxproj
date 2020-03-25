@@ -107,7 +107,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../SophiaGL;../../SophiaGL/thirdparty/glad/include;../../SophiaGL/thirdparty/glfw/include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -144,7 +144,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../SophiaGL;../../SophiaGL/thirdparty/glad/include;../../SophiaGL/thirdparty/glfw/include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -159,10 +159,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\SophiaGL\core\log\s3Log.cpp" />
+    <ClCompile Include="..\..\SophiaGL\core\log\s3LogFile.cpp" />
+    <ClCompile Include="..\..\SophiaGL\core\log\s3LogHTML.cpp" />
+    <ClCompile Include="..\..\SophiaGL\core\s3Settings.cpp" />
     <ClCompile Include="..\..\SophiaGL\test\main.cpp" />
     <ClCompile Include="..\..\SophiaGL\thirdparty\glad\src\glad.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\SophiaGL\core\log\s3Log.h" />
+    <ClInclude Include="..\..\SophiaGL\core\log\s3LogFile.h" />
+    <ClInclude Include="..\..\SophiaGL\core\log\s3LogHTML.h" />
+    <ClInclude Include="..\..\SophiaGL\core\s3Settings.h" />
     <ClInclude Include="..\..\SophiaGL\thirdparty\glad\include\glad\glad.h" />
     <ClInclude Include="..\..\SophiaGL\thirdparty\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="..\..\SophiaGL\thirdparty\glfw\include\glfw3.h" />
