@@ -1,0 +1,36 @@
+*.swp
+README~
+.gitignore~
+*.out
+*.tlog
+*.obj
+*.pdb
+*.idb
+*.sdf
+*.ilk
+*.log
+*.lastbuildstate
+*.suo
+*.VC.*
+*.csv
+*.ipch
+*.ipdb
+*.iobj
+*.exe
+
+#*.sln
+#*.vcxproj
+#*.filters
+*.cache
+*.user
+*.psess
+
+*.vsp
+# bin/*.exe
+# bin/*.ipdb
+# bin/*.iobj
+# resources
+#build
+*.FileListAbsolute.txt
+# let user to compile static lib
+*.lib
