@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="SophiaGL">
+      <UniqueIdentifier>{80102ffc-0eb8-4717-8cb0-e22a661dc46e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SophiaGL\test">
+      <UniqueIdentifier>{0e2ba147-f840-4396-9119-4dd3177df93e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SophiaGL\thirdparty">
+      <UniqueIdentifier>{b35e07f3-ca6f-4e85-86d8-3216b3a495dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SophiaGL\thirdparty\glad">
+      <UniqueIdentifier>{3e85519e-b3fe-4f62-ad41-f4861b090bcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SophiaGL\thirdparty\glfw">
+      <UniqueIdentifier>{1aeb8137-abcd-4209-b30c-71074d2a2eca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SophiaGL\test\main.cpp">
+      <Filter>SophiaGL\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\thirdparty\glad\src\glad.c">
+      <Filter>SophiaGL\thirdparty\glad</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\glad\include\glad\glad.h">
+      <Filter>SophiaGL\thirdparty\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\glad\include\KHR\khrplatform.h">
+      <Filter>SophiaGL\thirdparty\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\glfw\include\glfw3native.h">
+      <Filter>SophiaGL\thirdparty\glfw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\glfw\include\glfw3.h">
+      <Filter>SophiaGL\thirdparty\glfw</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
