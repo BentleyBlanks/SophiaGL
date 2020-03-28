@@ -33,4 +33,4 @@ README~
 #build
 *.FileListAbsolute.txt
 # let user to compile static lib
-*.lib
+# *.lib
