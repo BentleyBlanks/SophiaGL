@@ -2,25 +2,34 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-float vertices[] = 
-{
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
+float vertices[] = {
+    // positions         // colors
+     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f 
+};
+
+unsigned int indices[] = {
+    0, 1, 2
 };
 
 const char* vsSource = "#version 330 core\n"
-"layout(location = 0) in vec3 PositionWS;\n"
+"layout(location = 0) in vec3 positionWS;\n"
+"layout(location = 1) in vec3 color;\n"
+"out vec4 vertexColor;\n"
 "void main()\n"
 "{\n"
-"   gl_Position = vec4(PositionWS.xyz, 1.0);\n"
+"   gl_Position = vec4(positionWS.xyz, 1.0);\n"
+"   vertexColor = vec4(color, 1.0);\n"
 "}\0";
 
 const char* fsSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
+"in vec4 vertexColor;\n"
+"out vec4 fragColor;\n"
 "void main()\n"
 "{\n"
-"    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"//    fragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"    fragColor = vertexColor;\n"
 "}\0";
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height)
@@ -133,14 +142,24 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // configure and enabled vertex attributes with binded shader layout
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    // ebo generation and bind
+    uint32 ebo;
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // configure and enabled vertex attributes, and binded shader layout
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(0);
     
     // unbind vao / vbo
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    // render loop
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
@@ -151,7 +170,11 @@ int main()
         // activate shader and clearing
         glUseProgram(shaderProgram);
         glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        //glDrawArrays(GL_TRIANGLES, 0, 3);
+        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        //glBindVertexArray(0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -160,6 +183,7 @@ int main()
     // de-allocate all resources
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &ebo);
 
     glfwTerminate();
     return 0;
