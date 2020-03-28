@@ -45,6 +45,9 @@
     <ClCompile Include="..\..\SophiaGL\core\s3Settings.cpp">
       <Filter>SophiaGL\core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\shader\s3Shader.cpp">
+      <Filter>SophiaGL\shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SophiaGL\thirdparty\glad\include\glad\glad.h">
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="..\..\SophiaGL\core\s3Settings.h">
       <Filter>SophiaGL\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\shader\s3Shader.h">
+      <Filter>SophiaGL\shader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
