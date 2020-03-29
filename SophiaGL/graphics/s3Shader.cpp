@@ -36,8 +36,7 @@ void s3Shader::setInt(const std::string & name, int value) const
 
 void s3Shader::setFloat(const std::string & name, float value) const
 {
-    uint32 location = glGetUniformLocation(program, name.c_str());
-	glUniform1f(location, value);
+	glUniform1f(glGetUniformLocation(program, name.c_str()), value);
 }
 
 bool s3Shader::IsLoaded() const
@@ -50,7 +49,7 @@ int32 s3Shader::getProgram() const
 	return program;
 }
 
-bool s3Shader::checkShader(uint32 shader)
+bool s3Shader::checkShader(uint32 shader, bool isVertex)
 {
 	int success;
 	char infoLog[512];
@@ -59,7 +58,7 @@ bool s3Shader::checkShader(uint32 shader)
 	if (!success)
 	{
 		glGetShaderInfoLog(shader, 512, NULL, infoLog);
-		s3Log::error("Error::shader compile failed, %s\n", infoLog);
+		s3Log::error("%s shader compile failed, %s\n", isVertex ? "Vertex" : "Fragment", infoLog);
 		return false;
 	}
 
@@ -75,7 +74,7 @@ bool s3Shader::checkProgram(uint32 program)
 	if (!success)
 	{
 		glGetProgramInfoLog(program, 512, NULL, infoLog);
-		s3Log::error("Error::program link failed, %s\n", infoLog);
+		s3Log::error("Program link failed, %s\n", infoLog);
 		return false;
 	}
 
@@ -123,7 +122,7 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
     vs = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vs, 1, &vShaderCode, NULL);
     glCompileShader(vs);
-    if (!checkShader(vs))
+    if (!checkShader(vs, true))
     {
         isLoaded = false;
         return false;
@@ -134,7 +133,7 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
     fs = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fs, 1, &fShaderCode, NULL);
     glCompileShader(fs);
-    if (!checkShader(fs))
+    if (!checkShader(fs, false))
     {
         isLoaded = false;
         return false;
