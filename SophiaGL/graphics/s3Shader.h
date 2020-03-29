@@ -15,10 +15,11 @@ public:
     // utility uniform functions
     void setBool(const std::string& name, bool value) const;
     void setInt(const std::string& name, int value) const;
+    void setTexture(const std::string& name, int value) const;
     void setFloat(const std::string& name, float value) const;
 
-    bool IsLoaded() const;
-    int32 getProgram() const;
+    bool isLoaded() const;
+    uint32 getProgram() const;
 
 private:
     bool checkShader(uint32 shader, bool isVertex);
@@ -27,7 +28,7 @@ private:
     bool load(const char* vertexPath, const char* fragmentPath);
 
     uint32 program = 0;
-    bool isLoaded = false;
+    bool bIsLoaded = false;
 
     // vs fs shader code
     std::string vertexSource;
