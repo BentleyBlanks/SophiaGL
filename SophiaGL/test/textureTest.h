@@ -3,9 +3,7 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 #include <graphics/s3Shader.h>
-
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image/stb_image.h>
+#include <graphics/s3Texture.h>
 
 float vertices[] = 
 {
@@ -58,34 +56,13 @@ int main()
     glViewport(0, 0, 800, 600);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
-    // texture generation
-    uint32 texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    // set texture filtering options
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // map cpu data into miplevel 0 and generate mipmaps automatically
-    int width, height, channels;
-    uint8* data = stbi_load("../../resources/images/mi.png", &width, &height, &channels, 0);
-    if (!data)
-    {
-        s3Log::error("Failed to load texture\n");
-        return 0;
-    }
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    stbi_image_free(data);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    s3Texture texture0("../../resources/images/mi.png");
+    s3Texture texture1("../../resources/images/mi2.png");
+    if (!texture0.isLoaded()) return 0;
+    if (!texture1.isLoaded()) return 0;
 
     s3Shader shader("../../SophiaGL/shaders/basicVS.glsl", "../../SophiaGL/shaders/basicFS.glsl");
-    if (!shader.IsLoaded()) return 0;
+    if (!shader.isLoaded()) return 0;
 
     // vao generation and bind
     uint32 vao;
@@ -126,15 +103,21 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         // activate shader and clearing
-        shader.begin();
         float time = (float)(sin(glfwGetTime()) / 2.0f) + 0.5f;
-
+        shader.begin();
         shader.setFloat("time", time);
+        shader.setTexture("texture0", 0);
+        shader.setTexture("texture1", 1);
+
         glBindVertexArray(vao);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture0.getTexture());
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture1.getTexture());
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         //glDrawArrays(GL_TRIANGLES, 0, 3);
+        
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         shader.end();
 

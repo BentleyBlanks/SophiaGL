@@ -54,6 +54,9 @@
     <ClCompile Include="..\..\SophiaGL\graphics\s3Shader.cpp">
       <Filter>SophiaGL\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\graphics\s3Texture.cpp">
+      <Filter>SophiaGL\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SophiaGL\thirdparty\glad\include\glad\glad.h">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="..\..\SophiaGL\test\textureTest.h">
       <Filter>SophiaGL\test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\graphics\s3Texture.h">
+      <Filter>SophiaGL\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

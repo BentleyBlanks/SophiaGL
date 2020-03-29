@@ -4,11 +4,16 @@ in vec2 texCoord;
 out vec4 fragColor;
 
 uniform float time;
-uniform sampler2D testTexture;
+uniform sampler2D texture0;
+uniform sampler2D texture1;
 
 void main()
 {
-//    fragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
-    vec4 texColor = texture(testTexture, texCoord);
+    vec4 texColor;
+    if(texCoord.x > 0.5f)
+        texColor = texture(texture0, texCoord);
+    else
+        texColor = texture(texture1, texCoord);
+
     fragColor = time * color * texColor;
 }

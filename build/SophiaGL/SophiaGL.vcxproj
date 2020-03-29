@@ -164,6 +164,7 @@
     <ClCompile Include="..\..\SophiaGL\core\log\s3LogHTML.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\s3Settings.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3Shader.cpp" />
+    <ClCompile Include="..\..\SophiaGL\graphics\s3Texture.cpp" />
     <ClCompile Include="..\..\SophiaGL\test\main.cpp" />
     <ClCompile Include="..\..\SophiaGL\thirdparty\glad\src\glad.c" />
   </ItemGroup>
@@ -173,6 +174,7 @@
     <ClInclude Include="..\..\SophiaGL\core\log\s3LogHTML.h" />
     <ClInclude Include="..\..\SophiaGL\core\s3Settings.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Shader.h" />
+    <ClInclude Include="..\..\SophiaGL\graphics\s3Texture.h" />
     <ClInclude Include="..\..\SophiaGL\test\mainTest.h" />
     <ClInclude Include="..\..\SophiaGL\test\shaderTest.h" />
     <ClInclude Include="..\..\SophiaGL\test\textureTest.h" />

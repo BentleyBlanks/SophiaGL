@@ -34,17 +34,22 @@ void s3Shader::setInt(const std::string & name, int value) const
 	glUniform1i(glGetUniformLocation(program, name.c_str()), (int)value);
 }
 
+void s3Shader::setTexture(const std::string& name, int value) const
+{
+    glUniform1i(glGetUniformLocation(program, name.c_str()), (int)value);
+}
+
 void s3Shader::setFloat(const std::string & name, float value) const
 {
 	glUniform1f(glGetUniformLocation(program, name.c_str()), value);
 }
 
-bool s3Shader::IsLoaded() const
+bool s3Shader::isLoaded() const
 {
-	return isLoaded;
+	return bIsLoaded;
 }
 
-int32 s3Shader::getProgram() const
+uint32 s3Shader::getProgram() const
 {
 	return program;
 }
@@ -111,7 +116,7 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
     catch (std::ifstream::failure e)
     {
         s3Log::error("Error::shader file not succesfully read");
-        isLoaded = false;
+        bIsLoaded = false;
     }
 
     const char* vShaderCode = vertexSource.c_str();
@@ -124,7 +129,7 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
     glCompileShader(vs);
     if (!checkShader(vs, true))
     {
-        isLoaded = false;
+        bIsLoaded = false;
         return false;
     }
 
@@ -135,7 +140,7 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
     glCompileShader(fs);
     if (!checkShader(fs, false))
     {
-        isLoaded = false;
+        bIsLoaded = false;
         return false;
     }
 
@@ -146,7 +151,7 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
     glLinkProgram(program);
     if (!checkProgram(program))
     {
-        isLoaded = false;
+        bIsLoaded = false;
         return false;
     }
 
@@ -154,6 +159,6 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
     glDeleteShader(vs);
     glDeleteShader(fs);
 
-    isLoaded = true;
-    return isLoaded;
+    bIsLoaded = true;
+    return bIsLoaded;
 }
