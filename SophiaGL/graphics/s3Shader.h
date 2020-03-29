@@ -21,7 +21,7 @@ public:
     int32 getProgram() const;
 
 private:
-    bool checkShader(uint32 shader);
+    bool checkShader(uint32 shader, bool isVertex);
     bool checkProgram(uint32 program);
 
     bool load(const char* vertexPath, const char* fragmentPath);

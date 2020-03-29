@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../SophiaGL;../../SophiaGL/thirdparty/glad/include;../../SophiaGL/thirdparty/glfw/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../SophiaGL;../../SophiaGL/thirdparty/glad/include;../../SophiaGL/thirdparty/stb/include;../../SophiaGL/thirdparty/glfw/include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -146,7 +146,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../SophiaGL;../../SophiaGL/thirdparty/glad/include;../../SophiaGL/thirdparty/glfw/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../SophiaGL;../../SophiaGL/thirdparty/glad/include;../../SophiaGL/thirdparty/glfw/include;../../SophiaGL/thirdparty/stb/include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -175,10 +175,12 @@
     <ClInclude Include="..\..\SophiaGL\graphics\s3Shader.h" />
     <ClInclude Include="..\..\SophiaGL\test\mainTest.h" />
     <ClInclude Include="..\..\SophiaGL\test\shaderTest.h" />
+    <ClInclude Include="..\..\SophiaGL\test\textureTest.h" />
     <ClInclude Include="..\..\SophiaGL\thirdparty\glad\include\glad\glad.h" />
     <ClInclude Include="..\..\SophiaGL\thirdparty\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="..\..\SophiaGL\thirdparty\glfw\include\glfw3.h" />
     <ClInclude Include="..\..\SophiaGL\thirdparty\glfw\include\glfw3native.h" />
+    <ClInclude Include="..\..\SophiaGL\thirdparty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\SophiaGL\shaders\basicFS.glsl" />

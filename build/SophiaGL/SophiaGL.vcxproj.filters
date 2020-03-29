@@ -28,6 +28,9 @@
     <Filter Include="SophiaGL\shaders">
       <UniqueIdentifier>{b1215839-4cf9-4dac-895a-17c0a1a800bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SophiaGL\thirdparty\stb">
+      <UniqueIdentifier>{150d5db0-aef6-44e2-bf41-93f14ff522d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SophiaGL\test\main.cpp">
@@ -84,6 +87,12 @@
       <Filter>SophiaGL\test</Filter>
     </ClInclude>
     <ClInclude Include="..\..\SophiaGL\test\mainTest.h">
+      <Filter>SophiaGL\test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\stb\stb_image.h">
+      <Filter>SophiaGL\thirdparty\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\test\textureTest.h">
       <Filter>SophiaGL\test</Filter>
     </ClInclude>
   </ItemGroup>
