@@ -78,7 +78,7 @@ int main()
     glEnableVertexAttribArray(0);
 
     // unbind vao / vbo
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
@@ -96,12 +96,12 @@ int main()
 
         shader.setFloat("time", time);
         glBindVertexArray(vao);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
         //glDrawArrays(GL_TRIANGLES, 0, 3);
         //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         //glBindVertexArray(0);
-        shader.end();
+        //shader.end();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
