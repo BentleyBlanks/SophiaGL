@@ -36,7 +36,8 @@ void s3Shader::setInt(const std::string & name, int value) const
 
 void s3Shader::setFloat(const std::string & name, float value) const
 {
-	glUniform1f(glGetUniformLocation(program, name.c_str()), value);
+    uint32 location = glGetUniformLocation(program, name.c_str());
+	glUniform1f(location, value);
 }
 
 bool s3Shader::IsLoaded() const

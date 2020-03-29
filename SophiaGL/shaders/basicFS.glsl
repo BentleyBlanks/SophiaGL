@@ -1,6 +1,6 @@
 #version 330 core
 in vec4 vertexColor;
-in float time;
+uniform float time;
 out vec4 fragColor;
 
 void main()
