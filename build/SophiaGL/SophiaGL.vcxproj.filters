@@ -22,8 +22,11 @@
     <Filter Include="SophiaGL\core\log">
       <UniqueIdentifier>{55b741c1-3858-403d-a28e-1a0429e39f66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SophiaGL\shader">
+    <Filter Include="SophiaGL\graphics">
       <UniqueIdentifier>{9722234b-8d3a-4ea5-8cd6-35a2bdfa6240}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SophiaGL\shaders">
+      <UniqueIdentifier>{b1215839-4cf9-4dac-895a-17c0a1a800bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,8 +48,8 @@
     <ClCompile Include="..\..\SophiaGL\core\s3Settings.cpp">
       <Filter>SophiaGL\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\shader\s3Shader.cpp">
-      <Filter>SophiaGL\shader</Filter>
+    <ClCompile Include="..\..\SophiaGL\graphics\s3Shader.cpp">
+      <Filter>SophiaGL\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,8 +77,22 @@
     <ClInclude Include="..\..\SophiaGL\core\s3Settings.h">
       <Filter>SophiaGL\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\shader\s3Shader.h">
-      <Filter>SophiaGL\shader</Filter>
+    <ClInclude Include="..\..\SophiaGL\graphics\s3Shader.h">
+      <Filter>SophiaGL\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\test\shaderTest.h">
+      <Filter>SophiaGL\test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\test\mainTest.h">
+      <Filter>SophiaGL\test</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\SophiaGL\shaders\basicFS.glsl">
+      <Filter>SophiaGL\shaders</Filter>
+    </None>
+    <None Include="..\..\SophiaGL\shaders\basicVS.glsl">
+      <Filter>SophiaGL\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

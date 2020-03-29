@@ -21,8 +21,10 @@ public:
     int32 getProgram() const;
 
 private:
+    bool checkShader(uint32 shader);
+    bool checkProgram(uint32 program);
+
     bool load(const char* vertexPath, const char* fragmentPath);
-    bool compile();
 
     uint32 program = 0;
     bool isLoaded = false;
