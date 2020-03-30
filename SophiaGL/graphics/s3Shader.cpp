@@ -1,6 +1,8 @@
 #include <graphics/s3Shader.h>
 #include <core/log/s3Log.h>
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -44,17 +46,23 @@ void s3Shader::setFloat(const std::string & name, float value) const
 	glUniform1f(glGetUniformLocation(program, name.c_str()), value);
 }
 
+void s3Shader::setMatrix(const std::string& name, glm::mat4 mat) const
+{
+    unsigned int location = glGetUniformLocation(program, name.c_str());
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
+}
+
 bool s3Shader::isLoaded() const
 {
 	return bIsLoaded;
 }
 
-uint32 s3Shader::getProgram() const
+unsigned int s3Shader::getProgram() const
 {
 	return program;
 }
 
-bool s3Shader::checkShader(uint32 shader, bool isVertex)
+bool s3Shader::checkShader(unsigned int shader, bool isVertex)
 {
 	int success;
 	char infoLog[512];
@@ -70,7 +78,7 @@ bool s3Shader::checkShader(uint32 shader, bool isVertex)
 	return true;
 }
 
-bool s3Shader::checkProgram(uint32 program)
+bool s3Shader::checkProgram(unsigned int program)
 {
 	int success;
 	char infoLog[512];
@@ -123,7 +131,7 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
     const char* fShaderCode = fragmentSource.c_str();
 
     // vs Shader
-    uint32 vs;
+    unsigned int vs;
     vs = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vs, 1, &vShaderCode, NULL);
     glCompileShader(vs);
@@ -134,7 +142,7 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
     }
 
     // fs shader
-    uint32 fs;
+    unsigned int fs;
     fs = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fs, 1, &fShaderCode, NULL);
     glCompileShader(fs);
