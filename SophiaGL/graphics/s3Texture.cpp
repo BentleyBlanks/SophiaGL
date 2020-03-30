@@ -19,14 +19,14 @@ s3Texture::s3Texture(std::string path)
 
     // map cpu data into miplevel 0 and generate mipmaps automatically
     stbi_set_flip_vertically_on_load(true);
-    uint8* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+    unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
     if (!data)
     {
         s3Log::error("Failed to load texture\n");
         bIsLoaded = false;
     }
 
-    uint32 format = (channels == 3) ? GL_RGB : GL_RGBA;
+    unsigned int format = (channels == 3) ? GL_RGB : GL_RGBA;
     glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -69,7 +69,7 @@ bool s3Texture::isLoaded() const
 	return bIsLoaded;
 }
 
-uint32 s3Texture::getTexture() const
+unsigned int s3Texture::getTexture() const
 {
 	return texture;
 }

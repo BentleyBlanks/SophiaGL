@@ -15,13 +15,13 @@ public:
 	int getChannels() const;
 
 	bool isLoaded() const;
-	uint32 getTexture() const;
+	unsigned int getTexture() const;
 
 private:
-	int32 width    = -1;
-	int32 height   = -1;
-	int32 channels = -1;
+	int width    = -1;
+	int height   = -1;
+	int channels = -1;
 
 	bool bIsLoaded = false;
-	uint32 texture = 0;
+	unsigned int texture = 0;
 };

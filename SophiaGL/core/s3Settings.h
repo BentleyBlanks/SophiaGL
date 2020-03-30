@@ -66,49 +66,50 @@
 
 
 // ------------------------Type Renaming------------------------
-#ifndef int64
-#define int64	signed long long
-#endif
-
-#ifndef uint64
-#define uint64	unsigned long long
-#endif
-
-#ifndef int32
-#define int32	int
-#endif
-
-#ifndef uint32
-#define uint32	unsigned int
-#endif
-
-#ifndef int16
-#define int16	signed short
-#endif
-
-#ifndef uint16
-#define uint16	unsigned short
-#endif
-
-#ifndef int8
-#define int8	signed char
-#endif
-
-#ifndef uint8
-#define uint8	unsigned char
-#endif
-
-#ifndef float32
-#define float32	float
-#endif
-
-#ifndef float64
-#define float64	double
-#endif
-
-#ifndef ushort
-#define ushort	unsigned short int
-#endif
+// Confilict with glm
+//#ifndef int64
+//#define int64	signed long long
+//#endif
+//
+//#ifndef uint64
+//#define uint64	unsigned long long
+//#endif
+//
+//#ifndef int32
+//#define int32	int
+//#endif
+//
+//#ifndef uint32
+//#define uint32	unsigned int
+//#endif
+//
+//#ifndef int16
+//#define int16	signed short
+//#endif
+//
+//#ifndef uint16
+//#define uint16	unsigned short
+//#endif
+//
+//#ifndef int8
+//#define int8	signed char
+//#endif
+//
+//#ifndef uint8
+//#define uint8	unsigned char
+//#endif
+//
+//#ifndef float32
+//#define float32	float
+//#endif
+//
+//#ifndef float64
+//#define float64	double
+//#endif
+//
+//#ifndef ushort
+//#define ushort	unsigned short int
+//#endif
 
 enum s3ImageType
 {
