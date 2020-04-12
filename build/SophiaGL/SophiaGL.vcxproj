@@ -176,6 +176,7 @@
     <ClInclude Include="..\..\SophiaGL\core\s3Settings.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Shader.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Texture.h" />
+    <ClInclude Include="..\..\SophiaGL\test\cameraTest.h" />
     <ClInclude Include="..\..\SophiaGL\test\mainTest.h" />
     <ClInclude Include="..\..\SophiaGL\test\shaderTest.h" />
     <ClInclude Include="..\..\SophiaGL\test\textureTest.h" />
