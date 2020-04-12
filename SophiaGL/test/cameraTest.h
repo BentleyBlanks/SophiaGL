@@ -1,6 +1,5 @@
 #pragma once
 #include <core/log/s3Log.h>
-//#include <iostream>
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 #include <glm/glm.hpp>
@@ -9,17 +8,17 @@
 #include <graphics/s3Shader.h>
 #include <graphics/s3Texture.h>
 
-float width = 800.0f;
+float fov    = 45.0f;
+float width  = 800.0f;
 float height = 600.0f;
 
-//float vertices[] =
-//{
-//    // positions          // colors           // texture coords
-//     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-//     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-//    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-//    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
-//};
+// camera
+glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f, 0.0f);
+glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+
+float deltaTime     = 0.0f;	
+float lastFrameTime = 0.0f;
 
 float vertices[] = 
 {
@@ -81,18 +80,37 @@ glm::vec3 cubePositions[] =
     glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
-unsigned int indices[] = {
-    0, 1, 3,
-    1, 2, 3
-};
-
 void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
 
+void scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
+{
+    fov -= (float)yOffset;
+
+    if (fov <= 1.0f)
+        fov = 1.0f;
+    else if (fov >= 90.0f)
+        fov = 90.0f;
+}
+
+void mouseCallback(GLFWwindow* window, double xpos, double ypos)
+{
+
+}
+
 void processInput(GLFWwindow* window)
 {
+    float cameraSpeed = 2.5f * deltaTime;
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }
@@ -122,6 +140,8 @@ int main()
 
     glViewport(0, 0, (int)width, (int)height);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+    glfwSetScrollCallback(window, scrollCallback);
+    glfwSetCursorPosCallback(window, mouseCallback);
 
     s3Texture texture0("../../resources/images/lulu.jpg");
     s3Texture texture1("../../resources/images/lulu2.jpg");
@@ -152,38 +172,23 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    // camera
-    //glm::vec3 up           = glm::vec3(0.0f, 1.0f, 0.0f);
-    //glm::vec3 cameraPos    = glm::vec3(0.0f, 0.0f, 3.0f);
-    //glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-
-    //glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
-    //glm::vec3 cameraRight     = glm::normalize(glm::cross(up, cameraDirection));
-    //glm::vec3 cameraUp        = glm::cross(cameraDirection, cameraRight);
-
-    //glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
-    //                             glm::vec3(0.0f, 0.0f, 0.0f),
-    //                             glm::vec3(0.0f, 1.0f, 0.0f));
-
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
-
-
     // render loop
     glEnable(GL_DEPTH_TEST);
     while (!glfwWindowShouldClose(window))
     {
+        // time update
+        float currentFrame = (float)glfwGetTime();
+        deltaTime = currentFrame - lastFrameTime;
+        lastFrameTime = currentFrame;
+
         processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // camera / view transformation
-        float radius = 10.0f;
-        float camX   = sin((float)glfwGetTime() * 0.5f) * radius;
-		float camZ   = cos((float)glfwGetTime() * 0.5f) * radius;
-		glm::mat4 view = glm::lookAt(glm::vec3(camX, 0.0f, camZ),
-									 glm::vec3(0.0f, 0.0f, 0.0f),
-									 glm::vec3(0.0f, 1.0f, 0.0f));
+        // camera matrix
+        glm::mat4 view       = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+        glm::mat4 projection = glm::perspective(glm::radians(fov), width / height, 0.1f, 100.0f);
 
         // activate shader and clearing
         shader.begin();
