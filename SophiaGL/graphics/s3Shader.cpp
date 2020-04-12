@@ -123,7 +123,7 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
     }
     catch (std::ifstream::failure e)
     {
-        s3Log::error("Error::shader file not succesfully read");
+        s3Log::error("Error::shader file not succesfully read\n");
         bIsLoaded = false;
     }
 
