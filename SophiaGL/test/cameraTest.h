@@ -8,9 +8,12 @@
 #include <graphics/s3Shader.h>
 #include <graphics/s3Texture.h>
 
-float fov    = 45.0f;
-float width  = 800.0f;
-float height = 600.0f;
+float fov = 45.0f;
+float width = 800.0f, height = 600.0f;
+float lastX = 400, lastY = 300;
+float yaw = 0.0f, pitch = 0.0f;
+
+bool firstMouse = true;
 
 // camera
 glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -97,7 +100,38 @@ void scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 
 void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 {
+    float posX = (float)xpos;
+    float posY = (float)ypos;
 
+    if (firstMouse)
+    {
+        lastX = posX;
+        lastY = posY;
+        firstMouse = false;
+    }
+
+    float xoffset = posX - lastX;
+    float yoffset = lastY - posY;
+    lastX = posX;
+    lastY = posY;
+
+    float sensitivity = 0.05;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    yaw   += xoffset;
+    pitch += yoffset;
+
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
+
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    direction.y = sin(glm::radians(pitch));
+    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    cameraFront = glm::normalize(direction);
 }
 
 void processInput(GLFWwindow* window)
