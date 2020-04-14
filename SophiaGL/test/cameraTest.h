@@ -11,14 +11,16 @@
 float fov = 45.0f;
 float width = 800.0f, height = 600.0f;
 float lastX = 400, lastY = 300;
-float yaw = 0.0f, pitch = 0.0f;
+float yaw = -90.0f, pitch = 0.0f;
 
-bool firstMouse = true;
+bool firstMouse    = true;
+bool mousePressed  = false;
+//bool mouseReleased = true;
 
 // camera
-glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f, 0.0f);
-glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp        = glm::vec3(0.0f, 1.0f, 0.0f);
+glm::vec3 cameraPos       = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraDirection = glm::vec3(0.0f, 0.0f, -1.0f);
 
 float deltaTime     = 0.0f;	
 float lastFrameTime = 0.0f;
@@ -114,13 +116,18 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos)
     float yoffset = lastY - posY;
     lastX = posX;
     lastY = posY;
+    //s3Log::info("%f, %f\n", xoffset, yoffset);
 
-    float sensitivity = 0.05;
+    // change camera view only when right mouse button pressed
+    if (!mousePressed) return;
+
+    float sensitivity = 0.12f;
     xoffset *= sensitivity;
     yoffset *= sensitivity;
 
     yaw   += xoffset;
     pitch += yoffset;
+    //s3Log::info("%f, %f\n", yaw, pitch);
 
     if (pitch > 89.0f)
         pitch = 89.0f;
@@ -131,20 +138,29 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos)
     direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
     direction.y = sin(glm::radians(pitch));
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    cameraFront = glm::normalize(direction);
+    cameraDirection = glm::normalize(direction);
+}
+
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+        mousePressed = true;
+
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
+        mousePressed = false;
 }
 
 void processInput(GLFWwindow* window)
 {
     float cameraSpeed = 2.5f * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
+        cameraPos += cameraSpeed * cameraDirection;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
+        cameraPos -= cameraSpeed * cameraDirection;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        cameraPos -= glm::normalize(glm::cross(cameraDirection, cameraUp)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        cameraPos += glm::normalize(glm::cross(cameraDirection, cameraUp)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }
@@ -176,6 +192,7 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     glfwSetScrollCallback(window, scrollCallback);
     glfwSetCursorPosCallback(window, mouseCallback);
+    glfwSetMouseButtonCallback(window, mouseButtonCallback);
 
     s3Texture texture0("../../resources/images/lulu.jpg");
     s3Texture texture1("../../resources/images/lulu2.jpg");
@@ -221,7 +238,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // camera matrix
-        glm::mat4 view       = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+        glm::mat4 view       = glm::lookAt(cameraPos, cameraPos + cameraDirection, cameraUp);
         glm::mat4 projection = glm::perspective(glm::radians(fov), width / height, 0.1f, 100.0f);
 
         // activate shader and clearing
