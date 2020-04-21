@@ -34,6 +34,12 @@
     <Filter Include="SophiaGL\thirdparty\glm">
       <UniqueIdentifier>{73a02a53-bd8a-4d9d-ac87-13f902c8c18c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SophiaGL\app">
+      <UniqueIdentifier>{35bc3e7d-ec77-4b35-9ad3-9706a7f23cf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SophiaGL\3d">
+      <UniqueIdentifier>{80b76875-a0f4-44b1-b70a-dbe3fe7be466}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SophiaGL\test\main.cpp">
@@ -62,6 +68,27 @@
     </ClCompile>
     <ClCompile Include="..\..\SophiaGL\thirdparty\glm\include\glm\detail\glm.cpp">
       <Filter>SophiaGL\thirdparty\glm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\app\s3App.cpp">
+      <Filter>SophiaGL\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\app\s3CallbackManager.cpp">
+      <Filter>SophiaGL\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\core\s3Callback.cpp">
+      <Filter>SophiaGL\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\core\s3Event.cpp">
+      <Filter>SophiaGL\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\core\s3Timer.cpp">
+      <Filter>SophiaGL\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\3d\s3Camera.cpp">
+      <Filter>SophiaGL\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\app\s3Utils.cpp">
+      <Filter>SophiaGL\app</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -843,6 +870,30 @@
       <Filter>SophiaGL\test</Filter>
     </ClInclude>
     <ClInclude Include="..\..\SophiaGL\test\cameraTest.h">
+      <Filter>SophiaGL\test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\app\s3App.h">
+      <Filter>SophiaGL\app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\app\s3CallbackManager.h">
+      <Filter>SophiaGL\app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\core\s3Callback.h">
+      <Filter>SophiaGL\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\core\s3Event.h">
+      <Filter>SophiaGL\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\core\s3Timer.h">
+      <Filter>SophiaGL\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\3d\s3Camera.h">
+      <Filter>SophiaGL\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\app\s3Utils.h">
+      <Filter>SophiaGL\app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\test\appTest.h">
       <Filter>SophiaGL\test</Filter>
     </ClInclude>
   </ItemGroup>

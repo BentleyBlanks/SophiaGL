@@ -1,248 +1,74 @@
 ﻿#include <app/s3App.h>
-#include <app/s3Window.h>
 #include <app/s3CallbackManager.h>
 #include <core/s3Settings.h>
 #include <core/s3Event.h>
 #include <core/log/s3Log.h>
 
-extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-LRESULT windowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+#include <glad/glad.h>
+#include <glfw/glfw3.h>
+
+// for loop whole key code list
+int s3KeyCodeEnum[] =
 {
-    if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
-        return true;
+    32, 39, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 59, 61, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 96, 16, 16, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 280, 281, 282, 283, 284, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 340, 341, 342, 343, 344, 345, 346, 347, 348
+};
+int s3KeyCodeEnumCount = sizeof(s3KeyCodeEnum) / sizeof(int);
 
-    typedef s3MouseEvent::s3ButtonType s3ButtonType;
-    switch(msg)
-    {
-    case WM_LBUTTONDOWN:
-    case WM_LBUTTONDBLCLK:
-    case WM_RBUTTONDOWN:
-    case WM_RBUTTONDBLCLK:
-    case WM_MBUTTONDOWN:
-    {
-        bool button[3];
-        button[s3ButtonType::LEFT]   = (wParam & MK_LBUTTON) != 0;
-        button[s3ButtonType::MIDDLE] = (wParam & MK_MBUTTON) != 0;
-        button[s3ButtonType::RIGHT]  = (wParam & MK_RBUTTON) != 0;
-        
-        bool shift = (wParam & MK_SHIFT) != 0;
-        bool control = (wParam & MK_CONTROL) != 0;
-
-        int x = ((int)(short)LOWORD(lParam));
-        int y = ((int)(short)HIWORD(lParam));
-
-        for (int i = 0; i < 3; i++)
-        {
-            if (button[i])
-            {
-                s3MouseEvent mouseEvent((s3ButtonType)i, x, y, 0, 0, 0, control, shift);
-
-                s3CallbackUserData data;
-                data.imageData = &mouseEvent;
-
-                s3CallbackManager::callBack.onMousePressed.trigger(&data);
-            }
-        }
-        return 0;
-    }
-
-    case WM_LBUTTONUP:
-    case WM_MBUTTONUP:
-    case WM_RBUTTONUP:
-    {
-        bool button[3];
-        button[s3ButtonType::LEFT]   = (wParam & MK_LBUTTON) != 0;
-        button[s3ButtonType::MIDDLE] = (wParam & MK_MBUTTON) != 0;
-        button[s3ButtonType::RIGHT]  = (wParam & MK_RBUTTON) != 0;
-
-        bool shift = (wParam & MK_SHIFT) != 0;
-        bool control = (wParam & MK_CONTROL) != 0;
-
-        int x = ((int)(short)LOWORD(lParam));
-        int y = ((int)(short)HIWORD(lParam));
-
-        for (int i = 0; i < 3; i++)
-        {
-            if (button[i])
-            {
-                s3MouseEvent mouseEvent((s3ButtonType)i, x, y, 0, 0, 0, control, shift);
-
-                s3CallbackUserData data;
-                data.imageData = &mouseEvent;
-
-                s3CallbackManager::callBack.onMouseReleased.trigger(&data);
-            }
-        }
-        return 0;
-    }
-
-    case WM_MOUSEMOVE:
-    {
-        static bool first;
-        static int lastX, lastY;
-
-        bool button[3];
-        button[s3ButtonType::LEFT]   = (wParam & MK_LBUTTON) != 0;
-        button[s3ButtonType::MIDDLE] = (wParam & MK_MBUTTON) != 0;
-        button[s3ButtonType::RIGHT]  = (wParam & MK_RBUTTON) != 0;
-
-        bool shift = (wParam & MK_SHIFT) != 0;
-        bool control = (wParam & MK_CONTROL) != 0;
-
-        int x = ((int)(short)LOWORD(lParam));
-        int y = ((int)(short)HIWORD(lParam));
-
-        int offsetX = 0, offsetY = 0;
-        if (first)
-        {
-            lastX = x;
-            lastY = y;
-        }
-        else
-        {
-            offsetX = x - lastX;
-            offsetY = y - lastY;
-
-            lastX = x;
-            lastY = y;
-        }
-
-        for (int i = -1; i < 3; i++)
-        {
-            s3MouseEvent mouseEvent(s3ButtonType::NONE, x, y, offsetX, offsetY, 0, control, shift);
-
-            if (i != -1 && button[i])
-                mouseEvent.type = (s3ButtonType) i;
-
-            s3CallbackUserData data;
-            data.imageData = &mouseEvent;
-
-            s3CallbackManager::callBack.onMouseMoved.trigger(&data);
-        }
-        return 0;
-    }
-
-    case WM_MOUSEWHEEL:
-    {
-        // The distance the mouse wheel is rotated.
-        // A positive value indicates the wheel was rotated to the right.
-        // A negative value indicates the wheel was rotated to the left.
-        float zDelta = ((int)(short)HIWORD(wParam)) / (float)WHEEL_DELTA;
-        short keyStates = (short)LOWORD(wParam);
-
-        bool shift   = (keyStates & MK_SHIFT) != 0;
-        bool control = (keyStates & MK_CONTROL) != 0;
-
-        int x = ((int)(short)LOWORD(lParam));
-        int y = ((int)(short)HIWORD(lParam));
-
-        s3MouseEvent mouseEvent(s3ButtonType::NONE, x, y, 0, 0, zDelta, control, shift);
-        s3CallbackUserData data;
-        data.imageData = &mouseEvent;
-
-        s3CallbackManager::callBack.onMouseScrolled.trigger(&data);
-        return 0;
-    }
-
-    case WM_KEYDOWN:
-    {
-        MSG charMsg;
-        // Get the unicode character (UTF-16)
-        uint32 c = 0;
-        // For printable characters, the next message will be WM_CHAR.
-        // This message contains the character code we need to send the KeyPressed event.
-        // Inspired by the SDL 1.2 implementation.
-        if (PeekMessage(&charMsg, hwnd, 0, 0, PM_NOREMOVE) && charMsg.message == WM_CHAR)
-        {
-            GetMessage(&charMsg, hwnd, 0, 0);
-            c = (uint32) charMsg.wParam;
-        }
-
-        bool shift = GetAsyncKeyState(VK_SHIFT) > 0;
-        bool control = GetAsyncKeyState(VK_CONTROL) > 0;
-        bool alt = GetAsyncKeyState(VK_MENU) > 0;
-
-        s3KeyCode key = (s3KeyCode)wParam;
-        s3KeyEvent keyEvent(key, c, control, shift, alt);
-        s3CallbackUserData data;
-        data.imageData = &keyEvent;
-        
-        s3CallbackManager::callBack.onKeyPressed.trigger(&data);
-        return 0;
-    }
-
-    case WM_KEYUP:
-    {
-        bool shift   = GetAsyncKeyState(VK_SHIFT) > 0;
-        bool control = GetAsyncKeyState(VK_CONTROL) > 0;
-        bool alt     = GetAsyncKeyState(VK_MENU) > 0;
-
-        s3KeyCode key = (s3KeyCode)wParam;
-
-        uint32 c = 0;
-        uint32 scanCode = (lParam & 0x00FF0000) >> 16;
-
-        // Determine which key was released by converting the key code and the scan code
-        // to a printable character (if possible).
-        // Inspired by the SDL 1.2 implementation.
-        uint8 keyboardState[256];
-        GetKeyboardState(keyboardState);
-        wchar_t translatedCharacters[4];
-        if (int result = ToUnicodeEx((uint32) wParam, scanCode, keyboardState, translatedCharacters, 4, 0, NULL) > 0)
-        {
-            c = translatedCharacters[0];
-        }
-
-        s3KeyEvent keyEvent(key, c, control, shift, alt);
-        s3CallbackUserData data;
-        data.imageData = &keyEvent;
-        s3CallbackManager::callBack.onKeyReleased.trigger(&data);
-        return 0;
-    }
-
-    case WM_SIZE:
-    {
-        float w = (float) LOWORD(lParam), h = (float) HIWORD(lParam);
-        if(w != 0.0f && h != 0.0f)
-            s3Renderer::get().resize((int)w, (int)h);
-        return 0;
-    }
-
-    // System
-    case WM_CLOSE:
-    {
-        DestroyWindow(hwnd);
-        return 0;
-    }
-
-    case WM_DESTROY:
-    {
-        PostQuitMessage(0);
-        return 0;
-    }
-    }
-
-    return DefWindowProc(hwnd, msg, wParam, lParam);
-}
+s3App s3App::instance;
 
 s3App::s3App()
 {
-    window = nullptr;
-    clearColor.set(1.0f, 0.0f, 0.0f, 1.0f);
+    clearColor = glm::vec4(0.2f, 0.3f, 0.3f, 1.0f);
 }
 
 s3App::~s3App()
 {
-    S3_SAFE_DELETE(window);
 }
 
-bool s3App::init(const glm::vec2& size, const glm::vec2& pos)
+s3App& s3App::getInstance()
 {
+    return instance;
+}
+
+bool s3App::init(const char* title, int x, int y, int width, int height)
+{
+    if (width <= 0 || height <= 0) return false;
+
     s3CallbackInit();
 
-    window = new s3Window("Sophia", windowProc, size, pos);
-    if(!window)	return false;
+    // init window
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    window = glfwCreateWindow(width, height, title, NULL, NULL);
+    if (!window)
+    {
+        s3Log::error("Failed to create GLFW window/n");
+        glfwTerminate();
+        return false;
+    }
+ 
+    glfwMakeContextCurrent(window);
+
+    // init renderer
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        s3Log::error("Failed to initialize GLAD/n");
+        return false;
+    }
+
+    setWindowSize(width, height);
+    setWindowPosition(x, y);
+
+    // init glfw callback functions
+    glfwSetFramebufferSizeCallback(window, resizeCB);
+    glfwSetMouseButtonCallback(window, mouseButtonCB);
+    glfwSetCursorPosCallback(window, mouseMoveCB);
+    glfwSetScrollCallback(window, mouseScrollCB);
+
+    bInit = true;
     return true;
 }
 
@@ -255,56 +81,179 @@ float s3App::getTimeElapsed()
 
 void s3App::shutdown()
 {
-    S3_SAFE_DELETE(window);
-
     s3CallbackDeinit();
+    glfwSetWindowShouldClose(window, true);
+    //glfwTerminate();
 }
 
 void s3App::render()
 {
     s3CallbackManager::callBack.onUpdate.trigger();
 
-    //s3Renderer::get().clear(t3Vector4f(.75f, .75f, .75f, 1.0f));
-    s3Renderer::get().clear(clearColor);
+    glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     s3CallbackManager::callBack.onBeginRender.trigger();
+    // renderer draw something
     s3CallbackManager::callBack.onEndRender.trigger();
 
-    s3Renderer::get().present(0, 0);
+    // Present
+    glfwSwapBuffers(window);
+    glfwPollEvents();
 }
 
 void s3App::run()
 {
-    // init engine with hwnd
-    s3CallbackUserData imageData;
-    imageData.imageData = window->getHandle();
-    s3CallbackManager::callBack.onEngineInit.trigger(&imageData);
+    if (!isInited())
+    {
+        s3Log::warning("s3App need to be called init() first\n");
+        return;
+    }
 
-    MSG msg;
+    s3CallbackManager::callBack.onEngineInit.trigger();
+
     while(true)
     {
-        while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-        {
-            if(msg.message == WM_QUIT)
-            {
-                shutdown();
-                return;
-            }
-
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-
+        input();
         render();
     }
 }
 
-void s3App::setClearColor(glm::vec4 clearColor)
+void s3App::input()
 {
-    this->clearColor = clearColor;
+    s3CallbackUserData keyPressData;
+    GLFWwindow* window = s3App::getInstance().getWindow();
+
+    // key press event
+    for (int i = 0; i < s3KeyCodeEnumCount; i++)
+    {
+        if (glfwGetKey(window, s3KeyCodeEnum[i]) == GLFW_PRESS)
+        {
+            s3KeyEvent keyEvent((s3KeyCode)s3KeyCodeEnum[i], 0, false, false, false);
+            keyPressData.data = (void*)(&keyEvent);
+            s3CallbackManager::callBack.onKeyPressed.trigger(&keyPressData);
+            break;
+        }
+    }
+
+    // key release event
+	//s3CallbackUserData keyReleaseData;
+	//for (int i = 0; i < s3KeyCodeEnumCount; i++)
+	//{
+	//	if (glfwGetKey(window, s3KeyCodeEnum[i]) == GLFW_RELEASE)
+	//	{
+	//		s3KeyEvent keyEvent((s3KeyCode)s3KeyCodeEnum[i], 0, false, false, false);
+	//		keyReleaseData.data = (void*)(&keyEvent);
+	//		s3CallbackManager::callBack.onKeyReleased.trigger(&keyReleaseData);
+	//		break;
+	//	}
+	//}
 }
 
-s3Window * s3App::getWindow()
+void s3App::setClearColor(float r, float g, float b, float a)
+{
+    clearColor = glm::vec4(r, g, b, a);
+}
+
+void s3App::setWindowPosition(int x, int y)
+{
+    glfwSetWindowPos(window, x, y);
+
+    windowPosition.x = x;
+    windowPosition.y = y;
+}
+
+void s3App::setWindowSize(int width, int height)
+{
+    if (width <= 0 || height <= 0) return;
+
+    windowSize.x = width;
+    windowSize.y = height;
+
+    glViewport(0, 0, windowSize.x, windowSize.y);
+}
+
+GLFWwindow* s3App::getWindow() const
 {
     return window;
 }
+
+bool s3App::isInited() const
+{
+    return bInit;
+}
+
+glm::ivec2 s3App::getWindowSize() const
+{
+    return windowSize;
+}
+
+glm::ivec2 s3App::getWindowPosition() const
+{
+    return windowPosition;
+}
+
+void s3App::resizeCB(GLFWwindow* window, int width, int height)
+{
+    s3App::getInstance().setWindowSize(width, height);
+}
+
+void s3App::mouseMoveCB(GLFWwindow* window, double xPos, double yPos)
+{
+    static bool bFirst = true;
+    static float lastX = 400;
+    static float lastY = 300;
+
+    float curX = (float)xPos;
+    float curY = (float)yPos;
+
+    if (bFirst)
+    {
+        lastX = curX;
+        lastY = curY;
+        bFirst = false;
+    }
+
+    float xOffset = curX - lastX;
+    float yOffset = lastY - curY;
+
+    s3CallbackUserData moveData;
+    s3MouseEvent moveEvent(s3MouseEvent::s3ButtonType::NONE, 0, 0, (int)xOffset, (int)yOffset, 0, false, false);
+    moveData.data = (void*)(&moveEvent);
+    s3CallbackManager::callBack.onMouseMoved.trigger(&moveData);
+}
+
+void s3App::mouseButtonCB(GLFWwindow* window, int button, int action, int mods)
+{
+    s3MouseEvent::s3ButtonType buttonType = s3MouseEvent::s3ButtonType::NONE;
+    switch (button)
+    {
+    case GLFW_MOUSE_BUTTON_RIGHT:
+        buttonType = s3MouseEvent::s3ButtonType::RIGHT;
+        break;
+    case GLFW_MOUSE_BUTTON_LEFT:
+        buttonType = s3MouseEvent::s3ButtonType::LEFT;
+        break;
+    case GLFW_MOUSE_BUTTON_MIDDLE:
+        buttonType = s3MouseEvent::s3ButtonType::MIDDLE;
+        break;
+    }
+
+    s3CallbackUserData buttonData;
+    s3MouseEvent moveEvent(buttonType, 0, 0, 0, 0, 0, false, false);
+    buttonData.data = (void*)(&moveEvent);
+    
+    if(action == GLFW_PRESS)
+        s3CallbackManager::callBack.onMousePressed.trigger(&buttonData);
+    if(action == GLFW_RELEASE)
+        s3CallbackManager::callBack.onMouseReleased.trigger(&buttonData);
+}
+
+void s3App::mouseScrollCB(GLFWwindow * window, double xOffset, double yOffset)
+{
+    s3CallbackUserData scrollData;
+    s3MouseEvent scrollEvent(s3MouseEvent::s3ButtonType::MIDDLE, 0, 0, 0, 0, (float)yOffset, false, false);
+    scrollData.data = (void*)(&scrollEvent);
+    s3CallbackManager::callBack.onMouseScrolled.trigger(&scrollData);
+}
+

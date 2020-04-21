@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -159,10 +159,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\SophiaGL\3d\s3Camera.cpp" />
+    <ClCompile Include="..\..\SophiaGL\app\s3App.cpp" />
+    <ClCompile Include="..\..\SophiaGL\app\s3CallbackManager.cpp" />
+    <ClCompile Include="..\..\SophiaGL\app\s3Utils.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\log\s3Log.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\log\s3LogFile.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\log\s3LogHTML.cpp" />
+    <ClCompile Include="..\..\SophiaGL\core\s3Callback.cpp" />
+    <ClCompile Include="..\..\SophiaGL\core\s3Event.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\s3Settings.cpp" />
+    <ClCompile Include="..\..\SophiaGL\core\s3Timer.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3Shader.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3Texture.cpp" />
     <ClCompile Include="..\..\SophiaGL\test\main.cpp" />
@@ -170,12 +177,20 @@
     <ClCompile Include="..\..\SophiaGL\thirdparty\glm\include\glm\detail\glm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\SophiaGL\3d\s3Camera.h" />
+    <ClInclude Include="..\..\SophiaGL\app\s3App.h" />
+    <ClInclude Include="..\..\SophiaGL\app\s3CallbackManager.h" />
+    <ClInclude Include="..\..\SophiaGL\app\s3Utils.h" />
     <ClInclude Include="..\..\SophiaGL\core\log\s3Log.h" />
     <ClInclude Include="..\..\SophiaGL\core\log\s3LogFile.h" />
     <ClInclude Include="..\..\SophiaGL\core\log\s3LogHTML.h" />
+    <ClInclude Include="..\..\SophiaGL\core\s3Callback.h" />
+    <ClInclude Include="..\..\SophiaGL\core\s3Event.h" />
     <ClInclude Include="..\..\SophiaGL\core\s3Settings.h" />
+    <ClInclude Include="..\..\SophiaGL\core\s3Timer.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Shader.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Texture.h" />
+    <ClInclude Include="..\..\SophiaGL\test\appTest.h" />
     <ClInclude Include="..\..\SophiaGL\test\cameraTest.h" />
     <ClInclude Include="..\..\SophiaGL\test\mainTest.h" />
     <ClInclude Include="..\..\SophiaGL\test\shaderTest.h" />
