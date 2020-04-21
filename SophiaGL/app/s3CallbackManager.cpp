@@ -2,6 +2,7 @@
 #include <core/log/s3Log.h>
 #include <core/s3Event.h>
 #include <glfw/glfw3.h>
+#include <app/s3App.h>
 //#include <core/s3Gui.h>
 //#include <graphics/s3Renderer.h>
 //#include <imgui.h>
@@ -14,15 +15,15 @@ class s3SystemHandler : public s3CallbackHandle
 public:
     void onHandle(const s3CallbackUserData* data)
     {
-        if (data->sender == &s3CallbackManager::callBack.onKeyReleased)
+        if (data->sender == &s3CallbackManager::callBack.onKeyPressed)
         {
-            s3KeyEvent* keyEvent = (s3KeyEvent*)data->imageData;
-            if (keyEvent->keyCode == s3KeyCode::EscapeKey)
-                glfwSetWindowShouldClose(window, true);
+            s3KeyEvent* keyEvent = (s3KeyEvent*)data->data;
+            if (keyEvent->keyCode == s3KeyCode::escape)
+                s3App::getInstance().shutdown();
         }
         //else if (data->sender == &s3CallbackManager::callBack.onEngineInit)
         //{
-        //    s3ImGuiInit(data->imageData, s3Renderer::get().getDevice(), s3Renderer::get().getDeviceContext());
+        //    s3ImGuiInit(data->data, s3Renderer::get().getDevice(), s3Renderer::get().getDeviceContext());
         //}
         //else if (data->sender == &s3CallbackManager::callBack.onEngineDeinit)
         //{
