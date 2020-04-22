@@ -18,7 +18,7 @@ public:
         if (data->sender == &s3CallbackManager::callBack.onKeyPressed)
         {
             s3KeyEvent* keyEvent = (s3KeyEvent*)data->data;
-            if (keyEvent->keyCode == s3KeyCode::escape)
+            if (keyEvent->keyType == s3KeyEvent::s3KeyType::escape)
                 s3App::getInstance().shutdown();
         }
         //else if (data->sender == &s3CallbackManager::callBack.onEngineInit)

@@ -32,13 +32,13 @@ class s3Texture;
 //
 //std::string s3KeyStateToString(s3KeyState state);
 
-std::string s3MouseTypeToString(s3MouseEvent::s3ButtonType type);
+//std::string s3MouseTypeToString(s3MouseEvent::s3ButtonType type);
 
 //std::string s3KeyTypeToString(s3KeyCode type);
 
 //std::string s3GetLatestProfile(s3ShaderType type);
 
-s3ImageType s3GetImageType(const std::string & filePath);
+//s3ImageType s3GetImageType(const std::string & filePath);
 
 //s3Texture* s3LoadAsMipmap(std::vector<std::string> fileNames);
 
