@@ -896,6 +896,9 @@
     <ClInclude Include="..\..\SophiaGL\test\appTest.h">
       <Filter>SophiaGL\test</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\test\enumTest.h">
+      <Filter>SophiaGL\test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\SophiaGL\shaders\basicFS.glsl">
