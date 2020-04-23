@@ -25,6 +25,14 @@ public:
 			valueTable["MyEnum::" + token] = valueTable[token] = stringTable.size() - 1;
 		}
 	}
+	int getCount() const
+	{
+		return stringTable.size();
+	}
+	int getValue(MyEnum type) const
+	{
+		return 0;
+	}
 	std::string toString(MyEnum type) const
 	{
 		return stringTable[static_cast<int>(type)];
@@ -32,6 +40,7 @@ public:
 	int toIndex(MyEnum type) const
 	{
 		std::string result = stringTable[static_cast<int>(type)];
+		return 0;
 	}
 	MyEnum fromString(std::string s) const
 	{
@@ -73,7 +82,7 @@ public:
 //    __S3ENUM_DEFINE(TypeName, __VA_ARGS__)                         \
 //    __S3ENUM_TO_STRING(TypeName, __VA_ARGS__)
 //
-//#define s3EnumUtil(Type) (s3EnumUtil##Type::getHelper())
+#define s3EnumUtils (s3EnumUtil::getHelper())
 
 //s3Enum(MyEnum,
 //       E_MEMBER1,
@@ -82,10 +91,20 @@ public:
 
 int main()
 {
-	auto xxx = s3EnumUtil::getHelper();
+	//auto xxx = s3EnumUtil::getHelper();
 
-	std::cout << s3EnumUtil::getHelper().toString(MyEnum::E_MEMBER1) << std::endl;
-	std::cout << (int)s3EnumUtil::getHelper().fromString("MyEnum::E_MEMBER1") << std::endl;
+	//std::cout << s3EnumUtil::getHelper().toString(MyEnum::E_MEMBER1) << std::endl;
+	//std::cout << (int)s3EnumUtil::getHelper().fromString("MyEnum::E_MEMBER1") << std::endl;
+
+
+
+	for (int i = 0; i < s3EnumUtils.getCount(); i++)
+	{
+		MyEnum temp = s3EnumUtils.fromIndex(i);
+
+		std::cout << s3EnumUtils.toString(temp) << std::endl;
+		std::cout << s3EnumUtils.getValue(temp) << std::endl;
+	}
 
 	return 0;
 }
