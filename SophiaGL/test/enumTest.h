@@ -1,110 +1,273 @@
-#include<iostream>  
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>  
 #include <string>
 #include <sstream>
 #include <map>
+#include <algorithm>
 #include <vector>
-//private:																						            
-enum class MyEnum
-{
-	E_MEMBER1,
-	E_MEMBER2,
-	E_MEMBER3
-};
 
-//#define __S3ENUM_TO_STRING(Type, ...)														
-class s3EnumUtil
+//È¥¿Õ¸ñ
+std::string deleteSpace(const std::string& str)
 {
-public:
-	s3EnumUtil()
+	if (str.empty()) return std::string("");
+
+	std::string tmpStr;
+	for (int i = 0; i < str.length(); i++)
+		if (str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+			tmpStr += str[i];
+
+	return tmpStr;
+}
+
+bool parseEnumString(const std::string& str, std::map<int, std::string>& keyValueList)
+{
+	// string with enum type name and value
+	std::vector<std::string> fieldList;
+
+	// parse fieldList by comma
+	size_t pos = str.find(",");
+	size_t lastPos = 0;
+	while (pos != std::string::npos)
 	{
-		std::stringstream si("E_MEMBER1, E_MEMBER2, E_MEMBER3");
-		std::string token;
-		while ((token = getName(si)).length())
+		fieldList.push_back(str.substr(lastPos, pos - lastPos));
+		lastPos = pos + 1;
+		pos = str.find(",", static_cast<unsigned int>(lastPos));
+	}
+
+	if (lastPos != str.length())
+		fieldList.push_back(str.substr(lastPos, str.length() - lastPos));
+
+	if (fieldList.size() == 0)
+		return false;
+
+	// default value start with 0
+	int defaultValue = 0;
+
+	// parse enum type name and specific value
+	keyValueList.clear();
+	for (std::vector<std::string>::iterator it = fieldList.begin(); it != fieldList.end(); it++)
+	{
+		long value;
+		std::string enumStr = deleteSpace(*it);
+		std::string name;
+
+		// equal character may not provided
+		int pos = static_cast<int>(enumStr.find("="));
+		if (pos != std::string::npos)
 		{
-			stringTable.push_back("MyEnum::" + token);
-			valueTable["MyEnum::" + token] = valueTable[token] = stringTable.size() - 1;
+			char valueStr[64] = { '\0' };
+			std::string temp;
+			name = enumStr.substr(0, pos);
+
+			// substr after equal(value string)
+			temp = enumStr.substr(pos + 1, (*it).length());
+			sscanf(temp.c_str(), "%[^LlUu]", valueStr);
+			temp = valueStr;
+
+			if (temp.find("0x") != std::string::npos)
+				value = strtol(valueStr, NULL, 16);
+			else if (temp[0] == '0')
+				value = strtol(valueStr, NULL, 8);
+			else
+				value = strtol(valueStr, NULL, 10);
 		}
-	}
-	int getCount() const
-	{
-		return stringTable.size();
-	}
-	int getValue(MyEnum type) const
-	{
-		return 0;
-	}
-	std::string toString(MyEnum type) const
-	{
-		return stringTable[static_cast<int>(type)];
-	}
-	int toIndex(MyEnum type) const
-	{
-		std::string result = stringTable[static_cast<int>(type)];
-		return 0;
-	}
-	MyEnum fromString(std::string s) const
-	{
-		return static_cast<MyEnum>(valueTable.at(s));
-	}
-	MyEnum fromIndex(int index) const
-	{
-		std::string result = stringTable[index];
-		return static_cast<MyEnum>(valueTable.at(result));
-	}
-	static s3EnumUtil& getHelper()
-	{
-		static s3EnumUtil helper;
-		return helper;
-	}
-	static std::string getName(std::stringstream& si)
-	{
-		std::string ret;
-		while (si &&
-			   !((si.peek() >= 'a' && si.peek() <= 'z') ||
-			   (si.peek() >= 'A' && si.peek() <= 'Z') ||
-			   (si.peek() >= '0' && si.peek() <= '9')))
-			si.get();
-		if (!si) return "";
-		while ((si.peek() >= 'a' && si.peek() <= 'z') ||
-			   (si.peek() >= 'A' && si.peek() <= 'Z') ||
-			   (si.peek() >= '0' && si.peek() <= '9'))
-			ret += si.get();
-		return ret;
-	}
-	std::vector<std::string> stringTable;
-	std::map<std::string, int> valueTable;
-};
+		else
+		{
+			name = enumStr;
+			value = defaultValue;
+		}
 
-//#define __S3ENUM_DEFINE(TypeName, ...)                             \
-//    enum class TypeName { __VA_ARGS__ };                           \
-//
-//#define s3Enum(TypeName, ...)                                      \
-//    __S3ENUM_DEFINE(TypeName, __VA_ARGS__)                         \
-//    __S3ENUM_TO_STRING(TypeName, __VA_ARGS__)
-//
-#define s3EnumUtils (s3EnumUtil::getHelper())
+		defaultValue = value + 1;
+		keyValueList[value] = name;
+	}
 
-//s3Enum(MyEnum,
-//       E_MEMBER1,
-//       E_MEMBER2,
-//       E_MEMBER3);
+	if (keyValueList.size() == 0)
+		return false;
+	return true;
+}
+
+#define __S3ENUM_TO_STRING(Type, ...)																					   \
+template<typename Type>																								 	   \
+class s3EnumHelper																									 	   \
+{																													 	   \
+public:																												 	   \
+	s3EnumHelper()																									 	   \
+	{																												 	   \
+		std::string enumStr(#__VA_ARGS__);																				   \
+																													 	   \
+		parseEnumString(enumStr);																					 	   \
+	}																												 	   \
+																													 	   \
+	int getCount() const																							 	   \
+	{																												 	   \
+		return indexList.size();																					 	   \
+	}																												 	   \
+																													 	   \
+	const std::string& toString(Type type) const																		   \
+	{																													   \
+		/* [] operator would add element if not exsits */																   \
+		return enumList.at((int)(type));																				   \
+	}																												 	   \
+																													 	   \
+	Type fromString(std::string s) const																			 	   \
+	{																												 	   \
+		for (auto it = enumList.begin(); it != enumList.end(); it++)												 	   \
+			if (it->second == s)																					 	   \
+				return (Type)(it->first);																			 	   \
+																													 	   \
+		return (Type)-1;																							 	   \
+	}																												 	   \
+																													 	   \
+	Type fromIndex(int index) const																					 	   \
+	{																												 	   \
+		if(index > 0 && index < indexList.size())																	 	   \
+			return (Type)(indexList[index]);																		 	   \
+		return (Type)-1;																							 	   \
+	}																													   \
+																														   \
+	void print()																										   \
+	{																													   \
+		for (auto it = enumList.begin(); it != enumList.end(); it++)													   \
+		{																												   \
+			std::cout << "Value:" << it->first << ", " << "Name: " << it->second << std::endl;							   \
+		}																												   \
+																														   \
+		for (int i = 0; i < indexList.size(); i++)																		   \
+		{																												   \
+			std::cout << "Index:" << i << ", " << "Value: " << indexList[i] << std::endl;								   \
+		}																												   \
+	}																													   \
+																													 	   \
+	static s3EnumHelper& getHelper()																				 	   \
+	{																												 	   \
+		static s3EnumHelper helper;																					 	   \
+		return helper;																								 	   \
+	}																												 	   \
+																													 	   \
+private:																											 	   \
+	std::string deleteSpace(const std::string& str)																	 	   \
+	{																												 	   \
+		if (str.empty()) return std::string("");																	 	   \
+																													 	   \
+		std::string tmpStr;																							 	   \
+		for (int i = 0; i < str.length(); i++)																		 	   \
+			if (str[i] != ' ')																						 	   \
+				tmpStr += str[i];																					 	   \
+																													 	   \
+		return tmpStr;																								 	   \
+	}																												 	   \
+																													 	   \
+	bool parseEnumString(const std::string& str)																	 	   \
+	{																												 	   \
+		/* string with enum type nameStr and value */																 	   \
+		std::vector<std::string> fieldList;																			 	   \
+																													 	   \
+		/* parse fieldList by comma	*/																				 	   \
+		size_t pos = str.find(",");																					 	   \
+		size_t lastPos = 0;																							 	   \
+		while (pos != std::string::npos)																			 	   \
+		{																											 	   \
+			fieldList.push_back(str.substr(lastPos, pos - lastPos));												 	   \
+			lastPos = pos + 1;																						 	   \
+			pos = str.find(",", static_cast<unsigned int>(lastPos));												 	   \
+		}																											 	   \
+																													 	   \
+		if (lastPos != str.length())																				 	   \
+			fieldList.push_back(str.substr(lastPos, str.length() - lastPos));										 	   \
+																													 	   \
+		if (fieldList.size() == 0)																					 	   \
+			return false;																							 	   \
+																													 	   \
+		/* default value start with 0 */																			 	   \
+		int defaultValue = 0;																						 	   \
+																													 	   \
+		/* parse enum type nameStr and specific value */															 	   \
+		enumList.clear();																							 	   \
+		for (std::vector<std::string>::iterator it = fieldList.begin(); it != fieldList.end(); it++)				 	   \
+		{																											 	   \
+			long value;																								 	   \
+			std::string fieldStr = deleteSpace(*it);																 	   \
+			std::string nameStr;																					 	   \
+																													 	   \
+			/* equal character may not provided	*/																	 	   \
+			int pos = fieldStr.find("=");																			 	   \
+			if (pos != std::string::npos)																			 	   \
+			{																										 	   \
+				char temp[64] = { '\0' };																			 	   \
+				std::string valueStr;																				 	   \
+				nameStr = fieldStr.substr(0, pos);																 		   \
+																													 	   \
+				/* substr after equal(value string)	*/																 	   \
+				valueStr = fieldStr.substr(pos + 1, (*it).length());												 	   \
+				sscanf(valueStr.c_str(), "%[^LlUu]", temp);															 	   \
+				valueStr = temp;																					 	   \
+																													 	   \
+				/* convert string into interger	*/																	 	   \
+				if (valueStr.find("0x") != std::string::npos)														 	   \
+					value = strtol(temp, NULL, 16);																	 	   \
+				else if (valueStr[0] == '0')																		 	   \
+					value = strtol(temp, NULL, 8);																	 	   \
+				else																								 	   \
+					value = strtol(temp, NULL, 10);																	 	   \
+			}																										 	   \
+			else																									 	   \
+			{																										 	   \
+				nameStr = fieldStr;																					 	   \
+				value = defaultValue;																				 	   \
+			}																										 	   \
+																													 	   \
+			defaultValue = value + 1;																				 	   \
+			indexList.push_back(value);																				 	   \
+			enumList[value] = nameStr;																				 	   \
+		}																											 	   \
+																													 	   \
+		if (enumList.size() == 0)																					 	   \
+			return false;																							 	   \
+		return true;																								 	   \
+	}																												 	   \
+																													 	   \
+	std::vector<int> indexList;																						 	   \
+	std::map<int, std::string> enumList;																			 	   \
+};																													 
+
+#define __S3ENUM_DEFINE(Type, ...)                             \
+    enum class Type { __VA_ARGS__ };                           \
+
+#define s3Enum(Type, ...)                                      \
+    __S3ENUM_DEFINE(Type, __VA_ARGS__)                         \
+    __S3ENUM_TO_STRING(Type, __VA_ARGS__)
+
+#define s3EnumUtil(Type) (s3EnumHelper<Type>::getHelper())
+
+s3Enum(MyEnum,
+	   E_MEMBER1 = -1,
+	   E_MEMBER2 = 1200,
+	   E_MEMBER3 = 0xfff);
 
 int main()
 {
-	//auto xxx = s3EnumUtil::getHelper();
+	//std::string testStr = "A_1dddd3 =    1000,   _A_1dddd32,      _A_1dddd34    = 11000,_A_1dddd35 = 1200,	__sdfsdf_AD_4 = 0xAdef12,	_Asdfsdfdd = 01232";
+	//std::map<int, std::string> keyValueList;
+	//parseEnumString(testStr, keyValueList);
 
-	//std::cout << s3EnumUtil::getHelper().toString(MyEnum::E_MEMBER1) << std::endl;
-	//std::cout << (int)s3EnumUtil::getHelper().fromString("MyEnum::E_MEMBER1") << std::endl;
+	auto xxx = s3EnumUtil(MyEnum);
 
+	std::cout << s3EnumUtil(MyEnum).toString(MyEnum::E_MEMBER1) << std::endl;
+	std::cout << (int)s3EnumUtil(MyEnum).fromString("E_MEMBER1") << std::endl;
 
+	s3EnumUtil(MyEnum).print();
 
-	for (int i = 0; i < s3EnumUtils.getCount(); i++)
+	for (int i = 0; i < s3EnumUtil(MyEnum).getCount(); i++)
 	{
-		MyEnum temp = s3EnumUtils.fromIndex(i);
+		auto temp = s3EnumUtil(MyEnum).fromIndex(i);
+		auto str = s3EnumUtil(MyEnum).toString(temp);
+		auto value = s3EnumUtil(MyEnum).fromString(str);
 
-		std::cout << s3EnumUtils.toString(temp) << std::endl;
-		std::cout << s3EnumUtils.getValue(temp) << std::endl;
+		std::cout << str << std::endl;
+		std::cout << (int)value << std::endl;
 	}
 
+	getchar();
 	return 0;
 }
