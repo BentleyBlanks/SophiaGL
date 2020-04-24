@@ -7,18 +7,13 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-// for loop whole key code list
-int s3KeyCodeEnum[] =
-{
-    32, 39, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 59, 61, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 96, 16, 16, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 280, 281, 282, 283, 284, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 340, 341, 342, 343, 344, 345, 346, 347, 348
-};
-int s3KeyCodeEnumCount = sizeof(s3KeyCodeEnum) / sizeof(int);
-
 s3App s3App::instance;
 
 s3App::s3App()
 {
-    clearColor = glm::vec4(0.2f, 0.3f, 0.3f, 1.0f);
+    clearColor     = glm::vec4(0.2f, 0.3f, 0.3f, 1.0f);
+    windowSize     = glm::ivec2();
+    windowPosition = glm::ivec2();
 }
 
 s3App::~s3App()
@@ -125,12 +120,13 @@ void s3App::input()
     GLFWwindow* window = s3App::getInstance().getWindow();
 
     // key press event
-    for (int i = 0; i < s3KeyCodeEnumCount; i++)
+    for (int i = 0; i < FOO(s3MouseEvent, s3ButtonType).getCount(); i++)
     {
-        if (glfwGetKey(window, s3KeyCodeEnum[i]) == GLFW_PRESS)
+        s3KeyCodeType keyCodeType = FOO(s3KeyEvent, s3CodeType).fromIndex(i);
+        if (glfwGetKey(window, (int)s3KeyCodeType::W) == GLFW_PRESS)
         {
             s3KeyTriggerType type = s3KeyTriggerType::pressed;
-            s3KeyEvent keyEvent((s3KeyType)s3KeyCodeEnum[i], type, 0, false, false, false);
+            s3KeyEvent keyEvent(keyCodeType, type, 0, false, false, false);
             keyPressData.data = (void*)(&keyEvent);
             s3CallbackManager::callBack.onKeyPressed.trigger(&keyPressData);
             break;

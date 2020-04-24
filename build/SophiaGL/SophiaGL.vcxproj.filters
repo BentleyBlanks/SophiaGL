@@ -90,6 +90,9 @@
     <ClCompile Include="..\..\SophiaGL\app\s3Utils.cpp">
       <Filter>SophiaGL\app</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\core\s3Enum.cpp">
+      <Filter>SophiaGL\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SophiaGL\thirdparty\glad\include\glad\glad.h">
@@ -898,6 +901,9 @@
     </ClInclude>
     <ClInclude Include="..\..\SophiaGL\test\enumTest.h">
       <Filter>SophiaGL\test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\core\s3Enum.h">
+      <Filter>SophiaGL\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

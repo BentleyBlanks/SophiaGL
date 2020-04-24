@@ -3,7 +3,7 @@
 class s3Timer
 {
 public:
-    s3Timer():startTime(0.0f){}
+    s3Timer(){}
 
     // start counting time
     double start();
@@ -14,5 +14,5 @@ public:
 	// difference of counting time between start and end
     double difference();
 
-    double startTime, endTime;
+    double startTime = 0.0, endTime = 0.0;
 };

@@ -111,6 +111,8 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../SophiaGL;../../SophiaGL/thirdparty/glad/include;../../SophiaGL/thirdparty/stb/include;../../SophiaGL/thirdparty/glfw/include;../../SophiaGL/thirdparty/glm/include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,6 +169,7 @@
     <ClCompile Include="..\..\SophiaGL\core\log\s3LogFile.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\log\s3LogHTML.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\s3Callback.cpp" />
+    <ClCompile Include="..\..\SophiaGL\core\s3Enum.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\s3Event.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\s3Settings.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\s3Timer.cpp" />
@@ -185,6 +188,7 @@
     <ClInclude Include="..\..\SophiaGL\core\log\s3LogFile.h" />
     <ClInclude Include="..\..\SophiaGL\core\log\s3LogHTML.h" />
     <ClInclude Include="..\..\SophiaGL\core\s3Callback.h" />
+    <ClInclude Include="..\..\SophiaGL\core\s3Enum.h" />
     <ClInclude Include="..\..\SophiaGL\core\s3Event.h" />
     <ClInclude Include="..\..\SophiaGL\core\s3Settings.h" />
     <ClInclude Include="..\..\SophiaGL\core\s3Timer.h" />
