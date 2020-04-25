@@ -6,6 +6,7 @@ class s3Shader
 {
 public:
     // constructor reads and builds the shader
+    s3Shader();
     s3Shader(const char* vertexPath, const char* fragmentPath);
     ~s3Shader();
 
@@ -20,14 +21,14 @@ public:
     void setFloat(const std::string& name, float value) const;
     void setMatrix(const std::string& name, glm::mat4 mat) const;
 
+    bool load(const char* vertexPath, const char* fragmentPath);
     bool isLoaded() const;
+
     unsigned int getProgram() const;
 
 private:
     bool checkShader(unsigned int shader, bool isVertex);
     bool checkProgram(unsigned int program);
-
-    bool load(const char* vertexPath, const char* fragmentPath);
 
     unsigned int program = 0;
     bool bIsLoaded = false;
