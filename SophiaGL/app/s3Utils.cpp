@@ -8,7 +8,7 @@
 #include <iterator>
 #include <codecvt>
 
-//std::string s3MouseTypeToString(s3MouseEvent::s3ButtonType type)
+//std::string s3MouseTypeToString(s3MouseEvent::s3MouseType type)
 //{
 //    switch (type)
 //    {

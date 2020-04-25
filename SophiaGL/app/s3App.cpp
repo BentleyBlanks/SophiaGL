@@ -46,7 +46,6 @@ bool s3App::init(const char* title, int x, int y, int width, int height)
     }
  
     glfwMakeContextCurrent(window);
-
     // init renderer
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -62,6 +61,7 @@ bool s3App::init(const char* title, int x, int y, int width, int height)
     glfwSetMouseButtonCallback(window, mouseButtonCB);
     glfwSetCursorPosCallback(window, mouseMoveCB);
     glfwSetScrollCallback(window, mouseScrollCB);
+    glfwSetKeyCallback(window, keyCB);
 
     bInit = true;
     return true;
@@ -109,42 +109,45 @@ void s3App::run()
 
     while(true)
     {
-        input();
         render();
     }
 }
 
-void s3App::input()
+void s3App::keyCB(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    s3CallbackUserData keyPressData;
-    GLFWwindow* window = s3App::getInstance().getWindow();
+    auto keyType = (s3KeyType)key;
+    auto keyCode = s3EnumUtil(s3KeyType).toString(keyType);
 
-    // key press event
-    for (int i = 0; i < FOO(s3MouseEvent, s3ButtonType).getCount(); i++)
+    bool pressed  = action == GLFW_PRESS;
+    bool released = action == GLFW_RELEASE;
+    bool repeat   = action == GLFW_REPEAT;
+    bool control  = false, shift = false, alt = false;
+
+    if (glfwGetKey(window, (int)s3KeyType::leftAlt) == GLFW_PRESS ||
+        glfwGetKey(window, (int)s3KeyType::rightAlt) == GLFW_PRESS)
+        alt = true;
+
+    if (glfwGetKey(window, (int)s3KeyType::leftControl) == GLFW_PRESS ||
+        glfwGetKey(window, (int)s3KeyType::rightControl) == GLFW_PRESS)
+        control = true;
+
+    if (glfwGetKey(window, (int)s3KeyType::leftShift) == GLFW_PRESS ||
+        glfwGetKey(window, (int)s3KeyType::rightShift) == GLFW_PRESS)
+        shift = true;
+
+    s3CallbackUserData userData;
+    if (pressed || repeat)
     {
-        s3KeyCodeType keyCodeType = FOO(s3KeyEvent, s3CodeType).fromIndex(i);
-        if (glfwGetKey(window, (int)s3KeyCodeType::W) == GLFW_PRESS)
-        {
-            s3KeyTriggerType type = s3KeyTriggerType::pressed;
-            s3KeyEvent keyEvent(keyCodeType, type, 0, false, false, false);
-            keyPressData.data = (void*)(&keyEvent);
-            s3CallbackManager::callBack.onKeyPressed.trigger(&keyPressData);
-            break;
-        }
+        s3KeyEvent keyEvent(keyType, s3KeyTriggerType::pressed, keyCode, control, shift, alt);
+        userData.data = (void*)(&keyEvent);
+        s3CallbackManager::callBack.onKeyPressed.trigger(&userData);
     }
-
-    // key release event
-	//s3CallbackUserData keyReleaseData;
-	//for (int i = 0; i < s3KeyCodeEnumCount; i++)
-	//{
-	//	if (glfwGetKey(window, s3KeyCodeEnum[i]) == GLFW_RELEASE)
-	//	{
-	//		s3KeyEvent keyEvent((s3KeyCode)s3KeyCodeEnum[i], 0, false, false, false);
-	//		keyReleaseData.data = (void*)(&keyEvent);
-	//		s3CallbackManager::callBack.onKeyReleased.trigger(&keyReleaseData);
-	//		break;
-	//	}
-	//}
+    else if (released)
+    {
+        s3KeyEvent keyEvent(keyType, s3KeyTriggerType::released, keyCode, control, shift, alt);
+        userData.data = (void*)(&keyEvent);
+        s3CallbackManager::callBack.onKeyReleased.trigger(&userData);
+    }
 }
 
 void s3App::setClearColor(float r, float g, float b, float a)
@@ -215,24 +218,24 @@ void s3App::mouseMoveCB(GLFWwindow* window, double xPos, double yPos)
     float yOffset = lastY - curY;
 
     s3CallbackUserData moveData;
-    s3MouseEvent moveEvent(s3MouseButtonType::none, s3MouseTriggerType::none, 0, 0, (int)xOffset, (int)yOffset, 0, false, false);
+    s3MouseEvent moveEvent(s3MouseType::none, s3MouseTriggerType::none, 0, 0, (int)xOffset, (int)yOffset, 0, false, false);
     moveData.data = (void*)(&moveEvent);
     s3CallbackManager::callBack.onMouseMoved.trigger(&moveData);
 }
 
 void s3App::mouseButtonCB(GLFWwindow* window, int button, int action, int mods)
 {
-    s3MouseButtonType buttonType = s3MouseButtonType::none;
+    s3MouseType buttonType = s3MouseType::none;
     switch (button)
     {
     case GLFW_MOUSE_BUTTON_RIGHT:
-        buttonType = s3MouseButtonType::right;
+        buttonType = s3MouseType::right;
         break;
     case GLFW_MOUSE_BUTTON_LEFT:
-        buttonType = s3MouseButtonType::left;
+        buttonType = s3MouseType::left;
         break;
     case GLFW_MOUSE_BUTTON_MIDDLE:
-        buttonType = s3MouseButtonType::middle;
+        buttonType = s3MouseType::middle;
         break;
     }
 
@@ -249,7 +252,7 @@ void s3App::mouseButtonCB(GLFWwindow* window, int button, int action, int mods)
 void s3App::mouseScrollCB(GLFWwindow * window, double xOffset, double yOffset)
 {
     s3CallbackUserData scrollData;
-    s3MouseEvent scrollEvent(s3MouseButtonType::middle, s3MouseTriggerType::none, 0, 0, 0, 0, (float)yOffset, false, false);
+    s3MouseEvent scrollEvent(s3MouseType::middle, s3MouseTriggerType::none, 0, 0, 0, 0, (float)yOffset, false, false);
     scrollData.data = (void*)(&scrollEvent);
     s3CallbackManager::callBack.onMouseScrolled.trigger(&scrollData);
 }

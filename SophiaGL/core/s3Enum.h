@@ -1,12 +1,14 @@
 #pragma once
 #include <core/s3Settings.h>
+#include <core/log/s3Log.h>
 
+// s3Enum can't be used inside a class
 // template class would caused redefinition of s3EnumHelper, if enum was declared inside class
 #define __S3ENUM_TO_STRING(Type, ...)																					   \
 class s3EnumHelper##Type																								   \
 {																													 	   \
 public:																												 	   \
-	s3EnumHelper##Type()																									 	   \
+	s3EnumHelper##Type()																								   \
 	{																												 	   \
 		std::string enumStr(#__VA_ARGS__);																				   \
 																													 	   \
@@ -35,7 +37,7 @@ public:																												 	   \
 																													 	   \
 	Type fromIndex(int index) const																					 	   \
 	{																												 	   \
-		if(index > 0 && index < indexList.size())																	 	   \
+		if(index >= 0 && index < indexList.size())																	 	   \
 			return (Type)(indexList[index]);																		 	   \
 		return (Type)-1;																							 	   \
 	}																													   \
@@ -44,12 +46,12 @@ public:																												 	   \
 	{																													   \
 		for (auto it = enumList.begin(); it != enumList.end(); it++)													   \
 		{																												   \
-			std::cout << "Value:" << it->first << ", " << "Name: " << it->second << std::endl;							   \
+			s3Log::debug("Value: %d, Name: %s\n", it->first, it->second.c_str());										   \
 		}																												   \
 																														   \
 		for (int i = 0; i < indexList.size(); i++)																		   \
 		{																												   \
-			std::cout << "Index:" << i << ", " << "Value: " << indexList[i] << std::endl;								   \
+			s3Log::debug("Index: %d, Value: %d\n", i, indexList[i]);													   \
 		}																												   \
 	}																													   \
 																													 	   \
@@ -153,27 +155,24 @@ private:																											 	   \
     __S3ENUM_TO_STRING(Type, __VA_ARGS__)
 
 // core macro that would be used
-//#define s3EnumUtilOutsideClass(Type) (s3EnumHelper##Type::getHelper())
-//#define s3EnumUtilInsideClass(ClassName, Type) (ClassName::s3EnumHelper##Type::getHelper())
-
-#define FOO1(Type) s3EnumHelper##Type::getHelper()
-#define FOO2(ClassName, Type) ClassName::s3EnumHelper##Type::getHelper()
-
+#define s3EnumUtil(Type) (s3EnumHelper##Type::getHelper())
 
 //--! https://blog.csdn.net/lmhuanying1012/article/details/78715351
 // overload macro function(__VA_ARGS__ expand slightly different from GCC and VS compiler)
 //#define s3EnumUtilOverload(_1, _2, FunctionName, ...) FunctionName
 //#define s3EnumUtil(...) s3EnumUtilOverload(__VA_ARGS__, s3EnumUtilInsideClass, s3EnumUtilOutsideClass)(__VA_ARGS__)
 
-#define _my_BUGFX(x) x
-
-#define _my_NARG2(...) _my_BUGFX(_my_NARG1(__VA_ARGS__,_my_RSEQN()))
-#define _my_NARG1(...) _my_BUGFX(_my_ARGSN(__VA_ARGS__))
-#define _my_ARGSN(_1,_2,N,...) N
-#define _my_RSEQN() 2,1,0
-
-#define _my_FUNC2(name,n) name ## n
-#define _my_FUNC1(name,n) _my_FUNC2(name,n)
-#define GET_MACRO(func,...) _my_FUNC1(func,_my_BUGFX(_my_NARG2(__VA_ARGS__))) (__VA_ARGS__)
-
-#define FOO(...) GET_MACRO(FOO,__VA_ARGS__)
+//--! https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments
+// MSVC's __VA_ARGS__ worked not the same with GCC
+//#define _my_BUGFX(x) x
+//
+//#define _my_NARG2(...) _my_BUGFX(_my_NARG1(__VA_ARGS__,_my_RSEQN()))
+//#define _my_NARG1(...) _my_BUGFX(_my_ARGSN(__VA_ARGS__))
+//#define _my_ARGSN(_1,_2,N,...) N
+//#define _my_RSEQN() 2,1,0
+//
+//#define _my_FUNC2(name,n) name ## n
+//#define _my_FUNC1(name,n) _my_FUNC2(name,n)
+//#define GET_MACRO(func,...) _my_FUNC1(func,_my_BUGFX(_my_NARG2(__VA_ARGS__))) (__VA_ARGS__)
+//
+//#define FOO(...) GET_MACRO(FOO,__VA_ARGS__)
