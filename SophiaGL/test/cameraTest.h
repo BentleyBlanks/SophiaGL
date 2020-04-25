@@ -250,9 +250,9 @@ int main()
 
         // textures bind
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture0.getTexture());
+        texture0.begin();
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture1.getTexture());
+        texture1.begin();
 
         // render boxes
         glBindVertexArray(vao);

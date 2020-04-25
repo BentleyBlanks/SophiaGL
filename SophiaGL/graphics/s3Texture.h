@@ -4,7 +4,8 @@
 class s3Texture
 {
 public:
-	s3Texture(std::string path);
+	s3Texture();
+	s3Texture(const char* path);
 	~s3Texture();
 
 	void begin();
@@ -14,6 +15,7 @@ public:
 	int getHeight() const;
 	int getChannels() const;
 
+	bool load(const char* path);
 	bool isLoaded() const;
 	unsigned int getTexture() const;
 

@@ -69,9 +69,6 @@
     <ClCompile Include="..\..\SophiaGL\thirdparty\glm\include\glm\detail\glm.cpp">
       <Filter>SophiaGL\thirdparty\glm</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\app\s3App.cpp">
-      <Filter>SophiaGL\app</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\SophiaGL\app\s3CallbackManager.cpp">
       <Filter>SophiaGL\app</Filter>
     </ClCompile>
@@ -92,6 +89,12 @@
     </ClCompile>
     <ClCompile Include="..\..\SophiaGL\core\s3Enum.cpp">
       <Filter>SophiaGL\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\app\s3Window.cpp">
+      <Filter>SophiaGL\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\graphics\s3Renderer.cpp">
+      <Filter>SophiaGL\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -875,9 +878,6 @@
     <ClInclude Include="..\..\SophiaGL\test\cameraTest.h">
       <Filter>SophiaGL\test</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\app\s3App.h">
-      <Filter>SophiaGL\app</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\SophiaGL\app\s3CallbackManager.h">
       <Filter>SophiaGL\app</Filter>
     </ClInclude>
@@ -904,6 +904,12 @@
     </ClInclude>
     <ClInclude Include="..\..\SophiaGL\core\s3Enum.h">
       <Filter>SophiaGL\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\app\s3Window.h">
+      <Filter>SophiaGL\app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\graphics\s3Renderer.h">
+      <Filter>SophiaGL\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

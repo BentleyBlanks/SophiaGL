@@ -8,6 +8,9 @@
 #include <sstream>
 #include <iostream>
 
+s3Shader::s3Shader()
+{}
+
 s3Shader::s3Shader(const char* vertexPath, const char* fragmentPath)
 {
     load(vertexPath, fragmentPath);
