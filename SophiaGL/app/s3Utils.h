@@ -32,7 +32,7 @@ class s3Texture;
 //
 //std::string s3KeyStateToString(s3KeyState state);
 
-//std::string s3MouseTypeToString(s3MouseEvent::s3ButtonType type);
+//std::string s3MouseTypeToString(s3MouseEvent::s3MouseType type);
 
 //std::string s3KeyTypeToString(s3KeyCode type);
 
