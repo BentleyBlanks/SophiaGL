@@ -64,7 +64,7 @@ public:
 
 			float offsetX = (float)mouseEvent->offsetX;
 			float offsetY = (float)mouseEvent->offsetY;
-			s3Log::debug("OffsetX: %d, OffsetY: %d\n", offsetX, offsetY);
+			s3Log::debug("OffsetX: %f, OffsetY: %f\n", offsetX, offsetY);
 			//s3Log::debug("Yaw: %f, Pitch: %f\n", yaw, pitch);
 
 			offsetX *= sensitivity;

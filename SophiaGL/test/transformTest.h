@@ -192,9 +192,9 @@ int main()
         shader.setMatrix("projection", projection);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture0.getTexture());
+        glBindTexture(GL_TEXTURE_2D, texture0.getTextureID());
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture1.getTexture());
+        glBindTexture(GL_TEXTURE_2D, texture1.getTextureID());
 
         glBindVertexArray(vao);
         //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
