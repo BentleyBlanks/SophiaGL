@@ -88,6 +88,8 @@ class s3App : public s3CallbackHandle
 public:
     void onHandle(const s3CallbackUserData* userData)
     {
+        static auto bFirst = true;
+
         s3Window& window = s3Window::getInstance();
 
         if (userData->sender == &s3CallbackManager::onEngineInit)
@@ -98,6 +100,10 @@ public:
 
             texture0.load("../../resources/images/lulu.jpg");
             texture1.load("../../resources/images/lulu2.jpg");
+            // could be removed when shader parser added
+            texture0.setLocation(0);
+            texture1.setLocation(1);
+
             shader.load("../../SophiaGL/shaders/coordinateVS.glsl", "../../SophiaGL/shaders/coordinateFS.glsl");
 
             // vao generation and bind
@@ -135,18 +141,17 @@ public:
         }
         else if (userData->sender == &s3CallbackManager::onBeginRender)
         {
-            // activate shader and clearing
-            shader.begin();
             shader.setMatrix("projection", camera.getProjectionMatrix());
             shader.setMatrix("view", camera.getViewMatrix());
-            shader.setTexture("texture0", 0);
-            shader.setTexture("texture1", 1);
+            shader.setTexture("texture0", &texture0);
+			shader.setTexture("texture1", &texture1);
 
-            // textures bind
-            glActiveTexture(GL_TEXTURE0);
-            texture0.begin();
-            glActiveTexture(GL_TEXTURE1);
-            texture1.begin();
+			// activate shader and clearing
+			if (bFirst)
+			{
+				shader.print();
+				bFirst = false;
+			}
 
             // render boxes
             glBindVertexArray(vao);
@@ -159,8 +164,14 @@ public:
                 model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 
                 shader.setMatrix("model", model);
+                shader.begin();
+
                 glDrawArrays(GL_TRIANGLES, 0, 36);
             }
+        }
+        else if (userData->sender == &s3CallbackManager::onEngineDeinit)
+        {
+
         }
     }
 

@@ -111,9 +111,9 @@ int main()
 
         glBindVertexArray(vao);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture0.getTexture());
+        glBindTexture(GL_TEXTURE_2D, texture0.getTextureID());
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture1.getTexture());
+        glBindTexture(GL_TEXTURE_2D, texture1.getTextureID());
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         //glDrawArrays(GL_TRIANGLES, 0, 3);

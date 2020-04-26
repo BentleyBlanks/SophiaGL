@@ -245,7 +245,7 @@ void s3Log::print(const char* message, ...)
     va_start(args, message);
 
 #ifdef _MSC_VER
-    WORD attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+    WORD attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
     SetConsoleTextAttribute(GetStdHandle(STD_ERROR_HANDLE), attr);
 #endif
 
