@@ -78,8 +78,8 @@ void s3Shader::begin()
     // bind all the cached field into pipeline
     for (auto it = fieldMap.begin(); it != fieldMap.end(); it++)
     {
-        const std::string& name    = it->first;
-        const s3ShaderField& field = it->second;
+        const std::string& name = it->first;
+        s3ShaderField& field    = it->second;
         switch (field.type)
         {
         case s3ShaderFieldType::none:
@@ -99,62 +99,62 @@ void s3Shader::begin()
         }
         case s3ShaderFieldType::bool1:
         {
-            bool bool1 = field.bool1;
+            bool& bool1 = field.bool1;
             glUniform1i(glGetUniformLocation(program, name.c_str()), bool1);
             break;
         }
         case s3ShaderFieldType::int1:
         {
-            int int1 = field.int1;
+            int& int1 = field.int1;
             glUniform1i(glGetUniformLocation(program, name.c_str()), int1);
             break;
         }
         case s3ShaderFieldType::int2:
         {
-            glm::ivec2 int2 = field.int2;
+            glm::ivec2& int2 = field.int2;
             glUniform2i(glGetUniformLocation(program, name.c_str()), int2.x, int2.y);
             break;
         }
         case s3ShaderFieldType::int3:
         {
-            glm::ivec3 int3 = field.int3;
+            glm::ivec3& int3 = field.int3;
             glUniform3i(glGetUniformLocation(program, name.c_str()), int3.x, int3.y, int3.z);
             break;
         }
         case s3ShaderFieldType::int4:
         {
-            glm::ivec4 int4 = field.int4;
+            glm::ivec4& int4 = field.int4;
             glUniform4i(glGetUniformLocation(program, name.c_str()), int4.x, int4.y, int4.z, int4.w);
             break;
         }
         case s3ShaderFieldType::float1:
         {
-            float float1 = field.float1;
+            float& float1 = field.float1;
             glUniform1f(glGetUniformLocation(program, name.c_str()), float1);
             break;
         }
         case s3ShaderFieldType::float2:
         {
-            glm::vec2 float2 = field.float2;
+            glm::vec2& float2 = field.float2;
             glUniform2f(glGetUniformLocation(program, name.c_str()), float2.x, float2.y);
             break;
         }
         case s3ShaderFieldType::float3:
         {
-            glm::vec3 float3 = field.float3;
+            glm::vec3& float3 = field.float3;
             glUniform3f(glGetUniformLocation(program, name.c_str()), float3.x, float3.y, float3.z);
             break;
         }
         case s3ShaderFieldType::float4:
         {
-            glm::vec4 float4 = field.float4;
+            glm::vec4& float4 = field.float4;
             glUniform4f(glGetUniformLocation(program, name.c_str()), float4.x, float4.y, float4.z, float4.w);
             break;
         }
         case s3ShaderFieldType::mat4:
         {
-            glm::mat4 mat4 = field.mat4;
-            glUniformMatrix4fv(glGetUniformLocation(program, name.c_str()), false, 1, glm::value_ptr(mat4));
+            glm::mat4& mat4 = field.mat4;
+            glUniformMatrix4fv(glGetUniformLocation(program, name.c_str()), 1, false, glm::value_ptr(mat4));
             break;
         }
         }

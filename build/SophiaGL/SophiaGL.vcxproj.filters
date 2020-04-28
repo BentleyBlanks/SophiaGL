@@ -1321,5 +1321,11 @@
     <None Include="..\..\SophiaGL\thirdparty\glm\include\glm\gtx\wrap.inl">
       <Filter>SophiaGL\thirdparty\glm</Filter>
     </None>
+    <None Include="..\..\SophiaGL\shaders\coordinateFS.glsl">
+      <Filter>SophiaGL\shaders</Filter>
+    </None>
+    <None Include="..\..\SophiaGL\shaders\coordinateVS.glsl">
+      <Filter>SophiaGL\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

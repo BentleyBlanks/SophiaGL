@@ -9,11 +9,12 @@ uniform sampler2D texture1;
 
 void main()
 {
-    vec4 texColor;
-    if(texCoord.x > 0.5f)
-        texColor = texture(texture0, texCoord);
-    else
-        texColor = texture(texture1, texCoord);
+    //vec4 texColor;
+    //if(texCoord.x > 0.5f)
+    //    texColor = texture(texture0, texCoord);
+    //else
+    //    texColor = texture(texture1, texCoord);
 
-    fragColor = time * color * texColor;
+    //fragColor = time * color * texColor;
+    fragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
 }
