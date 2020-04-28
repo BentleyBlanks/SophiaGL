@@ -456,6 +456,8 @@
   <ItemGroup>
     <None Include="..\..\SophiaGL\shaders\basicFS.glsl" />
     <None Include="..\..\SophiaGL\shaders\basicVS.glsl" />
+    <None Include="..\..\SophiaGL\shaders\coordinateFS.glsl" />
+    <None Include="..\..\SophiaGL\shaders\coordinateVS.glsl" />
     <None Include="..\..\SophiaGL\thirdparty\glm\include\glm\detail\func_common.inl" />
     <None Include="..\..\SophiaGL\thirdparty\glm\include\glm\detail\func_common_simd.inl" />
     <None Include="..\..\SophiaGL\thirdparty\glm\include\glm\detail\func_exponential.inl" />

@@ -126,6 +126,9 @@ public:
             glBindVertexArray(0);
 
             s3Renderer::getInstance().setDepthTest(true);
+
+            shader.setTexture("texture0", &texture0);
+            shader.setTexture("texture1", &texture1);
         }
         else if (userData->sender == &s3CallbackManager::onUpdate)
         {
@@ -143,8 +146,6 @@ public:
         {
             shader.setMatrix("projection", camera.getProjectionMatrix());
             shader.setMatrix("view", camera.getViewMatrix());
-            shader.setTexture("texture0", &texture0);
-			shader.setTexture("texture1", &texture1);
 
 			// activate shader and clearing
 			if (bFirst)
