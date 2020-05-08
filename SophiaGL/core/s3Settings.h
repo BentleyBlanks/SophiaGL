@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <map>
+#include <list>
 // min&max function
 #include <algorithm>
 #include <assert.h>
