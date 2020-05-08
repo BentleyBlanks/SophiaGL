@@ -9,6 +9,7 @@
 #include <glfw/glfw3.h>
 
 s3Window s3Window::instance;
+std::map<int, s3KeyTriggerType> s3Window::keyInputList;
 
 s3Window::s3Window() : renderer(s3Renderer::getInstance())
 {
@@ -128,33 +129,56 @@ void s3Window::run()
     {
         s3CallbackManager::onUpdate.trigger();
 
+        keyInput(window);
         render();
     }
 }
 
-void s3Window::keyCB(GLFWwindow* window, int key, int scancode, int action, int mods)
+void s3Window::keyInput(GLFWwindow* window)
 {
+    int key = (int)'w';
     auto keyType = (s3KeyType)key;
     auto keyCode = s3EnumUtil(s3KeyType).toString(keyType);
-
-    bool pressed  = action == GLFW_PRESS;
-    bool released = action == GLFW_RELEASE;
-    bool repeat   = action == GLFW_REPEAT;
-    bool control  = false, shift = false, alt = false;
+    bool pressed = glfwGetKey(window, key) == GLFW_PRESS;
+    
+    bool control = false, shift = false, alt = false;
     functionKey(window, control, shift, alt);
 
     s3CallbackUserData userData;
-    if (pressed || repeat)
+    if (pressed)
     {
         s3KeyEvent keyEvent(keyType, s3KeyTriggerType::pressed, keyCode, control, shift, alt);
         userData.data = (void*)(&keyEvent);
         s3CallbackManager::onKeyPressed.trigger(&userData);
     }
+}
+
+// key repeat triggered after N frames, so put keyEvent message into GameLoop
+void s3Window::keyCB(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    auto keyType = (s3KeyType)key;
+    //auto keyCode = s3EnumUtil(s3KeyType).toString(keyType);
+
+    bool pressed  = action == GLFW_PRESS;
+    bool released = action == GLFW_RELEASE;
+    bool repeat   = action == GLFW_REPEAT;
+
+    //s3CallbackUserData userData;
+    if (pressed || repeat)
+    {
+        keyInputList[key] = s3KeyTriggerType::pressed;
+
+        //s3KeyEvent keyEvent(keyType, s3KeyTriggerType::pressed, keyCode, control, shift, alt);
+        //userData.data = (void*)(&keyEvent);
+        //s3CallbackManager::onKeyPressed.trigger(&userData);
+    }
     else if (released)
     {
-        s3KeyEvent keyEvent(keyType, s3KeyTriggerType::released, keyCode, control, shift, alt);
-        userData.data = (void*)(&keyEvent);
-        s3CallbackManager::onKeyReleased.trigger(&userData);
+        keyInputList[key] = s3KeyTriggerType::released;
+
+        //s3KeyEvent keyEvent(keyType, s3KeyTriggerType::released, keyCode, control, shift, alt);
+        //userData.data = (void*)(&keyEvent);
+        //s3CallbackManager::onKeyReleased.trigger(&userData);
     }
 }
 
