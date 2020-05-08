@@ -8,8 +8,14 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
+struct s3Window::s3KeyInputState
+{
+    s3KeyType key;
+    s3KeyTriggerType triggerType;
+};
+
 s3Window s3Window::instance;
-std::map<int, s3KeyTriggerType> s3Window::keyInputList;
+std::list<s3Window::s3KeyInputState> s3Window::keyInputList;
 
 s3Window::s3Window() : renderer(s3Renderer::getInstance())
 {
@@ -136,49 +142,68 @@ void s3Window::run()
 
 void s3Window::keyInput(GLFWwindow* window)
 {
-    int key = (int)'w';
-    auto keyType = (s3KeyType)key;
-    auto keyCode = s3EnumUtil(s3KeyType).toString(keyType);
-    bool pressed = glfwGetKey(window, key) == GLFW_PRESS;
-    
-    bool control = false, shift = false, alt = false;
-    functionKey(window, control, shift, alt);
+	bool control = false, shift = false, alt = false;
+	functionKey(window, control, shift, alt);
 
-    s3CallbackUserData userData;
-    if (pressed)
-    {
-        s3KeyEvent keyEvent(keyType, s3KeyTriggerType::pressed, keyCode, control, shift, alt);
-        userData.data = (void*)(&keyEvent);
-        s3CallbackManager::onKeyPressed.trigger(&userData);
-    }
+	for (auto it = keyInputList.begin(); it != keyInputList.end(); )
+	{
+		auto keyType        = it->key;
+        auto triggerType    = it->triggerType;
+		auto keyCode        = s3EnumUtil(s3KeyType).toString(keyType);
+		auto triggerTypeStr = s3EnumUtil(s3KeyTriggerType).toString(triggerType);
+        //s3Log::debug("keyType: %d, triggerType: %s\n", (int)keyType, triggerTypeStr.c_str());
+
+		s3CallbackUserData userData;
+		s3KeyEvent keyEvent(keyType, triggerType, keyCode, control, shift, alt);
+		userData.data = (void*)(&keyEvent);
+
+        if (triggerType == s3KeyTriggerType::pressed)
+        {
+            // delete until key released
+            s3CallbackManager::onKeyPressed.trigger(&userData);
+            it++;
+        }
+        else
+        {
+            // only process release event once
+            s3CallbackManager::onKeyReleased.trigger(&userData);
+            it = keyInputList.erase(it);
+        }
+	}
 }
 
 // key repeat triggered after N frames, so put keyEvent message into GameLoop
 void s3Window::keyCB(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     auto keyType = (s3KeyType)key;
-    //auto keyCode = s3EnumUtil(s3KeyType).toString(keyType);
+    auto keyCode = s3EnumUtil(s3KeyType).toString(keyType);
 
     bool pressed  = action == GLFW_PRESS;
     bool released = action == GLFW_RELEASE;
     bool repeat   = action == GLFW_REPEAT;
+    
+    // make the key pressed message unique
+    s3Window::s3KeyInputState state;
+    state.key         = (s3KeyType)key;
+    state.triggerType = s3KeyTriggerType::pressed;
+    auto it = std::find_if(keyInputList.begin(), keyInputList.end(), [state](const s3KeyInputState _state)
+    {
+        return (state.key == _state.key) && (state.triggerType == _state.triggerType);
+    });
 
-    //s3CallbackUserData userData;
     if (pressed || repeat)
     {
-        keyInputList[key] = s3KeyTriggerType::pressed;
-
-        //s3KeyEvent keyEvent(keyType, s3KeyTriggerType::pressed, keyCode, control, shift, alt);
-        //userData.data = (void*)(&keyEvent);
-        //s3CallbackManager::onKeyPressed.trigger(&userData);
+        if (it == keyInputList.end())
+            keyInputList.push_back(state);
+        else
+            s3Log::debug("Key: %s already pressed", keyCode.c_str());
     }
     else if (released)
     {
-        keyInputList[key] = s3KeyTriggerType::released;
-
-        //s3KeyEvent keyEvent(keyType, s3KeyTriggerType::released, keyCode, control, shift, alt);
-        //userData.data = (void*)(&keyEvent);
-        //s3CallbackManager::onKeyReleased.trigger(&userData);
+        if (it != keyInputList.end())
+            it->triggerType = s3KeyTriggerType::released;
+        else
+            s3Log::warning("Key: %s released without pressed", keyCode.c_str());
     }
 }
 

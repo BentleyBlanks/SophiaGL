@@ -17,13 +17,18 @@ public:
 		if (userData->sender == &s3CallbackManager::onKeyPressed)
 		{
 		    s3KeyEvent* keyEvent = (s3KeyEvent*)userData->data;
-		    keyEvent->print();
+		    //keyEvent->print();
 
 			glm::vec3& up        = camera->up;
 			glm::vec3& position  = camera->position;
 			glm::vec3& direction = camera->direction;
-			float& speed         = camera->speed;
+			float speed          = camera->speed;
 
+			// control key
+			if (keyEvent->shift)
+				speed = 5 * speed;
+
+			// move key
 			if(keyEvent->keyType == s3KeyType::W)
 				position += speed * direction;
 			else if (keyEvent->keyType == s3KeyType::S)
@@ -36,7 +41,7 @@ public:
 		else if (userData->sender == &s3CallbackManager::onKeyReleased)
 		{
 			s3KeyEvent* keyEvent = (s3KeyEvent*)userData->data;
-			keyEvent->print();
+			//keyEvent->print();
 		}
 		else if (userData->sender == &s3CallbackManager::onMouseScrolled)
 		{

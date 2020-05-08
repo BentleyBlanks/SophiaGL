@@ -30,6 +30,8 @@ public:
 
     bool isInited() const;
 
+    struct s3KeyInputState;
+
 private:
     s3Window();
     ~s3Window();
@@ -58,5 +60,5 @@ private:
 	s3Timer timer;
     s3Renderer& renderer;
 
-    static std::map<int, s3KeyTriggerType> keyInputList;
+    static std::list<s3KeyInputState> keyInputList;
 };
