@@ -2,6 +2,7 @@
 
 #include <core/s3Settings.h>
 #include <core/s3Timer.h>
+#include <core/s3Event.h>
 #include <glm/glm.hpp>
 
 typedef struct GLFWwindow GLFWwindow;
@@ -35,6 +36,7 @@ private:
 
     void render();
 
+    static void keyInput(GLFWwindow* window);
     static void functionKey(GLFWwindow* window, bool& control, bool& shift, bool& alt);
     static void keyCB(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void resizeCB(GLFWwindow* window, int width, int height);
@@ -55,4 +57,6 @@ private:
     glm::vec4 clearColor;
 	s3Timer timer;
     s3Renderer& renderer;
+
+    static std::map<int, s3KeyTriggerType> keyInputList;
 };
