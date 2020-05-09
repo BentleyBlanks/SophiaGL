@@ -40,6 +40,9 @@
     <Filter Include="SophiaGL\3d">
       <UniqueIdentifier>{80b76875-a0f4-44b1-b70a-dbe3fe7be466}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SophiaGL\thirdparty\tinyobjloader">
+      <UniqueIdentifier>{1cfab9ca-e0fa-478e-8cb3-a14fb2d76af7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SophiaGL\test\main.cpp">
@@ -94,6 +97,21 @@
       <Filter>SophiaGL\app</Filter>
     </ClCompile>
     <ClCompile Include="..\..\SophiaGL\graphics\s3Renderer.cpp">
+      <Filter>SophiaGL\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\thirdparty\tinyobjloader\src\tiny_obj_loader.cc">
+      <Filter>SophiaGL\thirdparty\tinyobjloader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\3d\s3Mesh.cpp">
+      <Filter>SophiaGL\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\3d\s3ModelImporter.cpp">
+      <Filter>SophiaGL\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\graphics\s3RenderTexture.cpp">
+      <Filter>SophiaGL\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\graphics\s3Texture2d.cpp">
       <Filter>SophiaGL\graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -909,6 +927,21 @@
       <Filter>SophiaGL\app</Filter>
     </ClInclude>
     <ClInclude Include="..\..\SophiaGL\graphics\s3Renderer.h">
+      <Filter>SophiaGL\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\tinyobjloader\include\tiny_obj_loader.h">
+      <Filter>SophiaGL\thirdparty\tinyobjloader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\3d\s3Mesh.h">
+      <Filter>SophiaGL\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\3d\s3ModelImporter.h">
+      <Filter>SophiaGL\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\graphics\s3RenderTexture.h">
+      <Filter>SophiaGL\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\graphics\s3Texture2d.h">
       <Filter>SophiaGL\graphics</Filter>
     </ClInclude>
   </ItemGroup>

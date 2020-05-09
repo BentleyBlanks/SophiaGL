@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../SophiaGL;../../SophiaGL/thirdparty/glad/include;../../SophiaGL/thirdparty/stb/include;../../SophiaGL/thirdparty/glfw/include;../../SophiaGL/thirdparty/glm/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../SophiaGL;../../SophiaGL/thirdparty/glad/include;../../SophiaGL/thirdparty/stb/include;../../SophiaGL/thirdparty/glfw/include;../../SophiaGL/thirdparty/tinyobjloader/include;../../SophiaGL/thirdparty/glm/include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -148,7 +148,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../SophiaGL;../../SophiaGL/thirdparty/glad/include;../../SophiaGL/thirdparty/glfw/include;../../SophiaGL/thirdparty/stb/include;../../SophiaGL/thirdparty/glm/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../SophiaGL;../../SophiaGL/thirdparty/glad/include;../../SophiaGL/thirdparty/glfw/include;../../SophiaGL/thirdparty/tinyobjloader/include;../../SophiaGL/thirdparty/stb/include;../../SophiaGL/thirdparty/glm/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -162,6 +162,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SophiaGL\3d\s3Camera.cpp" />
+    <ClCompile Include="..\..\SophiaGL\3d\s3Mesh.cpp" />
+    <ClCompile Include="..\..\SophiaGL\3d\s3ModelImporter.cpp" />
     <ClCompile Include="..\..\SophiaGL\app\s3Window.cpp" />
     <ClCompile Include="..\..\SophiaGL\app\s3CallbackManager.cpp" />
     <ClCompile Include="..\..\SophiaGL\app\s3Utils.cpp" />
@@ -174,14 +176,19 @@
     <ClCompile Include="..\..\SophiaGL\core\s3Settings.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\s3Timer.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3Renderer.cpp" />
+    <ClCompile Include="..\..\SophiaGL\graphics\s3RenderTexture.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3Shader.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3Texture.cpp" />
+    <ClCompile Include="..\..\SophiaGL\graphics\s3Texture2d.cpp" />
     <ClCompile Include="..\..\SophiaGL\test\main.cpp" />
     <ClCompile Include="..\..\SophiaGL\thirdparty\glad\src\glad.c" />
     <ClCompile Include="..\..\SophiaGL\thirdparty\glm\include\glm\detail\glm.cpp" />
+    <ClCompile Include="..\..\SophiaGL\thirdparty\tinyobjloader\src\tiny_obj_loader.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SophiaGL\3d\s3Camera.h" />
+    <ClInclude Include="..\..\SophiaGL\3d\s3Mesh.h" />
+    <ClInclude Include="..\..\SophiaGL\3d\s3ModelImporter.h" />
     <ClInclude Include="..\..\SophiaGL\app\s3Window.h" />
     <ClInclude Include="..\..\SophiaGL\app\s3CallbackManager.h" />
     <ClInclude Include="..\..\SophiaGL\app\s3Utils.h" />
@@ -194,8 +201,10 @@
     <ClInclude Include="..\..\SophiaGL\core\s3Settings.h" />
     <ClInclude Include="..\..\SophiaGL\core\s3Timer.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Renderer.h" />
+    <ClInclude Include="..\..\SophiaGL\graphics\s3RenderTexture.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Shader.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Texture.h" />
+    <ClInclude Include="..\..\SophiaGL\graphics\s3Texture2d.h" />
     <ClInclude Include="..\..\SophiaGL\test\appTest.h" />
     <ClInclude Include="..\..\SophiaGL\test\cameraTest.h" />
     <ClInclude Include="..\..\SophiaGL\test\enumTest.h" />
@@ -452,6 +461,7 @@
     <ClInclude Include="..\..\SophiaGL\thirdparty\glm\include\glm\vec4.hpp" />
     <ClInclude Include="..\..\SophiaGL\thirdparty\glm\include\glm\vector_relational.hpp" />
     <ClInclude Include="..\..\SophiaGL\thirdparty\stb\stb_image.h" />
+    <ClInclude Include="..\..\SophiaGL\thirdparty\tinyobjloader\include\tiny_obj_loader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\SophiaGL\shaders\basicFS.glsl" />
