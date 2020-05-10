@@ -453,42 +453,6 @@ s3ShaderField s3Shader::getValue(const std::string& name) const
     return defaultField;
 }
 
-//void s3Shader::setBool(const std::string & name, bool value) const
-//{
-//	glUniform1i(glGetUniformLocation(program, name.c_str()), (int)value);
-//}
-//
-//void s3Shader::setInt(const std::string & name, int value) const
-//{
-//	glUniform1i(glGetUniformLocation(program, name.c_str()), (int)value);
-//}
-//
-//void s3Shader::setTexture(const std::string& name, int value) const
-//{
-//    glUniform1i(glGetUniformLocation(program, name.c_str()), (int)value);
-//}
-//
-//void s3Shader::setFloat(const std::string & name, float value) const
-//{
-//	glUniform1f(glGetUniformLocation(program, name.c_str()), value);
-//}
-//
-//void s3Shader::setMatrix(const std::string& name, glm::mat4 mat) const
-//{
-//    unsigned int location = glGetUniformLocation(program, name.c_str());
-//    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
-//}
-
-bool s3Shader::isLoaded() const
-{
-	return bIsLoaded;
-}
-
-unsigned int s3Shader::getProgram() const
-{
-	return program;
-}
-
 void s3Shader::print() const
 {
     //s3Log::debug("VS: %s, FS: %s\n", vertexSource.c_str(), fragmentSource.c_str());

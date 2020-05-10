@@ -92,9 +92,9 @@ public:
     s3ShaderField getValue(const std::string& name) const;
 
     bool load(const char* vertexPath, const char* fragmentPath);
-    bool isLoaded() const;
+    bool isLoaded() const { return bIsLoaded; }
 
-    unsigned int getProgram() const;
+    unsigned int getProgram() const { return program; }
 
     // debug
     void print() const;

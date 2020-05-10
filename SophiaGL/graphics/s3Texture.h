@@ -16,9 +16,8 @@ s3Enum(s3TextureFormat,
 class s3Texture
 {
 public:
-	s3Texture();
-	s3Texture(const char* path);
-	~s3Texture();
+	s3Texture() {}
+	~s3Texture() {}
 
 	// could be removed when shader parser added
 	void setLocation(int _location) { location = _location; }
@@ -31,9 +30,6 @@ public:
 
 	s3WarpMode getWarpMode() const { return warpMode; }
 	s3TextureFormat getTextureFormat() const { return format; }
-
-	bool load(const char* path);
-	bool isLoaded() const { return bIsLoaded; }
 	unsigned int getTextureID() const { return textureID; }
 
 private:
@@ -46,8 +42,6 @@ private:
 	s3WarpMode warpMode;
 	s3TextureFormat format;
 
-	bool bIsLoaded = false;
-	
 	// opengl render data
 	unsigned int textureID = 0;
 	int location = 0;

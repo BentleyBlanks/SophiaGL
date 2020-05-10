@@ -6,5 +6,5 @@ class s3ModelImporter
 {
 public:
 	// add some load config in the future
-	static s3Mesh& load(const std::string& path);
+	static s3Mesh* load(const char* path);
 };

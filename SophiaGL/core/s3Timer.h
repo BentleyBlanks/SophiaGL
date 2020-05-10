@@ -5,10 +5,8 @@ class s3Timer
 public:
     s3Timer(){}
 
-    // start counting time
+    // start/end counting time
     double start();
-
-	// end counting time
     double end();
 
 	// difference of counting time between start and end
