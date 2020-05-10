@@ -11,24 +11,25 @@ public:
 	//	Clears all vertex data and all triangle indices.
 	void clear();
 
-	bool setIndices(const std::vector<int>& indices);
-	bool setVertices(const std::vector<glm::vec3>& vertices);
-	bool setNormals(const std::vector<glm::vec3>& normals);
-	bool setTangents(const std::vector<glm::vec3>& tangents);
-	bool setUV(const std::vector<glm::vec2>& uv);
+	// new a mesh object
+	void setIndices(const std::vector<int>& _indices) { indices.assign(_indices.begin(), _indices.end()); }
+	void setVertices(const std::vector<glm::vec3>& _vertices) { vertices.assign(_vertices.begin(), _vertices.end()); }
+	void setNormals(const std::vector<glm::vec3>& _normals) { normals.assign(_normals.begin(), _normals.end()); }
+	void setTangents(const std::vector<glm::vec3>& _tangents) { tangents.assign(_tangents.begin(), _tangents.end()); }
+	void setUV(const std::vector<glm::vec2>& _uv) { uv.assign(_uv.begin(), _uv.end()); }
 
-	bool setPosition(const glm::vec3& position);
-	bool setRotation(const glm::mat4& rotation);
+	void setPosition(const glm::vec3& _position) { position = _position; }
+	void setRotation(const glm::mat4& _rotation) { rotation = _rotation; }
 
-	const std::vector<int>& getIndices() const;
-	const std::vector<glm::vec3>& getVertices() const;
-	const std::vector<glm::vec3>& getNormals() const;
-	const std::vector<glm::vec3>& getTangents() const;
-	const std::vector<glm::vec2>& getUV() const;
+	const std::vector<int>& getIndices() const { return indices; }
+	const std::vector<glm::vec3>& getVertices() const { return vertices; }
+	const std::vector<glm::vec3>& getNormals() const { return normals; }
+	const std::vector<glm::vec3>& getTangents() const { return tangents; }
+	const std::vector<glm::vec2>& getUV() const { return uv; }
 	
-	const glm::vec3& getPosition() const;
-	const glm::mat4& getRotation() const;
-
+	const glm::vec3& getPosition() const { return position; }
+	const glm::mat4& getRotation() const { return rotation; }
+	
 private:
 	std::vector<int> indices;
 	std::vector<glm::vec3> vertices;
