@@ -6,7 +6,7 @@
 #include <3d/s3Camera.h>
 #include <graphics/s3Renderer.h>
 #include <graphics/s3Shader.h>
-#include <graphics/s3Texture.h>
+#include <graphics/s3Texture2d.h>
 
 #include <glad/glad.h>
 
@@ -179,7 +179,7 @@ public:
     float deltaTime     = 0.0f;
     float lastFrameTime = 0.0f;
 
-    s3Texture texture0, texture1;
+    s3Texture2d texture0, texture1;
     s3Shader shader;
     s3Camera camera;
 

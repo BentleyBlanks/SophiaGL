@@ -1,7 +1,7 @@
 #pragma once
 #include <graphics/s3Texture.h>
 
-class s3RenderTexture : s3Texture
+class s3RenderTexture : public s3Texture
 {
 public:
 };

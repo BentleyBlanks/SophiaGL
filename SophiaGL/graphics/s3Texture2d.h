@@ -1,7 +1,7 @@
 #pragma once
 #include <graphics/s3Texture.h>
 
-class s3Texture2d : s3Texture
+class s3Texture2d : public s3Texture
 {
 public:
 	s3Texture2d() {}
@@ -14,7 +14,7 @@ public:
 	// a small texture with custom color
 	static s3Texture2d blackTexture;
 	static s3Texture2d whiteTexture;
-	static s3Texture2d blackTexture;
+	static s3Texture2d grayTexture;
 
 private:
 	bool bIsLoaded = false;

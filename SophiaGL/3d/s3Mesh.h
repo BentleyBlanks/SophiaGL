@@ -32,7 +32,7 @@ public:
 
 	// Gets the index buffer for the specified sub mesh on this instance.
 	const std::vector<int>& getTriangles(int submesh) const { return triangles; }
-	int getSubmeshCount() const { return triangleRangeList.size(); }
+	int getSubmeshCount() const { return (int)triangleRangeList.size(); }
 
 	const glm::vec3& getPosition() const { return position; }
 	const glm::mat4& getRotation() const { return rotation; }
@@ -44,7 +44,9 @@ public:
 	static s3Mesh& createCapsule();
 	static s3Mesh& createCylinder();
 
-private:
+//private:
+	void resetRangeList();
+
 	struct s3MeshTriangleRange
 	{
 		int start = 0;
@@ -62,7 +64,7 @@ private:
 	std::vector<glm::vec2> uv;
 
 	// opengl render data
-	unsigned int vao, vbo, ebo;
+	unsigned int vao = 0, vbo = 0, ebo = 0;
 
 	// transform data
 	glm::vec3 position;

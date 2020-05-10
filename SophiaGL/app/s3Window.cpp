@@ -190,15 +190,15 @@ void s3Window::keyCB(GLFWwindow* window, int key, int scancode, int action, int 
     {
         if (it == keyInputList.end())
             keyInputList.push_back(state);
-        else
-            s3Log::debug("Key: %s already pressed", keyCode.c_str());
+        //else
+        //    s3Log::debug("Key: %s already pressed\n", keyCode.c_str());
     }
     else if (released)
     {
         if (it != keyInputList.end())
             it->triggerType = s3KeyTriggerType::released;
         else
-            s3Log::warning("Key: %s released without pressed", keyCode.c_str());
+            s3Log::warning("Key: %s released without pressed\n", keyCode.c_str());
     }
 }
 
