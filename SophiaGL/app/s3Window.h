@@ -10,13 +10,13 @@ class s3Renderer;
 class s3Window
 {
 public:
-    static s3Window& getInstance();
+    static s3Window& getInstance() { return instance; }
 
     bool init(const char* title, int x, int y, int width, int height);
     void run();
     void shutdown();
 
-    void setClearColor(float r, float g, float b, float a);
+    void setClearColor(float r, float g, float b, float a) { clearColor = glm::vec4(r, g, b, a); }
     void setWindowPosition(int x, int y);
     void setWindowSize(int width, int height);
 
@@ -24,11 +24,11 @@ public:
 	float getTime();
     
     glm::ivec2 getMousePosition() const;
-    glm::ivec2 getWindowSize() const;
-    glm::ivec2 getWindowPosition() const;
-    GLFWwindow* getWindow() const;
+    glm::ivec2 getWindowSize() const { return windowSize; }
+    glm::ivec2 getWindowPosition() const { return windowPosition; }
+    GLFWwindow* getWindow() const { return window; }
 
-    bool isInited() const;
+    bool isInited() const { return bInit; }
 
     struct s3KeyInputState;
 

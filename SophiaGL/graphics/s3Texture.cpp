@@ -16,41 +16,6 @@ s3Texture::s3Texture(const char* path)
 s3Texture::~s3Texture()
 {}
 
-//void s3Texture::begin(int location)
-//{
-//    glBindTexture(GL_TEXTURE_2D, texture);
-//}
-//
-//void s3Texture::end(int location)
-//{
-//    glBindTexture(GL_TEXTURE_2D, 0);
-//}
-
-void s3Texture::setLocation(int _location)
-{
-    location = _location;
-}
-
-int s3Texture::getWidth() const
-{
-	return width;
-}
-
-int s3Texture::getHeight() const
-{
-	return height;
-}
-
-int s3Texture::getChannels() const
-{
-	return channels;
-}
-
-int s3Texture::getLocation() const
-{
-    return location;
-}
-
 bool s3Texture::load(const char* path)
 {
     if (!path)
@@ -88,14 +53,4 @@ bool s3Texture::load(const char* path)
 
     bIsLoaded = true;
     return true;
-}
-
-bool s3Texture::isLoaded() const
-{
-	return bIsLoaded;
-}
-
-unsigned int s3Texture::getTextureID() const
-{
-	return textureID;
 }

@@ -21,20 +21,20 @@ public:
 	~s3Texture();
 
 	// could be removed when shader parser added
-	void setLocation(int location);
+	void setLocation(int _location) { location = _location; }
 
-	int getWidth() const;
-	int getHeight() const;
-	int getChannels() const;
-	int getLocation() const;
-	int getMipCount() const;
+	int getWidth() const { return width; }
+	int getHeight() const { return height; }
+	int getChannels() const { return channels; }
+	int getLocation() const { return location; }
+	int getMipCount() const { return mipCount; }
 
-	s3WarpMode getWarpMode() const;
-	s3TextureFormat getTextureFormat() const;
+	s3WarpMode getWarpMode() const { return warpMode; }
+	s3TextureFormat getTextureFormat() const { return format; }
 
 	bool load(const char* path);
-	bool isLoaded() const;
-	unsigned int getTextureID() const;
+	bool isLoaded() const { return bIsLoaded; }
+	unsigned int getTextureID() const { return textureID; }
 
 private:
 	// texture properties

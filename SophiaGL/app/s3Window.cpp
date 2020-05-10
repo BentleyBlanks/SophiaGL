@@ -28,11 +28,6 @@ s3Window::~s3Window()
 {
 }
 
-s3Window& s3Window::getInstance()
-{
-    return instance;
-}
-
 bool s3Window::init(const char* title, int x, int y, int width, int height)
 {
     if (width <= 0 || height <= 0) return false;
@@ -207,11 +202,6 @@ void s3Window::keyCB(GLFWwindow* window, int key, int scancode, int action, int 
     }
 }
 
-void s3Window::setClearColor(float r, float g, float b, float a)
-{
-    clearColor = glm::vec4(r, g, b, a);
-}
-
 void s3Window::setWindowPosition(int x, int y)
 {
     glfwSetWindowPos(window, x, y);
@@ -230,32 +220,12 @@ void s3Window::setWindowSize(int width, int height)
     glViewport(0, 0, windowSize.x, windowSize.y);
 }
 
-GLFWwindow* s3Window::getWindow() const
-{
-    return window;
-}
-
-bool s3Window::isInited() const
-{
-    return bInit;
-}
-
 glm::ivec2 s3Window::getMousePosition() const
 {
     double xPos, yPos;
     glfwGetCursorPos(window, &xPos, &yPos);
     
     return glm::ivec2((int)xPos, (int)yPos);
-}
-
-glm::ivec2 s3Window::getWindowSize() const
-{
-    return windowSize;
-}
-
-glm::ivec2 s3Window::getWindowPosition() const
-{
-    return windowPosition;
 }
 
 void s3Window::resizeCB(GLFWwindow* window, int width, int height)
