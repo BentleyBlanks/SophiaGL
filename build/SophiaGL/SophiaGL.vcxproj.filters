@@ -944,6 +944,9 @@
     <ClInclude Include="..\..\SophiaGL\graphics\s3Texture2d.h">
       <Filter>SophiaGL\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\test\meshTest.h">
+      <Filter>SophiaGL\test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\SophiaGL\shaders\basicFS.glsl">

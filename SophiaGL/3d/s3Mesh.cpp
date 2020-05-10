@@ -20,12 +20,16 @@ void s3Mesh::setTriangles(const std::vector<int>& subIndices, int submesh)
 {
 	if (submesh < 0 && submesh >= triangleRangeList.size()) return;
 
+	// std::copy won't alloc mem when exceeded, ensure enough space here
 	auto range = triangleRangeList[submesh];
+	auto diffCount = subIndices.size() - range.count;
+	if (triangles.capacity() < triangles.size() + diffCount)
+		triangles.resize(triangles.size() + diffCount);
 
-	// cound only copy part of the triangle list
+	// copy rest of the triangle list
 	std::vector<int> temp;
 	auto restIndicesStart = triangles.begin() + range.start + subIndices.size();
-	std::copy(restIndicesStart, triangles.end(), temp);
+	std::copy(restIndicesStart, triangles.end(), temp.begin());
 	
 	auto subIndicesStart = triangles.begin() + range.start;
 	std::copy(subIndices.begin(), subIndices.end(), subIndicesStart);
@@ -36,15 +40,36 @@ void s3Mesh::setTriangles(const std::vector<int>& subIndices, int submesh)
 
 void s3Mesh::setSubMeshCount(int subMeshCount)
 {
-	int currentCount = triangleRangeList.size();
+	int currentCount = (int)triangleRangeList.size();
 	triangleRangeList.resize(subMeshCount);
+	resetRangeList();
 
-	// filling the new submesh range
-	auto lastRange = triangleRangeList[currentCount - 1];
-	for (int i = currentCount; i < subMeshCount; i++)
+	//// initialize range list
+	//if (currentCount <= 0)
+	//{
+	//	resetRangeList();
+	//	return;
+	//}
+
+	//// filling the new submesh range
+	//auto lastRange = triangleRangeList[currentCount - 1];
+	//for (int i = currentCount; i < subMeshCount; i++)
+	//{
+	//	triangleRangeList[i].start = lastRange.start + lastRange.count;
+	//	triangleRangeList[i].count = 0;
+	//}
+}
+
+void s3Mesh::resetRangeList()
+{
+	if (triangleRangeList.size() <= 0) return;
+
+	auto lastRange = triangleRangeList[0];
+	for (int i = 1; i < triangleRangeList.size(); i++)
 	{
-		triangleRangeList[i].start = lastRange.start + lastRange.count;
-		triangleRangeList[i].count = 0;
+		auto& range = triangleRangeList[i];
+		range.start = lastRange.start + lastRange.count;
+		range.count = 0;
 	}
 }
 

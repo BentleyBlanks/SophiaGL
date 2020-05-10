@@ -12,6 +12,7 @@ class s3Renderer
 public:
     static s3Renderer& getInstance() { return instance; }
 
+    // moved into shader's properties in the future
     void setDepthTest(bool bDepthTest);
     bool isDepthTest() const { return bDepthTest; }
 

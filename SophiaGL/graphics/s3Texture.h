@@ -32,14 +32,14 @@ public:
 	s3TextureFormat getTextureFormat() const { return format; }
 	unsigned int getTextureID() const { return textureID; }
 
-private:
+protected:
 	// texture properties
 	int width    = -1;
 	int height   = -1;
 	int channels = -1;
 	int mipCount = 0;
 
-	s3WarpMode warpMode;
+	s3WarpMode warpMode = s3WarpMode::clamp;
 	s3TextureFormat format;
 
 	// opengl render data

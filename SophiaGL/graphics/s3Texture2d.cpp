@@ -5,6 +5,10 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image/stb_image.h>
 
+s3Texture2d s3Texture2d::blackTexture;
+s3Texture2d s3Texture2d::whiteTexture;
+s3Texture2d s3Texture2d::grayTexture;
+
 //--! ref: https://docs.unity3d.com/2017.4/Documentation/ScriptReference/Texture2D.html
 bool s3Texture2d::load(const char* path)
 {
