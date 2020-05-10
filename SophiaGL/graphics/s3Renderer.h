@@ -10,10 +10,10 @@ class s3RenderTexture;
 class s3Renderer
 {
 public:
-    static s3Renderer& getInstance();
+    static s3Renderer& getInstance() { return instance; }
 
     void setDepthTest(bool bDepthTest);
-    bool isDepthTest() const;
+    bool isDepthTest() const { return bDepthTest; }
 
     void clear(glm::vec4 clearColor, bool color = true, bool depth = true) const;
 
