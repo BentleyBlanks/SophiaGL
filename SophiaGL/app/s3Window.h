@@ -53,10 +53,10 @@ private:
     bool bInit = false;
 
     GLFWwindow* window = nullptr;
-    glm::ivec2 windowSize;
-    glm::ivec2 windowPosition;
+    glm::ivec2 windowSize     = glm::ivec2();
+    glm::ivec2 windowPosition = glm::ivec2();
 
-    glm::vec4 clearColor;
+    glm::vec4 clearColor = glm::vec4();
 	s3Timer timer;
     s3Renderer& renderer;
 

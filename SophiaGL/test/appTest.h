@@ -117,8 +117,9 @@ public:
 
             // configure and enabled vertex attributes, and binded shader layout
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
             glEnableVertexAttribArray(0);
+
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
             glEnableVertexAttribArray(1);
 
             // unbind vao / vbo
@@ -183,7 +184,7 @@ public:
     s3Shader shader;
     s3Camera camera;
 
-    unsigned int vao, vbo;
+    unsigned int vao = 0, vbo = 0;
 };
 
 int main()
