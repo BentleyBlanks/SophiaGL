@@ -45,7 +45,7 @@ public:
 	static s3Mesh& createCylinder();
 
 //private:
-	void resetRangeList();
+	void updateRangeList();
 
 	struct s3MeshTriangleRange
 	{
