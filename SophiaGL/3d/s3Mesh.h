@@ -67,6 +67,6 @@ public:
 	unsigned int vao = 0, vbo = 0, ebo = 0;
 
 	// transform data
-	glm::vec3 position;
-	glm::mat4 rotation;
+	glm::vec3 position = glm::vec3();
+	glm::mat4 rotation = glm::mat4();
 };

@@ -18,32 +18,43 @@ void s3Mesh::clear()
 
 void s3Mesh::setTriangles(const std::vector<int>& subIndices, int submesh)
 {
-	if (submesh < 0 && submesh >= triangleRangeList.size()) return;
+	if (submesh < 0 || submesh >= triangleRangeList.size())
+	{
+		s3Log::warning("s3Mesh::setTriangles() invalid submesh index: %d\n", submesh);
+		return;
+	}
 
-	// std::copy won't alloc mem when exceeded, ensure enough space here
+	int newCount = (int)subIndices.size();
 	auto& range = triangleRangeList[submesh];
-	auto diffCount = subIndices.size() - range.count;
-	if (triangles.capacity() < triangles.size() + diffCount)
-		triangles.resize(triangles.size() + diffCount);
 
-	// ensure enough space here
+	// std::copy won't alloc mem when exceeded, ensure enough space mannually
 	std::vector<int> temp;
-	auto tempSize = triangles.size() - range.start - subIndices.size();
-	if(tempSize > 0) temp.resize(tempSize);
-	
-	// copy rest of the triangle list
-	auto restIndicesStart = triangles.begin() + range.start + subIndices.size();
-	std::copy(restIndicesStart, triangles.end(), temp.begin());
-	
+	auto tempSize = triangles.size() - range.start - range.count;
+	if (tempSize > 0)
+	{
+		temp.resize(tempSize);
+
+		// copy rest of the triangle list
+		auto restIndicesStart = triangles.begin() + range.start + range.count;
+		std::copy(restIndicesStart, triangles.end(), temp.begin());
+	}
+
+	// diffCount could be < 0, smaller than before is acceptable
+	auto diffCount = newCount - range.count;
+	triangles.resize(triangles.size() + diffCount);
+
 	auto subIndicesStart = triangles.begin() + range.start;
 	std::copy(subIndices.begin(), subIndices.end(), subIndicesStart);
 
 	// update range list
-	range.count = (int)subIndices.size();
+	range.count = newCount;
 	updateRangeList();
 
-	if (temp.size() <= 0) return;
-	std::copy(temp.begin(), temp.end(), restIndicesStart);
+	if (temp.size() > 0)
+	{
+		auto copyBackStart = triangles.begin() + range.start + newCount;
+		std::copy(temp.begin(), temp.end(), copyBackStart);
+	}
 }
 
 void s3Mesh::setSubMeshCount(int subMeshCount)
@@ -51,21 +62,6 @@ void s3Mesh::setSubMeshCount(int subMeshCount)
 	int currentCount = (int)triangleRangeList.size();
 	triangleRangeList.resize(subMeshCount);
 	updateRangeList();
-
-	//// initialize range list
-	//if (currentCount <= 0)
-	//{
-	//	updateRangeList();
-	//	return;
-	//}
-
-	//// filling the new submesh range
-	//auto lastRange = triangleRangeList[currentCount - 1];
-	//for (int i = currentCount; i < subMeshCount; i++)
-	//{
-	//	triangleRangeList[i].start = lastRange.start + lastRange.count;
-	//	triangleRangeList[i].count = 0;
-	//}
 }
 
 void s3Mesh::updateRangeList()
@@ -77,7 +73,6 @@ void s3Mesh::updateRangeList()
 	{
 		auto& range = triangleRangeList[i];
 		range.start = lastRange.start + lastRange.count;
-		//range.count = 0;
 
 		lastRange = range;
 	}
