@@ -32,7 +32,7 @@ int main()
 	mesh.setTriangles(B, 1);
 	print(mesh.triangles);
 	
-	mesh.setTriangles(D, 4);
+	mesh.setTriangles(D, 3);
 	print(mesh.triangles);
 
 	return 0;
