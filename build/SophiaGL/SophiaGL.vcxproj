@@ -175,6 +175,7 @@
     <ClCompile Include="..\..\SophiaGL\core\s3Event.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\s3Settings.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\s3Timer.cpp" />
+    <ClCompile Include="..\..\SophiaGL\graphics\s3Material.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3Renderer.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3RenderTexture.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3Shader.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="..\..\SophiaGL\core\s3Event.h" />
     <ClInclude Include="..\..\SophiaGL\core\s3Settings.h" />
     <ClInclude Include="..\..\SophiaGL\core\s3Timer.h" />
+    <ClInclude Include="..\..\SophiaGL\graphics\s3Material.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Renderer.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3RenderTexture.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Shader.h" />
