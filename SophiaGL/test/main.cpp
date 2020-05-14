@@ -4,5 +4,5 @@
 //#include <test/transformTest.h>
 //#include <test/cameraTest.h>
 //#include <test/enumTest.h>
-//#include <test/appTest.h>
-#include <test/meshTest.h>
+//#include <test/meshTest.h>
+#include <test/appTest.h>
