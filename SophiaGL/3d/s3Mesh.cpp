@@ -101,48 +101,55 @@ const std::vector<unsigned int>& s3Mesh::getTriangles(int submesh) const
 // index buffer  = ebo
 void s3Mesh::apply()
 {
-	int pSize = (int)positions.size();
-	int nSize = (int)normals.size();
-	int tSize = (int)uvs.size();
-	if (pSize <= 0 || (nSize >= 0 && pSize != nSize) || (tSize >= 0 && pSize != tSize))
+	int pCount = (int)positions.size();
+	int nCount = (int)normals.size();
+	int tCount = (int)uvs.size();
+	if (pCount <= 0 || 
+	   (nCount >= 0 && pCount != nCount) || 
+	   (tCount >= 0 && pCount != tCount) ||
+	   (tCount >= 0 && nCount >= 0 && !(pCount == nCount == tCount)))
 	{
-		s3Log::warning("s3Mesh's properties error, position: %d, normals: %d, uvs: %d\n", pSize, nSize, tSize);
+		s3Log::warning("s3Mesh's properties error, position: %d, normals: %d, uvs: %d\n", pCount, nCount, tCount);
 		return;
 	}
 
-	// copy exsited mesh property into vertices
-	vertices.resize(pSize * 3 + nSize * 3 + tSize * 2);
+	//// copy exsited mesh property into vertices
+	//vertices.resize(pCount * 3 + nCount * 3 + tCount * 2);
 
-	// would be slow, sad
-	// not supported tangents now
-	int vertexSize = 3;
-	vertexSize += nSize > 0 ? 3 : 0;
-	vertexSize += tSize > 0 ? 2 : 0;
-	for (int i = 0; i < pSize; i++)
-	{
+	//// would be slow, sad
+	//// not supported tangents now
+	//int vertexSize = 3;
+	//vertexSize += nCount > 0 ? 3 : 0;
+	//vertexSize += tCount > 0 ? 2 : 0;
+	//for (int i = 0; i < pCount; i++)
+	//{
 
-		vertices[i * vertexSize + 0] = positions[i].x;
-		vertices[i * vertexSize + 1] = positions[i].y;
-		vertices[i * vertexSize + 2] = positions[i].z;
+	//	vertices[i * vertexSize + 0] = positions[i].x;
+	//	vertices[i * vertexSize + 1] = positions[i].y;
+	//	vertices[i * vertexSize + 2] = positions[i].z;
 
-		if (nSize > 0)
-		{
-			vertices[i * vertexSize + 3] = normals[i].x;
-			vertices[i * vertexSize + 4] = normals[i].y;
-			vertices[i * vertexSize + 5] = normals[i].z;
+	//	if (nCount > 0)
+	//	{
+	//		vertices[i * vertexSize + 3] = normals[i].x;
+	//		vertices[i * vertexSize + 4] = normals[i].y;
+	//		vertices[i * vertexSize + 5] = normals[i].z;
 
-			if (tSize > 0)
-			{
-				vertices[i * vertexSize + 6] = uvs[i].x;
-				vertices[i * vertexSize + 7] = uvs[i].y;
-			}
-		}
-		else if (tSize > 0)
-		{
-			vertices[i * vertexSize + 3] = uvs[i].x;
-			vertices[i * vertexSize + 4] = uvs[i].y;
-		}
-	}
+	//		if (tCount > 0)
+	//		{
+	//			vertices[i * vertexSize + 6] = uvs[i].x;
+	//			vertices[i * vertexSize + 7] = uvs[i].y;
+	//		}
+	//	}
+	//	else if (tCount > 0)
+	//	{
+	//		vertices[i * vertexSize + 3] = uvs[i].x;
+	//		vertices[i * vertexSize + 4] = uvs[i].y;
+	//	}
+	//}
+
+	int pSize = sizeof(glm::vec3) * pCount;
+	int nSize = sizeof(glm::vec3) * nCount;
+	int tSize = sizeof(glm::vec2) * tCount;
 
 	// vao generation and bind
 	glGenVertexArrays(1, &vao);
@@ -153,41 +160,34 @@ void s3Mesh::apply()
 	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+	if (pCount > 0) glBufferSubData(GL_ARRAY_BUFFER, 0, pSize, &positions[0]);
+	if (nCount > 0) glBufferSubData(GL_ARRAY_BUFFER, pSize, nSize, &normals[0]);
+	if (tCount > 0) glBufferSubData(GL_ARRAY_BUFFER, nCount > 0 ? pSize + nSize : pSize, tSize, &uvs[0]);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangles.size() * sizeof(unsigned int), &triangles[0], GL_STATIC_DRAW);
 
-	unsigned int vaIndex    = 0;
-	unsigned int startIndex = 0;
-
 	// vertex positions
-	if (pSize > 0)
+	if (pCount > 0)
 	{
-		glEnableVertexAttribArray(vaIndex);
-		glVertexAttribPointer(startIndex, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-		vaIndex++;
-		startIndex++;
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);
 	}
 
 	// vertex normals
-	if (nSize > 0)
+	if (nCount > 0)
 	{
-		size_t offset = 3 * sizeof(float);
-		glEnableVertexAttribArray(vaIndex);
-		glVertexAttribPointer(startIndex, 3, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)offset);
-		vaIndex++;
-		startIndex++;
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)(pSize));
 	}
 
 	// vertex texture coords
-	if (tSize > 0)
+	if (tCount > 0)
 	{
-		size_t offset = (nSize > 0 ? 6 : 3) * sizeof(float);
-		glEnableVertexAttribArray(vaIndex);
-		glVertexAttribPointer(startIndex, 2, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)offset);
-		vaIndex++;
-		startIndex++;
+		int index = nCount > 0 ? 2 : 1;
+		size_t offset = nCount > 0 ? pSize + nSize : pSize;
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void*)(nCount > 0 ? pSize + nSize : pSize));
 	}
 
 	// not supported tangents now

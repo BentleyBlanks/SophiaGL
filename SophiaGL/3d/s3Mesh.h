@@ -71,7 +71,7 @@ public:
 	std::vector<glm::vec2> uvs;
 
 	// vertex data
-	std::vector<float> vertices;
+	//std::vector<float> vertices;
 
 	// opengl render data
 	unsigned int vao = 0, vbo = 0, ebo = 0;
