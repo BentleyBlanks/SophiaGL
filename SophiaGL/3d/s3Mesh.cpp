@@ -113,40 +113,7 @@ void s3Mesh::apply()
 		return;
 	}
 
-	//// copy exsited mesh property into vertices
-	//vertices.resize(pCount * 3 + nCount * 3 + tCount * 2);
-
-	//// would be slow, sad
-	//// not supported tangents now
-	//int vertexSize = 3;
-	//vertexSize += nCount > 0 ? 3 : 0;
-	//vertexSize += tCount > 0 ? 2 : 0;
-	//for (int i = 0; i < pCount; i++)
-	//{
-
-	//	vertices[i * vertexSize + 0] = positions[i].x;
-	//	vertices[i * vertexSize + 1] = positions[i].y;
-	//	vertices[i * vertexSize + 2] = positions[i].z;
-
-	//	if (nCount > 0)
-	//	{
-	//		vertices[i * vertexSize + 3] = normals[i].x;
-	//		vertices[i * vertexSize + 4] = normals[i].y;
-	//		vertices[i * vertexSize + 5] = normals[i].z;
-
-	//		if (tCount > 0)
-	//		{
-	//			vertices[i * vertexSize + 6] = uvs[i].x;
-	//			vertices[i * vertexSize + 7] = uvs[i].y;
-	//		}
-	//	}
-	//	else if (tCount > 0)
-	//	{
-	//		vertices[i * vertexSize + 3] = uvs[i].x;
-	//		vertices[i * vertexSize + 4] = uvs[i].y;
-	//	}
-	//}
-
+	// pCount must be greater than 0, but for code unify, check it everytime
 	int pSize = sizeof(glm::vec3) * pCount;
 	int nSize = sizeof(glm::vec3) * nCount;
 	int tSize = sizeof(glm::vec2) * tCount;

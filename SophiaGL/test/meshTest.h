@@ -1,5 +1,6 @@
 #pragma once
 #include <core/log/s3Log.h>
+#include <3d/s3ModelImporter.h>
 #include <3d/s3Mesh.h>
 #include <app/s3Window.h>
 
@@ -37,6 +38,8 @@ int main()
 	mesh.setTriangles(D, 3);
 	print(mesh.triangles);
 #endif
+
+#if 0
 	s3Window& window = s3Window::getInstance();
 	window.init("SophiaGL", 100, 100, 1280, 720);
 
@@ -49,6 +52,9 @@ int main()
 	mesh.normals   = n;
 	mesh.uvs       = t;
 	mesh.apply();
+#endif
+
+	s3Mesh* mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
 
 	return 0;
 }
