@@ -114,9 +114,9 @@ void s3Mesh::apply()
 	}
 
 	// pCount must be greater than 0, but for code unify, check it everytime
-	int pSize = sizeof(glm::vec3) * pCount;
-	int nSize = sizeof(glm::vec3) * nCount;
-	int tSize = sizeof(glm::vec2) * tCount;
+	unsigned long long pSize = sizeof(glm::vec3) * pCount;
+	unsigned long long nSize = sizeof(glm::vec3) * nCount;
+	unsigned long long tSize = sizeof(glm::vec2) * tCount;
 
 	// vao generation and bind
 	glGenVertexArrays(1, &vao);
