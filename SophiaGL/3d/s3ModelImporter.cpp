@@ -3,7 +3,6 @@
 
 #include <tiny_obj_loader.h>
 
-
 s3Mesh* s3ModelImporter::load(const char* path)
 {
 	auto mesh = new s3Mesh();
@@ -25,15 +24,31 @@ s3Mesh* s3ModelImporter::load(const char* path)
     if (!ret)
     {
         s3Log::error("Model loading failed\n");
-        return false;
+        return nullptr;
     }
 
     for (int i = 0; i < shapes.size(); i++)
     {
         std::vector<unsigned int> indices;
 
+        auto& shape = shapes[i];
+        for (const auto& index : shape.mesh.indices)
+        {
+            mesh->positions.push_back(glm::vec3(attrib.vertices[3 * index.vertex_index + 0],
+                                                attrib.vertices[3 * index.vertex_index + 1],
+                                                attrib.vertices[3 * index.vertex_index + 2]));
+
+            mesh->normals.push_back(glm::vec3(attrib.normals[3 * index.normal_index + 0],
+                                              attrib.normals[3 * index.normal_index + 1],
+                                              attrib.normals[3 * index.normal_index + 2]));
+
+            mesh->uvs.push_back(glm::vec2(attrib.texcoords[2 * index.texcoord_index + 0],
+                                          attrib.texcoords[2 * index.texcoord_index + 1]));
+        }
+
         mesh->setTriangles(indices, i);
     }
+    mesh->apply();
 
     s3Log::success("Model loaded successfully\n", path);
 	return mesh;
