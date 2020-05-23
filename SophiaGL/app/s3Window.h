@@ -6,7 +6,6 @@
 #include <glm/glm.hpp>
 
 typedef struct GLFWwindow GLFWwindow;
-class s3Renderer;
 class s3Window
 {
 public:
@@ -58,7 +57,6 @@ private:
 
     glm::vec4 clearColor = glm::vec4();
 	s3Timer timer;
-    s3Renderer& renderer;
 
     static std::list<s3KeyInputState> keyInputList;
 };

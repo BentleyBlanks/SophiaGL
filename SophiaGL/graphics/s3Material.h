@@ -6,14 +6,13 @@
 #include <graphics/s3Shader.h>
 
 class s3Texture;
-//class s3Shader;
 class s3Material
 {
 public:
 	s3Material(s3Shader& shader);
-	~s3Material();
+    ~s3Material() {}
 
-	const s3Shader& getShader() { return *shader; }
+	const s3Shader& getShader() const { return *shader; }
 
     // utility uniform functions
     float getFloat(const std::string& name) const;
@@ -41,6 +40,8 @@ public:
     bool setFloat4(const std::string& name, const glm::vec4& value);
     bool setMatrix(const std::string& name, const glm::mat4& value);
     bool setTexture(const std::string& name, s3Texture* value);
+
+    void print() { shader->print(); } 
 
 private:
 	s3Shader* shader = nullptr;

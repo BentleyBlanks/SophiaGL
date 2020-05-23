@@ -17,7 +17,7 @@ struct s3Window::s3KeyInputState
 s3Window s3Window::instance;
 std::list<s3Window::s3KeyInputState> s3Window::keyInputList;
 
-s3Window::s3Window() : renderer(s3Renderer::getInstance())
+s3Window::s3Window()
 {
     clearColor     = glm::vec4(0.2f, 0.3f, 0.3f, 1.0f);
     windowSize     = glm::ivec2();
@@ -87,7 +87,7 @@ void s3Window::shutdown()
 
 void s3Window::render()
 {
-    renderer.clear(clearColor);
+    s3Renderer::clear(clearColor);
 
     s3CallbackManager::onBeginRender.trigger();
     // renderer draw something
