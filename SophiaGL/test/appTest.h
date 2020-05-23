@@ -98,8 +98,8 @@ public:
         if (userData->sender == &s3CallbackManager::onEngineInit)
         {
             // watching if any shader file has changed
-            dirWatch = new s3UtilsDirectoryWatch();
-            dirWatch->watch("../../SophiaGL/shaders");
+            shaderDirWatch = new s3UtilsDirectoryWatch();
+            shaderDirWatch->watch("../../SophiaGL/shaders");
 
             camera = new s3Camera();
             camera->position  = glm::vec3(0.0f, 0.0f, 3.0f);
@@ -138,7 +138,6 @@ public:
         {
             material->setTexture("texture0", texture0);
             material->setTexture("texture1", texture1);
-
             material->setMatrix("projection", camera->getProjectionMatrix());
             material->setMatrix("view", camera->getViewMatrix());
 
@@ -170,13 +169,12 @@ public:
             S3_SAFE_DELETE(material);
             S3_SAFE_DELETE(shader);
             S3_SAFE_DELETE(mesh);
+            S3_SAFE_DELETE(shaderDirWatch);
         }
         else if (userData->sender == &s3CallbackManager::onWindowFocused)
         {
-            if (dirWatch->hasChanged())
-            {
-                shader->load("../../SophiaGL/shaders/coordinateVS.glsl", "../../SophiaGL/shaders/coordinateFS.glsl");;
-            }
+            if (shaderDirWatch->hasChanged())
+                shader->reload();
         }
     }
 
@@ -188,7 +186,7 @@ public:
     s3Material* material;
     s3Camera *camera;
     s3Mesh* mesh;
-    s3UtilsDirectoryWatch* dirWatch;
+    s3UtilsDirectoryWatch* shaderDirWatch;
 
     unsigned int vao = 0, vbo = 0;
 };

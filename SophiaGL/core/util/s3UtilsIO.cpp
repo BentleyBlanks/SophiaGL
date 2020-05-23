@@ -41,7 +41,7 @@ bool s3UtilsDirectoryWatch::hasChanged() const
 {
 	// Wait for notification 
 	DWORD dwWaitStatus;
-	dwWaitStatus = WaitForMultipleObjects(1, &changeHandle, FALSE, 100);
+	dwWaitStatus = WaitForMultipleObjects(1, &changeHandle, FALSE, 0);
 	switch (dwWaitStatus)
 	{
 	case WAIT_OBJECT_0:

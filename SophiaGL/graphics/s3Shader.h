@@ -58,6 +58,7 @@ public:
 
     bool load(const char* vertexPath, const char* fragmentPath);
     bool isLoaded() const { return bIsLoaded; }
+    bool reload();
 
     unsigned int getProgram() const { return program; }
 
@@ -108,8 +109,8 @@ private:
     bool bIsLoaded = false;
 
     // vs fs shader code
-    std::string vertexSource;
-    std::string fragmentSource;
+    std::string vertexSource, fragmentSource;
+    std::string vertexPath, fragmentPath;
 
     std::map<std::string, s3ShaderField> fieldMap;
 };

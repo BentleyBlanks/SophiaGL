@@ -496,7 +496,7 @@ bool s3Shader::checkProgram(unsigned int program)
 	return true;
 }
 
-bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
+bool s3Shader::load(const char* _vertexPath, const char* _fragmentPath)
 {
     if (bIsLoaded)
     {
@@ -519,8 +519,8 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
     try
     {
         // open files
-        vShaderFile.open(vertexPath);
-        fShaderFile.open(fragmentPath);
+        vShaderFile.open(_vertexPath);
+        fShaderFile.open(_fragmentPath);
         std::stringstream vShaderStream, fShaderStream;
 
         // read file's buffer contents into streams
@@ -540,6 +540,9 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
         s3Log::error("Error::shader file not succesfully read\n");
         bIsLoaded = false;
     }
+
+    vertexPath   = _vertexPath;
+    fragmentPath = _fragmentPath;
 
     const char* vShaderCode = vertexSource.c_str();
     const char* fShaderCode = fragmentSource.c_str();
@@ -583,4 +586,11 @@ bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
 
     bIsLoaded = true;
     return bIsLoaded;
+}
+
+bool s3Shader::reload()
+{
+    if(!bIsLoaded) s3Log::warning("s3Shader::reload() need successfully called load() before\n");
+    
+    return load(vertexPath.c_str(), fragmentPath.c_str());
 }
