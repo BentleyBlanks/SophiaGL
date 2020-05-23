@@ -1,50 +1,5 @@
-﻿#pragma once
-
+#pragma once
 #include <core/s3Settings.h>
-#include <core/s3Event.h>
-//#include <t3Vector3.h>
-
-class s3Texture;
-
-//enum s3ShaderType
-//{
-//    S3_VERTEX_SHADER,
-//    S3_GEOMETRY_SHADER,
-//    S3_HULL_SHADER,
-//    S3_PIXEL_SHADER
-//};
-//
-//enum s3MouseState
-//{
-//    S3_MOUSE_PRESSED = 0,
-//    S3_MOUSE_RELEASED,
-//    S3_MOUSE_MOVED,
-//    S3_MOUSE_SCROLLED
-//};
-//
-//enum s3KeyState
-//{
-//    S3_KEY_PRESSED = 0,
-//    S3_KEY_RELEASED
-//};
-
-//std::string s3MouseStateToString(s3MouseState state);
-//
-//std::string s3KeyStateToString(s3KeyState state);
-
-//std::string s3MouseTypeToString(s3MouseEvent::s3MouseType type);
-
-//std::string s3KeyTypeToString(s3KeyCode type);
-
-//std::string s3GetLatestProfile(s3ShaderType type);
-
-//s3ImageType s3GetImageType(const std::string & filePath);
-
-//s3Texture* s3LoadAsMipmap(std::vector<std::string> fileNames);
-
-//float s3SphericalTheta(const t3Vector3f &w);
-//
-//float s3SphericalPhi(const t3Vector3f &w);
 
 // wstring string convert
 std::wstring s3S2WS(const std::string& str);
@@ -69,15 +24,15 @@ std::string s3ToString(const T& value)
     return out.str();
 }
 
-//// bool need to return "true/false" not "1/0"
-//template <>
-//std::string s3ToString<bool>(const bool& b)
-//{
-//    if (b)
-//        return "true";
-//    else
-//        return "false";
-//}
+// bool need to return "true/false" not "1/0"
+template <>
+std::string s3ToString<bool>(const bool& b)
+{
+    if (b)
+        return "true";
+    else
+        return "false";
+}
 
 // Convert a value to a string with a specific precision.
 // Like sprintf "%4f" format, in this example precision=4
@@ -200,24 +155,3 @@ float s3HexToFloat(const std::string& floatHexString);
 
 // Convert a string representing an string in hexadecimal to a string.
 std::string s3HexToString(const std::string& stringHexString);
-
-// Log
-// reporting that the given function is not implemented
-#define s3FuncNotImplementedError()\
-{\
-    std::string error = "Unimplemented ";\
-    error += __FUNCTION__;\
-    error += "() method called";\
-    s3Log::error(error.c_str());\
-}
-
-// reporting a warning that ptr is nullptr
-#define s3NullPtrWarning(ptrName)\
-{\
-    std::string error;\
-    error += __FUNCTION__;\
-    error += "() given ";\
-    error += ptrName;\
-    error += "is null";\
-    a3Log::warning(error.c_str());\
-}

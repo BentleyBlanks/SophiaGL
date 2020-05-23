@@ -23,6 +23,9 @@ public:
     // called when keyEvent triggered
     static s3Callback onKeyPressed;
     static s3Callback onKeyReleased;
+
+    // called when specific action triggered
+    static s3Callback onWindowFocused;
 };
 
 // add / remove the system callbacks

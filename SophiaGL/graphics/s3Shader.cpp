@@ -498,6 +498,18 @@ bool s3Shader::checkProgram(unsigned int program)
 
 bool s3Shader::load(const char* vertexPath, const char* fragmentPath)
 {
+    if (bIsLoaded)
+    {
+        glDeleteProgram(program);
+        program = 0;
+
+        vertexSource.clear();
+        fragmentSource.clear();
+        fieldMap.clear();
+
+        bIsLoaded = false;
+    }
+
     // retrieve the vs/fs source code from filePath
     std::ifstream vShaderFile;
     std::ifstream fShaderFile;

@@ -1,6 +1,7 @@
 #pragma once
 #include <core/log/s3Log.h>
 #include <core/s3Event.h>
+#include <core/util/s3UtilsIO.h>
 #include <app/s3CallbackManager.h>
 #include <app/s3Window.h>
 #include <3d/s3Camera.h>
@@ -96,6 +97,10 @@ public:
 
         if (userData->sender == &s3CallbackManager::onEngineInit)
         {
+            // watching if any shader file has changed
+            dirWatch = new s3UtilsDirectoryWatch();
+            dirWatch->watch("../../SophiaGL/shaders");
+
             camera = new s3Camera();
             camera->position  = glm::vec3(0.0f, 0.0f, 3.0f);
             camera->up        = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -116,9 +121,6 @@ public:
             mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
 
             s3Renderer::setDepthTest(true);
-
-            material->setTexture("texture0", texture0);
-            material->setTexture("texture1", texture1);
         }
         else if (userData->sender == &s3CallbackManager::onUpdate)
         {
@@ -134,6 +136,9 @@ public:
         }
         else if (userData->sender == &s3CallbackManager::onBeginRender)
         {
+            material->setTexture("texture0", texture0);
+            material->setTexture("texture1", texture1);
+
             material->setMatrix("projection", camera->getProjectionMatrix());
             material->setMatrix("view", camera->getViewMatrix());
 
@@ -166,6 +171,13 @@ public:
             S3_SAFE_DELETE(shader);
             S3_SAFE_DELETE(mesh);
         }
+        else if (userData->sender == &s3CallbackManager::onWindowFocused)
+        {
+            if (dirWatch->hasChanged())
+            {
+                shader->load("../../SophiaGL/shaders/coordinateVS.glsl", "../../SophiaGL/shaders/coordinateFS.glsl");;
+            }
+        }
     }
 
     float deltaTime     = 0.0f;
@@ -176,6 +188,7 @@ public:
     s3Material* material;
     s3Camera *camera;
     s3Mesh* mesh;
+    s3UtilsDirectoryWatch* dirWatch;
 
     unsigned int vao = 0, vbo = 0;
 };
@@ -183,9 +196,10 @@ public:
 int main()
 {
     s3App app;
-    s3CallbackManager::onEngineInit  += app;
-    s3CallbackManager::onUpdate      += app;
-    s3CallbackManager::onBeginRender += app;
+    s3CallbackManager::onEngineInit    += app;
+    s3CallbackManager::onUpdate        += app;
+    s3CallbackManager::onBeginRender   += app;
+    s3CallbackManager::onWindowFocused += app;
 
     s3Window& window = s3Window::getInstance();
     window.init("SophiaGL", 100, 100, 1280, 720);

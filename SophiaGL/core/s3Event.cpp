@@ -1,6 +1,5 @@
 #include <core/s3Event.h>
 #include <core/log/s3Log.h>
-#include <app/s3Utils.h>
 
 s3MouseEvent::s3MouseEvent(s3MouseType type, s3MouseTriggerType triggerType, int x, int y, int offsetX, int offsetY, float scroll, bool control, bool shift, bool alt)
     : type(type), triggerType(triggerType), x(x), y(y), offsetX(offsetX), offsetY(offsetY), scroll(scroll), control(control), shift(shift), alt(alt)

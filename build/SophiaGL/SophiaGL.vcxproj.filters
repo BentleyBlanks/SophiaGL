@@ -43,6 +43,9 @@
     <Filter Include="SophiaGL\thirdparty\tinyobjloader">
       <UniqueIdentifier>{1cfab9ca-e0fa-478e-8cb3-a14fb2d76af7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SophiaGL\core\util">
+      <UniqueIdentifier>{ea12c5da-9693-4653-baca-2bd5c7376245}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SophiaGL\test\main.cpp">
@@ -87,9 +90,6 @@
     <ClCompile Include="..\..\SophiaGL\3d\s3Camera.cpp">
       <Filter>SophiaGL\3d</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\app\s3Utils.cpp">
-      <Filter>SophiaGL\app</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\SophiaGL\core\s3Enum.cpp">
       <Filter>SophiaGL\core</Filter>
     </ClCompile>
@@ -116,6 +116,15 @@
     </ClCompile>
     <ClCompile Include="..\..\SophiaGL\graphics\s3Material.cpp">
       <Filter>SophiaGL\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\core\util\s3Utils.cpp">
+      <Filter>SophiaGL\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\core\util\s3UtilsIO.cpp">
+      <Filter>SophiaGL\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\core\util\s3UtilsString.cpp">
+      <Filter>SophiaGL\core\util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -914,9 +923,6 @@
     <ClInclude Include="..\..\SophiaGL\3d\s3Camera.h">
       <Filter>SophiaGL\3d</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\app\s3Utils.h">
-      <Filter>SophiaGL\app</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\SophiaGL\test\appTest.h">
       <Filter>SophiaGL\test</Filter>
     </ClInclude>
@@ -952,6 +958,15 @@
     </ClInclude>
     <ClInclude Include="..\..\SophiaGL\graphics\s3Material.h">
       <Filter>SophiaGL\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\core\util\s3Utils.h">
+      <Filter>SophiaGL\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\core\util\s3UtilsIO.h">
+      <Filter>SophiaGL\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\core\util\s3UtilsString.h">
+      <Filter>SophiaGL\core\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

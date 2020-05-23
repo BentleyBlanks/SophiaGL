@@ -45,6 +45,7 @@ private:
     static void mouseButtonCB(GLFWwindow* window, int button, int action, int mods);
     static void mouseScrollCB(GLFWwindow* window, double xOffset, double yOffset);
     static void windowCloseCB(GLFWwindow* window);
+    static void focusCB(GLFWwindow* window, int focused);
 
     // thread safe
     static s3Window instance;
