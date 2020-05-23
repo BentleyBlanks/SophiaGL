@@ -166,7 +166,6 @@
     <ClCompile Include="..\..\SophiaGL\3d\s3ModelImporter.cpp" />
     <ClCompile Include="..\..\SophiaGL\app\s3Window.cpp" />
     <ClCompile Include="..\..\SophiaGL\app\s3CallbackManager.cpp" />
-    <ClCompile Include="..\..\SophiaGL\app\s3Utils.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\log\s3Log.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\log\s3LogFile.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\log\s3LogHTML.cpp" />
@@ -175,6 +174,9 @@
     <ClCompile Include="..\..\SophiaGL\core\s3Event.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\s3Settings.cpp" />
     <ClCompile Include="..\..\SophiaGL\core\s3Timer.cpp" />
+    <ClCompile Include="..\..\SophiaGL\core\util\s3Utils.cpp" />
+    <ClCompile Include="..\..\SophiaGL\core\util\s3UtilsIO.cpp" />
+    <ClCompile Include="..\..\SophiaGL\core\util\s3UtilsString.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3Material.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3Renderer.cpp" />
     <ClCompile Include="..\..\SophiaGL\graphics\s3RenderTexture.cpp" />
@@ -192,7 +194,6 @@
     <ClInclude Include="..\..\SophiaGL\3d\s3ModelImporter.h" />
     <ClInclude Include="..\..\SophiaGL\app\s3Window.h" />
     <ClInclude Include="..\..\SophiaGL\app\s3CallbackManager.h" />
-    <ClInclude Include="..\..\SophiaGL\app\s3Utils.h" />
     <ClInclude Include="..\..\SophiaGL\core\log\s3Log.h" />
     <ClInclude Include="..\..\SophiaGL\core\log\s3LogFile.h" />
     <ClInclude Include="..\..\SophiaGL\core\log\s3LogHTML.h" />
@@ -201,6 +202,9 @@
     <ClInclude Include="..\..\SophiaGL\core\s3Event.h" />
     <ClInclude Include="..\..\SophiaGL\core\s3Settings.h" />
     <ClInclude Include="..\..\SophiaGL\core\s3Timer.h" />
+    <ClInclude Include="..\..\SophiaGL\core\util\s3Utils.h" />
+    <ClInclude Include="..\..\SophiaGL\core\util\s3UtilsIO.h" />
+    <ClInclude Include="..\..\SophiaGL\core\util\s3UtilsString.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Material.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3Renderer.h" />
     <ClInclude Include="..\..\SophiaGL\graphics\s3RenderTexture.h" />

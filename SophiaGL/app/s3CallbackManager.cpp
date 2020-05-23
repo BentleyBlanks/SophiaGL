@@ -19,6 +19,8 @@ s3Callback s3CallbackManager::onMouseScrolled;
 s3Callback s3CallbackManager::onKeyPressed;
 s3Callback s3CallbackManager::onKeyReleased;
 
+s3Callback s3CallbackManager::onWindowFocused;
+
 // handle system's event
 struct s3SystemHandler : public s3CallbackHandle
 {
@@ -73,6 +75,8 @@ void s3CallbackInit()
 
     s3CallbackManager::onKeyPressed    += systemHandler;
     s3CallbackManager::onKeyReleased   += systemHandler;
+
+    s3CallbackManager::onWindowFocused += systemHandler;
 }
 
 void s3CallbackDeinit()
@@ -90,4 +94,6 @@ void s3CallbackDeinit()
 
     s3CallbackManager::onKeyPressed    -= systemHandler;
     s3CallbackManager::onKeyReleased   -= systemHandler;
+
+    s3CallbackManager::onWindowFocused -= systemHandler;
 }

@@ -66,6 +66,7 @@ bool s3Window::init(const char* title, int x, int y, int width, int height)
     glfwSetScrollCallback(window, mouseScrollCB);
     glfwSetKeyCallback(window, keyCB);
     glfwSetWindowCloseCallback(window, windowCloseCB);
+    glfwSetWindowFocusCallback(window, focusCB);
 
     s3CallbackManager::onEngineInit.trigger();
 
@@ -317,5 +318,12 @@ void s3Window::mouseScrollCB(GLFWwindow * window, double xOffset, double yOffset
 
 void s3Window::windowCloseCB(GLFWwindow* window)
 {
+}
+
+void s3Window::focusCB(GLFWwindow* window, int focused)
+{
+    s3CallbackUserData focusedData;
+    focusedData.data = (void*)(&focused);
+    s3CallbackManager::onWindowFocused.trigger(&focusedData);
 }
 
