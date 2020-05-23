@@ -180,10 +180,6 @@ void s3Shader::end()
         }
         case s3ShaderFieldType::texture:
         {
-            s3Texture* tex = field.texture;
-            int location = tex->getLocation();
-            int textureID = tex->getTextureID();
-
             glBindTexture(GL_TEXTURE_2D, 0);
             glActiveTexture(GL_TEXTURE0);
             break;

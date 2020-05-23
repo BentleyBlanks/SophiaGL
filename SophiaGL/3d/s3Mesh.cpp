@@ -137,7 +137,7 @@ void s3Mesh::apply()
 
 	// input layout
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(s3Vertex), 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(s3Vertex), (void*)0);
 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(s3Vertex), (void*)offsetof(s3Vertex, normal));
