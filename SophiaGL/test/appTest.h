@@ -4,8 +4,10 @@
 #include <app/s3CallbackManager.h>
 #include <app/s3Window.h>
 #include <3d/s3Camera.h>
+#include <3d/s3Mesh.h>
+#include <3d/s3ModelImporter.h>
 #include <graphics/s3Renderer.h>
-#include <graphics/s3Shader.h>
+#include <graphics/s3Material.h>
 #include <graphics/s3Texture2d.h>
 
 #include <glad/glad.h>
@@ -94,42 +96,29 @@ public:
 
         if (userData->sender == &s3CallbackManager::onEngineInit)
         {
-            camera.position  = glm::vec3(0.0f, 0.0f, 3.0f);
-            camera.up        = glm::vec3(0.0f, 1.0f, 0.0f);
-            camera.direction = glm::vec3(0.0f, 0.0f, -1.0f);
+            camera = new s3Camera();
+            camera->position  = glm::vec3(0.0f, 0.0f, 3.0f);
+            camera->up        = glm::vec3(0.0f, 1.0f, 0.0f);
+            camera->direction = glm::vec3(0.0f, 0.0f, -1.0f);
 
-            texture0.load("../../resources/images/lulu.jpg");
-            texture1.load("../../resources/images/lulu2.jpg");
+            texture0 = new s3Texture2d();
+            texture1 = new s3Texture2d();
+            texture0->load("../../resources/images/lulu.jpg");
+            texture1->load("../../resources/images/lulu2.jpg");
             // could be removed when shader parser added
-            texture0.setLocation(0);
-            texture1.setLocation(1);
+            texture0->setLocation(0);
+            texture1->setLocation(1);
 
-            shader.load("../../SophiaGL/shaders/coordinateVS.glsl", "../../SophiaGL/shaders/coordinateFS.glsl");
+            shader = new s3Shader();
+            shader->load("../../SophiaGL/shaders/coordinateVS.glsl", "../../SophiaGL/shaders/coordinateFS.glsl");
+            material = new s3Material(*shader);
 
-            // vao generation and bind
-            glGenVertexArrays(1, &vao);
-            glBindVertexArray(vao);
+            mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
 
-            // vbo generation and bind
-            glGenBuffers(1, &vbo);
-            glBindBuffer(GL_ARRAY_BUFFER, vbo);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+            s3Renderer::setDepthTest(true);
 
-            // configure and enabled vertex attributes, and binded shader layout
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-            glEnableVertexAttribArray(0);
-
-            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-            glEnableVertexAttribArray(1);
-
-            // unbind vao / vbo
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindVertexArray(0);
-
-            s3Renderer::getInstance().setDepthTest(true);
-
-            shader.setTexture("texture0", &texture0);
-            shader.setTexture("texture1", &texture1);
+            material->setTexture("texture0", texture0);
+            material->setTexture("texture1", texture1);
         }
         else if (userData->sender == &s3CallbackManager::onUpdate)
         {
@@ -140,23 +129,22 @@ public:
 
             // window may resize
             auto windowSize = window.getWindowSize();
-            camera.aspectRatio = (float)windowSize.x / windowSize.y;
-            camera.speed       = 2.5f * deltaTime;
+            camera->aspectRatio = (float)windowSize.x / windowSize.y;
+            camera->speed       = 2.5f * deltaTime;
         }
         else if (userData->sender == &s3CallbackManager::onBeginRender)
         {
-            shader.setMatrix("projection", camera.getProjectionMatrix());
-            shader.setMatrix("view", camera.getViewMatrix());
+            material->setMatrix("projection", camera->getProjectionMatrix());
+            material->setMatrix("view", camera->getViewMatrix());
 
 			// activate shader and clearing
 			if (bFirst)
 			{
-				shader.print();
+                material->print();
 				bFirst = false;
 			}
 
             // render boxes
-            glBindVertexArray(vao);
             for (int i = 0; i < 10; i++)
             {
                 float angle = 20.0f * i;
@@ -165,24 +153,29 @@ public:
                 model = glm::translate(model, cubePositions[i]);
                 model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 
-                shader.setMatrix("model", model);
-                shader.begin();
-
-                glDrawArrays(GL_TRIANGLES, 0, 36);
+                material->setMatrix("model", model);
+                s3Renderer::drawMesh(*mesh, *material);
             }
         }
         else if (userData->sender == &s3CallbackManager::onEngineDeinit)
         {
-
+            S3_SAFE_DELETE(camera);
+            S3_SAFE_DELETE(texture0);
+            S3_SAFE_DELETE(texture1);
+            S3_SAFE_DELETE(material);
+            S3_SAFE_DELETE(shader);
+            S3_SAFE_DELETE(mesh);
         }
     }
 
     float deltaTime     = 0.0f;
     float lastFrameTime = 0.0f;
 
-    s3Texture2d texture0, texture1;
-    s3Shader shader;
-    s3Camera camera;
+    s3Texture2d *texture0, *texture1;
+    s3Shader *shader;
+    s3Material* material;
+    s3Camera *camera;
+    s3Mesh* mesh;
 
     unsigned int vao = 0, vbo = 0;
 };

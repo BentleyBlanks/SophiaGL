@@ -27,16 +27,16 @@ int main()
 
 	mesh.setSubMeshCount(4);
 	mesh.setTriangles(A, 0);
-	print(mesh.triangles);
+	print(mesh.indices);
 
 	mesh.setTriangles(C, 2);
-	print(mesh.triangles);
+	print(mesh.indices);
 	
 	mesh.setTriangles(B, 1);
-	print(mesh.triangles);
+	print(mesh.indices);
 	
 	mesh.setTriangles(D, 3);
-	print(mesh.triangles);
+	print(mesh.indices);
 #endif
 
 #if 0
@@ -44,7 +44,7 @@ int main()
 	s3Window& window = s3Window::getInstance();
 	window.init("SophiaGL", 100, 100, 1280, 720);
 
-	mesh.triangles.resize(3);
+	mesh.indices.resize(3);
 
 	std::vector<glm::vec3> p = { glm::vec3(1, 1, 1), glm::vec3(2, 2, 2), glm::vec3(3, 3, 3) };
 	std::vector<glm::vec3> n = { glm::vec3(4, 4, 4), glm::vec3(5, 5, 5), glm::vec3(6, 6, 6) };
@@ -54,6 +54,9 @@ int main()
 	mesh.uvs       = t;
 	mesh.apply();
 #endif
+
+	s3Window& window = s3Window::getInstance();
+	window.init("SophiaGL", 100, 100, 1280, 720);
 
 	s3Mesh* mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
 
