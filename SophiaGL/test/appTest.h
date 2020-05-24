@@ -118,7 +118,7 @@ public:
             shader->load("../../SophiaGL/shaders/coordinateVS.glsl", "../../SophiaGL/shaders/coordinateFS.glsl");
             material = new s3Material(*shader);
 
-            mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
+            mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
 
             s3Renderer::setDepthTest(true);
         }
@@ -149,7 +149,7 @@ public:
 			}
 
             // render boxes
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
                 float angle = 20.0f * i;
 

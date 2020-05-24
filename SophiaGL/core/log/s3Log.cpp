@@ -78,11 +78,11 @@ void s3Log::log(s3LogLevel logLevel, const char* message, va_list args)
 
         SetConsoleTextAttribute(GetStdHandle(STD_ERROR_HANDLE), attr);
 
-        static char contentBuffer[1024];
+        static char contentBuffer[2048];
         char* content = NULL;
 
         // save time + message + format(args) to content
-        static char timeBuffer[30], messageBuffer[1024];
+        static char timeBuffer[30], messageBuffer[2048];
         sprintf(timeBuffer, "%02d:%02d:%02d %10s       ", tm->tm_hour, tm->tm_min, tm->tm_sec, lv);
         // messageBuffer:[hour]:[minute]:[second]
         strcpy(messageBuffer, timeBuffer);

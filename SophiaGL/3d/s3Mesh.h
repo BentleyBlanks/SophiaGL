@@ -41,7 +41,7 @@ public:
 
 	// Gets the index buffer for the specified sub mesh on this instance.
 	//const std::vector<unsigned int>& getTriangles(int submesh) const;
-	//int getSubmeshCount() const { return (int)triangleRangeList.size(); }
+	//int getSubmeshCount() const { return (int)indexRangeList.size(); }
 
 	const glm::vec3& getPosition() const { return positionWS; }
 	const glm::mat4& getRotation() const { return rotationWS; }
@@ -70,16 +70,16 @@ public:
 
 	// submesh indices
 	std::vector<unsigned int> indices;
-	//std::vector<s3MeshTriangleRange> triangleRangeList;
+	std::vector<s3MeshTriangleRange> indexRangeList;
 
 	// vertex's buffer
-	//std::vector<glm::vec3> positions;
-	//std::vector<glm::vec3> normals;
-	//std::vector<glm::vec3> tangents;
-	//std::vector<glm::vec2> uvs;
+	std::vector<glm::vec3> positions;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec3> tangents;
+	std::vector<glm::vec2> uvs;
 
-	// vertex data
-	std::vector<s3Vertex> vertices;
+	// vertex data would be updated after called apply()
+	std::vector<float> vertices;
 
 	// opengl render data
 	unsigned int vao = 0, vbo = 0, ebo = 0;
