@@ -118,7 +118,9 @@ public:
             shader->load("../../SophiaGL/shaders/coordinateVS.glsl", "../../SophiaGL/shaders/coordinateFS.glsl");
             material = new s3Material(*shader);
 
-            mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
+            //mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
+            mesh = s3ModelImporter::load("../../resources/models/cornellBox/CornellBox-Sphere.obj");
+            //mesh = s3ModelImporter::load("../../resources/models/cornellBox/water.obj");
 
             s3Renderer::setDepthTest(true);
         }

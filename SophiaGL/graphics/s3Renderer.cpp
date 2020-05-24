@@ -39,10 +39,13 @@ void s3Renderer::drawMesh(const s3Mesh& mesh, const s3Material& material)
 	auto shader = material.getShader();
 	shader.begin();
 
-	// draw mesh
-	glBindVertexArray(mesh.vao);
-	glDrawElements(GL_TRIANGLES, (int)mesh.indices.size(), GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+	for (auto submesh : mesh.submeshes)
+	{
+		// draw mesh
+		glBindVertexArray(submesh->vao);
+		glDrawElements(GL_TRIANGLES, (int)submesh->indices.size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+	}
 
 	shader.end();
 }

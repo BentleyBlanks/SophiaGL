@@ -3,15 +3,36 @@
 #include <core/s3Enum.h>
 #include <glm/glm.hpp>
 
-class s3Vertex
+class s3ModelImporter;
+class s3Renderer;
+class s3Submesh
 {
 public:
-	glm::vec3 position;
-	glm::vec3 normal;
-	glm::vec2 uv;
+	s3Submesh() {}
+	~s3Submesh() {}
+
+	void clear();
+	void apply();
+
+	friend class s3ModelImporter;
+	friend class s3Renderer;
+private:
+	// submesh indices
+	std::vector<unsigned int> indices;
+
+	// vertex's buffer
+	std::vector<glm::vec3> positions;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec3> tangents;
+	std::vector<glm::vec2> uvs;
+
+	// vertex data would be updated after called apply()
+	std::vector<float> vertices;
+
+	// opengl render data
+	unsigned int vao = 0, vbo = 0, ebo = 0;
 };
 
-class s3Renderer;
 class s3Mesh
 {
 public:
@@ -21,13 +42,13 @@ public:
 	//	Clears all vertex data and all triangle indices.
 	void clear();
 
-	// new a mesh object
+	//// new a mesh object
 	//void setVertices(const std::vector<glm::vec3>& _vertices) { positions.assign(_vertices.begin(), _vertices.end()); }
 	//void setNormals(const std::vector<glm::vec3>& _normals) { normals.assign(_normals.begin(), _normals.end()); }
 	//void setTangents(const std::vector<glm::vec3>& _tangents) { tangents.assign(_tangents.begin(), _tangents.end()); }
 	//void setUVs(const std::vector<glm::vec2>& _uvs) { uvs.assign(_uvs.begin(), _uvs.end()); }
 
-	// Sets the index buffer for the sub-Mesh.
+	//// Sets the index buffer for the sub-Mesh.
 	//void setTriangles(const std::vector<unsigned int>& _indices, int submesh);
 	//void setSubMeshCount(int subMeshCount);
 
@@ -39,9 +60,9 @@ public:
 	//const std::vector<glm::vec3>& getTangents() const { return tangents; }
 	//const std::vector<glm::vec2>& getUVs() const { return uvs; }
 
-	// Gets the index buffer for the specified sub mesh on this instance.
+	// //Gets the index buffer for the specified sub mesh on this instance.
 	//const std::vector<unsigned int>& getTriangles(int submesh) const;
-	//int getSubmeshCount() const { return (int)indexRangeList.size(); }
+	//int getSubmeshCount() const { return (int)submeshes.size(); }
 
 	const glm::vec3& getPosition() const { return positionWS; }
 	const glm::mat4& getRotation() const { return rotationWS; }
@@ -58,31 +79,20 @@ public:
 	void apply();
 
 	friend class s3Renderer;
+	friend class s3ModelImporter;
 
 //private:
 	//void updateRangeList();
 
-	struct s3MeshTriangleRange
-	{
-		unsigned int start = 0;
-		unsigned int count = 0;
-	};
+	//struct s3MeshTriangleRange
+	//{
+	//	unsigned int start = 0;
+	//	unsigned int count = 0;
+	//};
 
-	// submesh indices
-	std::vector<unsigned int> indices;
-	std::vector<s3MeshTriangleRange> indexRangeList;
+	//std::vector<s3MeshTriangleRange> indexRangeList;
 
-	// vertex's buffer
-	std::vector<glm::vec3> positions;
-	std::vector<glm::vec3> normals;
-	std::vector<glm::vec3> tangents;
-	std::vector<glm::vec2> uvs;
-
-	// vertex data would be updated after called apply()
-	std::vector<float> vertices;
-
-	// opengl render data
-	unsigned int vao = 0, vbo = 0, ebo = 0;
+	std::vector<class s3Submesh*> submeshes;
 
 	// transform data
 	glm::vec3 positionWS = glm::vec3();
