@@ -1,6 +1,114 @@
 #include <3d/s3Mesh.h>
 #include <glad/glad.h>
 
+// ---------------------------------------------s3Submesh---------------------------------------------
+void s3Submesh::clear()
+{
+	indices.clear();
+	positions.clear();
+	normals.clear();
+	tangents.clear();
+	uvs.clear();
+}
+
+void s3Submesh::apply()
+{
+	int pCount = (int)positions.size();
+	int nCount = (int)normals.size();
+	int tCount = (int)uvs.size();
+	if (pCount < 0 ||
+		(nCount > 0 && pCount != nCount) ||
+		(tCount > 0 && pCount != tCount) ||
+		(tCount > 0 && nCount > 0 && (pCount != nCount || pCount != tCount)))
+	{
+		s3Log::warning("s3Mesh's properties error, position: %d, normals: %d, uvs: %d\n", pCount, nCount, tCount);
+		return;
+	}
+
+	// pCount must be greater than 0, but for code unify, check it everytime
+	//unsigned long long pSize = sizeof(glm::vec3) * pCount;
+	//unsigned long long nSize = sizeof(glm::vec3) * nCount;
+	//unsigned long long tSize = sizeof(glm::vec2) * tCount;
+
+	vertices.clear();
+	for (int i = 0; i < pCount; i++)
+	{
+		if (pCount > 0)
+		{
+			auto& position = positions[i];
+			vertices.push_back(position.x);
+			vertices.push_back(position.y);
+			vertices.push_back(position.z);
+		}
+
+		if (nCount > 0)
+		{
+			auto& normal = normals[i];
+			vertices.push_back(normal.x);
+			vertices.push_back(normal.y);
+			vertices.push_back(normal.z);
+		}
+
+		if (tCount > 0)
+		{
+			auto& uv = uvs[i];
+			vertices.push_back(uv.x);
+			vertices.push_back(uv.y);
+		}
+	}
+
+	// vao generation and bind
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	// vbo, vertex buffer
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+
+	// ebo, index buffer
+	glGenBuffers(1, &ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
+	// input layout
+	int index = 0;
+	unsigned long long offset = 0;
+	if (pCount > 0)
+	{
+		int size = sizeof(float) * 3;
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, size, (void*)offset);
+		index += 1;
+		offset += size;
+	}
+
+	if (nCount > 0)
+	{
+		int size = sizeof(float) * 3;
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, size, (void*)offset);
+		index += 1;
+		offset += size;
+	}
+
+	if (tCount > 0)
+	{
+		int size = sizeof(float) * 2;
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, size, (void*)offset);
+		index += 1;
+		offset += size;
+	}
+
+	// not supported tangents now
+
+	// unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
+// ---------------------------------------------s3Mesh---------------------------------------------
 //--! ref: https://docs.unity3d.com/2017.4/Documentation/ScriptReference/Mesh.html
 s3Mesh::s3Mesh()
 {}
@@ -10,11 +118,13 @@ s3Mesh::~s3Mesh()
 
 void s3Mesh::clear()
 {
-	indices.clear();
-	//positions.clear();
-	//normals.clear();
-	//tangents.clear();
-	//uvs.clear();
+	for (auto submesh : submeshes)
+	{
+		submesh->clear();
+		S3_SAFE_DELETE(submesh);
+	}
+
+	submeshes.clear();
 }
 
 //void s3Mesh::setTriangles(const std::vector<unsigned int>& subIndices, int submesh)
@@ -101,99 +211,8 @@ void s3Mesh::clear()
 // index buffer  = ebo
 void s3Mesh::apply()
 {
-	int pCount = (int)positions.size();
-	int nCount = (int)normals.size();
-	int tCount = (int)uvs.size();
-	if (pCount < 0 || 
-	   (nCount > 0 && pCount != nCount) || 
-	   (tCount > 0 && pCount != tCount) ||
-	   (tCount > 0 && nCount > 0 && !(pCount == nCount == tCount)))
-	{
-		s3Log::warning("s3Mesh's properties error, position: %d, normals: %d, uvs: %d\n", pCount, nCount, tCount);
-		return;
-	}
-
-	// pCount must be greater than 0, but for code unify, check it everytime
-	//unsigned long long pSize = sizeof(glm::vec3) * pCount;
-	//unsigned long long nSize = sizeof(glm::vec3) * nCount;
-	//unsigned long long tSize = sizeof(glm::vec2) * tCount;
-
-	vertices.clear();
-	for (int i = 0; i < pCount; i++)
-	{
-		if (pCount > 0)
-		{
-			auto& position = positions[i];
-			vertices.push_back(position.x);
-			vertices.push_back(position.y);
-			vertices.push_back(position.z);
-		}
-
-		if (nCount > 0)
-		{
-			auto& normal = normals[i];
-			vertices.push_back(normal.x);
-			vertices.push_back(normal.y);
-			vertices.push_back(normal.z);
-		}
-
-		if (tCount > 0)
-		{
-			auto& uv = uvs[i];
-			vertices.push_back(uv.x);
-			vertices.push_back(uv.y);
-		}
-	}
-
-	// vao generation and bind
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-	// vbo, vertex buffer
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
-
-	// ebo, index buffer
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-
-	// input layout
-	int index = 0;
-	unsigned long long offset = 0;
-	if (pCount > 0)
-	{
-		int size = sizeof(float) * 3;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, size, (void*)offset);
-		index  += 1;
-		offset += size;
-	}
-
-	if (nCount > 0)
-	{
-		int size = sizeof(float) * 3;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, size, (void*)offset);
-		index  += 1;
-		offset += size;
-	}
-
-	if (tCount > 0)
-	{
-		int size = sizeof(float) * 2;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, size, (void*)offset);
-		index  += 1;
-		offset += size;
-	}
-
-	// not supported tangents now
-
-	// unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	for (auto submesh : submeshes)
+		submesh->apply();
 }
 
 s3Mesh& s3Mesh::createCube()
