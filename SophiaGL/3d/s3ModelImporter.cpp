@@ -27,6 +27,7 @@ s3Mesh* s3ModelImporter::load(const char* path)
         return nullptr;
     }
 
+    //--! ref: https://github.com/tinyobjloader/tinyobjloader/blob/master/examples/viewer/viewer.cc
     for (int i = 0; i < shapes.size(); i++)
     {
         auto& shape = shapes[i];
