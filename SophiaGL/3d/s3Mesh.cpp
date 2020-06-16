@@ -74,11 +74,13 @@ void s3Submesh::apply()
 	// input layout
 	int index = 0;
 	unsigned long long offset = 0;
+	int stride = ((int)(pCount > 0) + (int)(tCount > 0) + (int)(nCount > 0)) * sizeof(float);
+
 	if (pCount > 0)
 	{
 		int size = sizeof(float) * 3;
 		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, size, (void*)offset);
+		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
 		index += 1;
 		offset += size;
 	}
@@ -87,7 +89,7 @@ void s3Submesh::apply()
 	{
 		int size = sizeof(float) * 3;
 		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, size, (void*)offset);
+		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
 		index += 1;
 		offset += size;
 	}
@@ -96,7 +98,7 @@ void s3Submesh::apply()
 	{
 		int size = sizeof(float) * 2;
 		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, size, (void*)offset);
+		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, stride, (void*)offset);
 		index += 1;
 		offset += size;
 	}

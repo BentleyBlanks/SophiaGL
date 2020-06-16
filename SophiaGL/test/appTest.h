@@ -151,6 +151,7 @@ public:
 			}
 
             // render boxes
+            s3Renderer::setDepthTest(true);
             for (int i = 0; i < 1; i++)
             {
                 float angle = 20.0f * i;
