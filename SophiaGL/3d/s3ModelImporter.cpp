@@ -31,7 +31,7 @@ s3Mesh* s3ModelImporter::load(const char* path)
     for (int i = 0; i < shapes.size(); i++)
     {
         auto& shape = shapes[i];
-        auto submesh = new s3Submesh();
+        auto submesh = new s3Submesh(shape.name);
         for (const auto& index : shape.mesh.indices)
         {
             // -1 means not used
