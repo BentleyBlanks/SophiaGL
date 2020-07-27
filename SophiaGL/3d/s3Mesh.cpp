@@ -74,7 +74,7 @@ void s3Submesh::apply()
 	// input layout
 	int index = 0;
 	unsigned long long offset = 0;
-	int stride = ((int)(pCount > 0) + (int)(tCount > 0) + (int)(nCount > 0)) * sizeof(float);
+	int stride = ((int)(pCount > 0) * 3 + (int)(tCount > 0) * 3 + (int)(nCount > 0) * 2) * sizeof(float);
 
 	if (pCount > 0)
 	{
