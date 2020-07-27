@@ -8,7 +8,7 @@ class s3Renderer;
 class s3Submesh
 {
 public:
-	s3Submesh() {}
+	s3Submesh(const std::string& name = "") : name(name) {}
 	~s3Submesh() {}
 
 	void clear();
@@ -31,6 +31,8 @@ private:
 
 	// opengl render data
 	unsigned int vao = 0, vbo = 0, ebo = 0;
+
+	std::string name;
 };
 
 class s3Mesh
