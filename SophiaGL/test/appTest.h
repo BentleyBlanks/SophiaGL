@@ -17,6 +17,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <imgui.h>
+
 float fov = 45.0f;
 float lastX = 400, lastY = 300;
 float yaw = -90.0f, pitch = 0.0f;
@@ -139,6 +141,9 @@ public:
         }
         else if (userData->sender == &s3CallbackManager::onBeginRender)
         {
+            static bool openWindow = true;
+            ImGui::ShowDemoWindow(&openWindow);
+
             material->setTexture("texture0", texture0);
             material->setTexture("texture1", texture1);
             material->setMatrix("projection", camera->getProjectionMatrix());
