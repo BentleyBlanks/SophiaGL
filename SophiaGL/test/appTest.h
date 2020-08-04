@@ -118,8 +118,8 @@ public:
             shader->load("../../SophiaGL/shaders/coordinateVS.glsl", "../../SophiaGL/shaders/coordinateFS.glsl");
             material = new s3Material(*shader);
 
-            //mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
-            mesh = s3ModelImporter::load("../../resources/models/cornellBox/CornellBox-Sphere.obj");
+            mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
+            //mesh = s3ModelImporter::load("../../resources/models/cornellBox/CornellBox-Sphere.obj");
             //mesh = s3ModelImporter::load("../../resources/models/cornellBox/water.obj");
             //mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
 
@@ -185,12 +185,13 @@ public:
     float deltaTime     = 0.0f;
     float lastFrameTime = 0.0f;
 
-    s3Texture2d *texture0, *texture1;
-    s3Shader *shader;
-    s3Material* material;
-    s3Camera *camera;
-    s3Mesh* mesh;
-    s3UtilsDirectoryWatch* shaderDirWatch;
+    s3Texture2d* texture0                 = nullptr;
+    s3Texture2d *texture1                 = nullptr;
+    s3Shader *shader                      = nullptr;
+    s3Material* material                  = nullptr;
+    s3Camera *camera                      = nullptr;
+    s3Mesh* mesh                          = nullptr;
+    s3UtilsDirectoryWatch* shaderDirWatch = nullptr;
 
     unsigned int vao = 0, vbo = 0;
 };
