@@ -4,6 +4,7 @@
 #include <core/s3Event.h>
 #include <core/log/s3Log.h>
 #include <graphics/s3Renderer.h>
+#include <app/s3Gui.h>
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
@@ -34,8 +35,12 @@ bool s3Window::init(const char* title, int x, int y, int width, int height)
 
     s3CallbackInit();
 
+    glfwSetErrorCallback(errorCB);
+
     // init window
-    glfwInit();
+    if (!glfwInit()) return false;
+
+    // Decide GL versions
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -47,8 +52,10 @@ bool s3Window::init(const char* title, int x, int y, int width, int height)
         glfwTerminate();
         return false;
     }
- 
+    
     glfwMakeContextCurrent(window);
+    if (bVSync) glfwSwapInterval(1);
+
     // init renderer
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -68,6 +75,7 @@ bool s3Window::init(const char* title, int x, int y, int width, int height)
     glfwSetWindowCloseCallback(window, windowCloseCB);
     glfwSetWindowFocusCallback(window, focusCB);
 
+    s3ImGuiInit(window);
     s3CallbackManager::onEngineInit.trigger();
 
     bInit = true;
@@ -82,7 +90,11 @@ float s3Window::getTime()
 void s3Window::shutdown()
 {
     s3CallbackDeinit();
+    s3ImGuiShutdown();
+
+    // glfw deinit
     glfwSetWindowShouldClose(window, true);
+    glfwDestroyWindow(window);
     glfwTerminate();
 }
 
@@ -90,13 +102,14 @@ void s3Window::render()
 {
     s3Renderer::clear(clearColor);
 
+    s3ImGuiBeginRender();
     s3CallbackManager::onBeginRender.trigger();
     // renderer draw something
     s3CallbackManager::onEndRender.trigger();
+    s3ImGuiEndRender();
 
     // Present
     glfwSwapBuffers(window);
-    glfwPollEvents();
 }
 
 void s3Window::functionKey(GLFWwindow* window, bool& control, bool& shift, bool& alt)
@@ -118,6 +131,11 @@ void s3Window::functionKey(GLFWwindow* window, bool& control, bool& shift, bool&
         shift = true;
 }
 
+void s3Window::errorCB(int error, const char* description)
+{
+    s3Log::error("Glfw Error %d: %s\n", error, description);
+}
+
 void s3Window::run()
 {
     if (!isInited())
@@ -129,6 +147,8 @@ void s3Window::run()
     // render loop
     while(!glfwWindowShouldClose(window))
     {
+        glfwPollEvents();
+        
         s3CallbackManager::onUpdate.trigger();
 
         keyInput(window);
@@ -219,6 +239,11 @@ void s3Window::setWindowSize(int width, int height)
     windowSize.y = height;
 
     glViewport(0, 0, windowSize.x, windowSize.y);
+}
+
+void s3Window::setVSync(bool _bVSync)
+{
+    bVSync = _bVSync;
 }
 
 glm::ivec2 s3Window::getMousePosition() const

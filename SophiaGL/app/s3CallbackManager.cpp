@@ -1,10 +1,7 @@
 #include <app/s3CallbackManager.h>
 #include <core/log/s3Log.h>
 #include <core/s3Event.h>
-#include <glfw/glfw3.h>
 #include <app/s3Window.h>
-//#include <core/s3Gui.h>
-//#include <imgui.h>
 
 s3Callback s3CallbackManager::onEngineInit;
 s3Callback s3CallbackManager::onEngineDeinit;
@@ -34,26 +31,26 @@ struct s3SystemHandler : public s3CallbackHandle
             if (keyEvent->keyType == s3KeyType::escape)
                 s3Window::getInstance().shutdown();
         }
+        //else if (data->sender == &s3CallbackManager::onEngineInit)
+        //{
+        //    s3ImGuiInit((GLFWwindow*)data->data);
+        //}
+        //else if (data->sender == &s3CallbackManager::onEngineDeinit)
+        //{
+        //    s3ImGuiShutdown();
+        //}
+        //else if (data->sender == &s3CallbackManager::onBeginRender)
+        //{
+        //    s3ImGuiBeginRender();
+        //}
+        //else if (data->sender == &s3CallbackManager::onEndRender)
+        //{
+        //    s3ImGuiEndRender();
+        //}
         //else if (data->sender == &s3CallbackManager::onKeyPressed)
         //{
         //    s3KeyEvent* keyEvent = (s3KeyEvent*)data->data;
         //    keyEvent->print();
-        //}
-        //else if (data->sender == &s3CallbackManager::callBack.onEngineInit)
-        //{
-        //    s3ImGuiInit(data->data, s3Renderer::get().getDevice(), s3Renderer::get().getDeviceContext());
-        //}
-        //else if (data->sender == &s3CallbackManager::callBack.onEngineDeinit)
-        //{
-        //    s3ImGuiShutdown();
-        //}
-        //else if (data->sender == &s3CallbackManager::callBack.onBeginRender)
-        //{
-        //    s3ImGuiBeginRender();
-        //}
-        //else if (data->sender == &s3CallbackManager::callBack.onEndRender)
-        //{
-        //    s3ImGuiEndRender();
         //}
     }
 };

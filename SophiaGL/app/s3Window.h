@@ -18,6 +18,7 @@ public:
     void setClearColor(float r, float g, float b, float a) { clearColor = glm::vec4(r, g, b, a); }
     void setWindowPosition(int x, int y);
     void setWindowSize(int width, int height);
+    void setVSync(bool bVSync);
 
 	// get elapsed time when app is running
 	float getTime();
@@ -28,6 +29,7 @@ public:
     GLFWwindow* getWindow() const { return window; }
 
     bool isInited() const { return bInit; }
+    bool isEnabledVSync() const { return bVSync; }
 
     struct s3KeyInputState;
 
@@ -39,6 +41,7 @@ private:
 
     static void keyInput(GLFWwindow* window);
     static void functionKey(GLFWwindow* window, bool& control, bool& shift, bool& alt);
+    static void errorCB(int error, const char* description);
     static void keyCB(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void resizeCB(GLFWwindow* window, int width, int height);
     static void mouseMoveCB(GLFWwindow* window, double xPos, double yPos);
@@ -50,7 +53,8 @@ private:
     // thread safe
     static s3Window instance;
 
-    bool bInit = false;
+    bool bInit  = false;
+    bool bVSync = true;
 
     GLFWwindow* window = nullptr;
     glm::ivec2 windowSize     = glm::ivec2();

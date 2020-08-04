@@ -46,6 +46,9 @@
     <Filter Include="SophiaGL\core\util">
       <UniqueIdentifier>{ea12c5da-9693-4653-baca-2bd5c7376245}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SophiaGL\thirdparty\imgui">
+      <UniqueIdentifier>{2cda2620-aa9a-45d6-82e1-c7f603da7501}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SophiaGL\test\main.cpp">
@@ -125,6 +128,21 @@
     </ClCompile>
     <ClCompile Include="..\..\SophiaGL\core\util\s3UtilsString.cpp">
       <Filter>SophiaGL\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\app\s3Gui.cpp">
+      <Filter>SophiaGL\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\thirdparty\imgui\include\imgui_demo.cpp">
+      <Filter>SophiaGL\thirdparty\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\thirdparty\imgui\include\imgui_draw.cpp">
+      <Filter>SophiaGL\thirdparty\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\thirdparty\imgui\include\imgui_widgets.cpp">
+      <Filter>SophiaGL\thirdparty\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SophiaGL\thirdparty\imgui\include\imgui.cpp">
+      <Filter>SophiaGL\thirdparty\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -967,6 +985,30 @@
     </ClInclude>
     <ClInclude Include="..\..\SophiaGL\core\util\s3UtilsString.h">
       <Filter>SophiaGL\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\test\imguiTest.h">
+      <Filter>SophiaGL\test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\app\s3Gui.h">
+      <Filter>SophiaGL\app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\imgui\include\imgui_internal.h">
+      <Filter>SophiaGL\thirdparty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\imgui\include\imstb_rectpack.h">
+      <Filter>SophiaGL\thirdparty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\imgui\include\imstb_textedit.h">
+      <Filter>SophiaGL\thirdparty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\imgui\include\imstb_truetype.h">
+      <Filter>SophiaGL\thirdparty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\imgui\include\imconfig.h">
+      <Filter>SophiaGL\thirdparty\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\imgui\include\imgui.h">
+      <Filter>SophiaGL\thirdparty\imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
