@@ -213,5 +213,5 @@ int main()
     window.init("SophiaGL", 100, 100, 1280, 720);
     window.run();
 
-    return 0;
+     return 0;
 }

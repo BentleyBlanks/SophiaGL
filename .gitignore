@@ -3,7 +3,6 @@ README~
 .gitignore~
 *.out
 *.tlog
-*.obj
 *.pdb
 *.idb
 *.sdf
@@ -35,3 +34,8 @@ README~
 *.FileListAbsolute.txt
 # let user to compile static lib
 # *.lib
+
+build/SophiaGL/x64/Debug/*.obj
+build/SophiaGL/x64/Release/*.obj
+# !/resources/*.obj
+# *.obj
