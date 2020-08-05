@@ -91,11 +91,8 @@ void s3Window::shutdown()
 {
     s3CallbackDeinit();
     s3ImGuiShutdown();
-
-    // glfw deinit
+    
     glfwSetWindowShouldClose(window, true);
-    glfwDestroyWindow(window);
-    glfwTerminate();
 }
 
 void s3Window::render()
@@ -152,8 +149,13 @@ void s3Window::run()
         s3CallbackManager::onUpdate.trigger();
 
         keyInput(window);
-        render();
+
+        // Window may be closed by keyboard
+        if(!glfwWindowShouldClose(window)) render();
     }
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
 }
 
 void s3Window::keyInput(GLFWwindow* window)

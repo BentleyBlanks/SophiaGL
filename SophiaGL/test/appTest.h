@@ -137,12 +137,15 @@ public:
             // window may resize
             auto windowSize = window.getWindowSize();
             camera->aspectRatio = (float)windowSize.x / windowSize.y;
-            camera->speed       = 2.5f * deltaTime;
+            camera->speed       = cameraSpeed * deltaTime;
         }
         else if (userData->sender == &s3CallbackManager::onBeginRender)
         {
-            static bool openWindow = true;
-            ImGui::ShowDemoWindow(&openWindow);
+            ImGui::Begin("Sophia");
+            ImGui::DragFloat("Camera Speed", &cameraSpeed, 1.0f, 0.0f, 200.0f);
+            ImGui::DragFloat("Camera Near Plane", &camera->nearClip, 1.0f, 0.1f, 10.0f);
+            ImGui::DragFloat("Camera Far Plane", &camera->farClip, 1.0f, 0.0f, 100000.0f);
+            ImGui::End();
 
             material->setTexture("texture0", texture0);
             material->setTexture("texture1", texture1);
@@ -189,6 +192,7 @@ public:
 
     float deltaTime     = 0.0f;
     float lastFrameTime = 0.0f;
+    float cameraSpeed   = 2.5f;
 
     s3Texture2d* texture0                 = nullptr;
     s3Texture2d *texture1                 = nullptr;
