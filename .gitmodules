@@ -1,0 +1,3 @@
+[submodule "SophiaGL/thirdparty/fakeUnityShader"]
+	path = SophiaGL/thirdparty/fakeUnityShader
+	url = https://github.com/lonelyWaiting/fake_unity_shader
