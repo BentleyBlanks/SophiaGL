@@ -496,6 +496,52 @@ bool s3Shader::checkProgram(unsigned int program)
 	return true;
 }
 
+bool s3Shader::loadFromSource(const char* vShaderCode, const char* fShaderCode)
+{
+    //const char* vShaderCode = vertexSource.c_str();
+    //const char* fShaderCode = fragmentSource.c_str();
+
+    // vs Shader
+    unsigned int vs;
+    vs = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vs, 1, &vShaderCode, NULL);
+    glCompileShader(vs);
+    if (!checkShader(vs, true))
+    {
+        bIsLoaded = false;
+        return false;
+    }
+
+    // fs shader
+    unsigned int fs;
+    fs = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fs, 1, &fShaderCode, NULL);
+    glCompileShader(fs);
+    if (!checkShader(fs, false))
+    {
+        bIsLoaded = false;
+        return false;
+    }
+
+    // shader Program
+    program = glCreateProgram();
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+    if (!checkProgram(program))
+    {
+        bIsLoaded = false;
+        return false;
+    }
+
+    // delete the shaders as they're linked into our program now and no longer necessery
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+
+    bIsLoaded = true;
+    return bIsLoaded;
+}
+
 bool s3Shader::load(const char* _vertexPath, const char* _fragmentPath)
 {
     if (bIsLoaded)
@@ -544,48 +590,50 @@ bool s3Shader::load(const char* _vertexPath, const char* _fragmentPath)
     vertexPath   = _vertexPath;
     fragmentPath = _fragmentPath;
 
-    const char* vShaderCode = vertexSource.c_str();
-    const char* fShaderCode = fragmentSource.c_str();
+    return loadFromSource(vertexSource.c_str(), fragmentSource.c_str());
 
-    // vs Shader
-    unsigned int vs;
-    vs = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vs, 1, &vShaderCode, NULL);
-    glCompileShader(vs);
-    if (!checkShader(vs, true))
-    {
-        bIsLoaded = false;
-        return false;
-    }
+    //const char* vShaderCode = vertexSource.c_str();
+    //const char* fShaderCode = fragmentSource.c_str();
 
-    // fs shader
-    unsigned int fs;
-    fs = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fs, 1, &fShaderCode, NULL);
-    glCompileShader(fs);
-    if (!checkShader(fs, false))
-    {
-        bIsLoaded = false;
-        return false;
-    }
+    //// vs Shader
+    //unsigned int vs;
+    //vs = glCreateShader(GL_VERTEX_SHADER);
+    //glShaderSource(vs, 1, &vShaderCode, NULL);
+    //glCompileShader(vs);
+    //if (!checkShader(vs, true))
+    //{
+    //    bIsLoaded = false;
+    //    return false;
+    //}
 
-    // shader Program
-    program = glCreateProgram();
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-    if (!checkProgram(program))
-    {
-        bIsLoaded = false;
-        return false;
-    }
+    //// fs shader
+    //unsigned int fs;
+    //fs = glCreateShader(GL_FRAGMENT_SHADER);
+    //glShaderSource(fs, 1, &fShaderCode, NULL);
+    //glCompileShader(fs);
+    //if (!checkShader(fs, false))
+    //{
+    //    bIsLoaded = false;
+    //    return false;
+    //}
 
-    // delete the shaders as they're linked into our program now and no longer necessery
-    glDeleteShader(vs);
-    glDeleteShader(fs);
+    //// shader Program
+    //program = glCreateProgram();
+    //glAttachShader(program, vs);
+    //glAttachShader(program, fs);
+    //glLinkProgram(program);
+    //if (!checkProgram(program))
+    //{
+    //    bIsLoaded = false;
+    //    return false;
+    //}
 
-    bIsLoaded = true;
-    return bIsLoaded;
+    //// delete the shaders as they're linked into our program now and no longer necessery
+    //glDeleteShader(vs);
+    //glDeleteShader(fs);
+
+    //bIsLoaded = true;
+    //return bIsLoaded;
 }
 
 bool s3Shader::reload()

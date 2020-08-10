@@ -52,9 +52,6 @@
     <Filter Include="SophiaGL\thirdparty\fakeUnityShader">
       <UniqueIdentifier>{9e7b85c9-756f-49e1-8a18-4ebf9737366b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SophiaGL\thirdparty\fakeUnityShader\lua">
-      <UniqueIdentifier>{78a8cd21-c72c-4b2f-8099-f91aa3d7d9ea}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SophiaGL\test\main.cpp">
@@ -150,116 +147,11 @@
     <ClCompile Include="..\..\SophiaGL\thirdparty\imgui\include\imgui.cpp">
       <Filter>SophiaGL\thirdparty\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\main.cpp">
+    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\shader_parser_dx.cpp">
       <Filter>SophiaGL\thirdparty\fakeUnityShader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\shader_parser.cpp">
+    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\shader_parser_gl.cpp">
       <Filter>SophiaGL\thirdparty\fakeUnityShader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lapi.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lauxlib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lbaselib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lbitlib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lcode.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lcorolib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lctype.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\ldblib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\ldebug.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\ldo.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\ldump.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lfunc.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lgc.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\linit.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\liolib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\llex.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lmathlib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lmem.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\loadlib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lobject.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lopcodes.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\loslib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lparser.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lstate.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lstring.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lstrlib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\ltable.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\ltablib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\ltm.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lua.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\luac.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lundump.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lutf8lib.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lvm.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lzio.c">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1127,89 +1019,17 @@
     <ClInclude Include="..\..\SophiaGL\thirdparty\imgui\include\imconfig.h">
       <Filter>SophiaGL\thirdparty\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\SophiaGL\test\shaderParserTest.h">
+      <Filter>SophiaGL\test</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\shader.h">
       <Filter>SophiaGL\thirdparty\fakeUnityShader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\shader_parser.h">
+    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\shader_parser_dx.h">
       <Filter>SophiaGL\thirdparty\fakeUnityShader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lapi.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lauxlib.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lcode.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lctype.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\ldebug.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\ldo.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lfunc.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lgc.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\llex.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\llimits.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lmem.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lobject.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lopcodes.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lparser.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lprefix.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lstate.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lstring.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\ltable.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\ltm.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lua.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lua.hpp">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\luaconf.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lualib.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lundump.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lvm.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\Lua\lzio.h">
-      <Filter>SophiaGL\thirdparty\fakeUnityShader\lua</Filter>
+    <ClInclude Include="..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\shader_parser_gl.h">
+      <Filter>SophiaGL\thirdparty\fakeUnityShader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
