@@ -104,6 +104,7 @@ public:
 private:
     bool checkShader(unsigned int shader, bool isVertex);
     bool checkProgram(unsigned int program);
+    bool loadFromSource(const char* vShaderCode, const char* fShaderCode);
 
     unsigned int program = 0;
     bool bIsLoaded = false;
