@@ -4,12 +4,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SophiaGL", "SophiaGL.vcxproj", "{471E369B-7AB9-48E5-94E9-D5D234C5CEF4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{77EDE716-5716-479C-84E6-22DE90AED774} = {77EDE716-5716-479C-84E6-22DE90AED774}
+		{E4A5415E-E8D7-42BF-9F8E-A3D303553E0E} = {E4A5415E-E8D7-42BF-9F8E-A3D303553E0E}
+		{05FEA07A-C962-4B37-A50C-35919B9AFFF8} = {05FEA07A-C962-4B37-A50C-35919B9AFFF8}
+		{59869EB0-F06B-42FE-8665-4237B43B9FC9} = {59869EB0-F06B-42FE-8665-4237B43B9FC9}
+		{737E01C3-8E41-4C60-B9A0-56FF795F1C6D} = {737E01C3-8E41-4C60-B9A0-56FF795F1C6D}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SophiaGL", "SophiaGL", "{01748205-DCE7-40DD-8E0E-B36A5FE225FB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Thirdparty", "Thirdparty", "{EDD74236-B1E7-4B01-A35C-C89112BD31DC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fakeUnityShader", "..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\fake_unity_shader.vcxproj", "{59869EB0-F06B-42FE-8665-4237B43B9FC9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fake_unity_shader", "..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\fake_unity_shader.vcxproj", "{59869EB0-F06B-42FE-8665-4237B43B9FC9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glad", "..\..\SophiaGL\thirdparty\glad\build\glad\glad.vcxproj", "{E4A5415E-E8D7-42BF-9F8E-A3D303553E0E}"
 EndProject
