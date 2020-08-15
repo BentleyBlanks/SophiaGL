@@ -17,6 +17,7 @@ README~
 *.iobj
 *.exe
 *.i
+*.recipe
 
 #*.sln
 #*.vcxproj
@@ -35,7 +36,15 @@ README~
 # let user to compile static lib
 # *.lib
 
+# Complicated, could be replaced by other ways to ignore them
+build/SophiaGL/x64/Debug/*.lib
+build/SophiaGL/x64/Release/*.lib
 build/SophiaGL/x64/Debug/*.obj
 build/SophiaGL/x64/Release/*.obj
+build/thirdyparty/*.obj
+SophiaGL/thirdparty/imgui/build/imgui/x64/Debug/*.obj
+SophiaGL/thirdparty/tinyobjloader/build/tinyobjloader/x64/Debug/*.obj
+SophiaGL/thirdparty/glad/build/glad/x64/Debug/*.obj
+
 # !/resources/*.obj
 # *.obj

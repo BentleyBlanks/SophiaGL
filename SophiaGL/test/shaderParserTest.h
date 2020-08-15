@@ -15,6 +15,7 @@ int main()
 {
 	ShaderInitInfo info;
 	info.api = ShaderGraphicsAPI::OpenGL;
+	info.shader_parser_search_path = "../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shader_parser/";
 	shader_init(info);
 
 	const char* content = shader_load("");
