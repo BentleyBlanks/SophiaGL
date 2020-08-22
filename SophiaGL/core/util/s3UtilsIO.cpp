@@ -39,9 +39,12 @@ void s3UtilsDirectoryWatch::unwatch()
 //--! ref: https://www.installsetupconfig.com/win32programming/windowsdirectoryapis3_5.html
 bool s3UtilsDirectoryWatch::hasChanged() const
 {
+	if (!bIsWatched) return false;
+
 	// Wait for notification 
 	DWORD dwWaitStatus;
 	dwWaitStatus = WaitForMultipleObjects(1, &changeHandle, FALSE, 0);
+
 	switch (dwWaitStatus)
 	{
 	case WAIT_OBJECT_0:
