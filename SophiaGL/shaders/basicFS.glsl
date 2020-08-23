@@ -16,5 +16,5 @@ void main()
     //    texColor = texture(texture1, texCoord);
 
     //fragColor = time * color * texColor;
-    fragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    fragColor = vec4(2.0f, 0.0f, 0.0f, 1.0f);
 }

@@ -19,11 +19,15 @@ class s3App : public s3CallbackHandle
 public:
 	s3App()
 	{
+		//std::vector<std::string> paths;
+		//paths.push_back("../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shader_parser");
+		//paths.push_back("../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shaders");
+
 		shaderDirWatch = new s3UtilsDirectoryWatch();
-		shaderDirWatch->watch(path.c_str());
+		shaderDirWatch->watch("../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shader_parser", false);
 
 		info.api = ShaderGraphicsAPI::OpenGL;
-		info.root_path = path.c_str();
+		info.root_path = "../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/";
 	}
 
 	~s3App()
@@ -33,21 +37,15 @@ public:
 
 	void onHandle(const s3CallbackUserData* userData)
 	{
-		bool dirHasChanged = shaderDirWatch->hasChanged();
-
 		if (userData->sender == &s3CallbackManager::onEngineInit)
 		{
 			shader_init(info);
 
 			const char* content = shader_load("shaders/openglTest.shader");
-			printf("%s", content);
+			printf("%s\n", content);
 		}
 		else if (userData->sender == &s3CallbackManager::onUpdate)
 		{
-			//if (dirHasChanged)
-			{
-
-			}
 		}
 		else if (userData->sender == &s3CallbackManager::onEngineDeinit)
 		{
@@ -55,13 +53,16 @@ public:
 		}
 		else if (userData->sender == &s3CallbackManager::onWindowFocused)
 		{
-			shader_init(info);
-			const char* content = shader_load("shaders/openglTest.shader");
-			printf("%s", content);
+			if (shaderDirWatch->hasChanged())
+			{
+				// hotreload
+				shader_init(info);
+				const char* content = shader_load("shaders/openglTest.shader");
+				printf("%s\n", content);
+			}
 		}
 	}
 
-	std::string path = "../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/";
 	s3UtilsDirectoryWatch* shaderDirWatch = nullptr;
 	ShaderInitInfo info;
 };
