@@ -8,15 +8,19 @@ public:
 	~s3UtilsDirectoryWatch();
 
 	// return false if watching event failed
-	bool watch(const std::string& path);
+	bool watch(const std::string& path, bool watchSubTree = false);
+	bool watch(const std::vector<std::string>& paths, bool watchSubTree = false);
 	void unwatch();
 
 	// return true if any file in the directory has been modified
+	// file change event could only be triggerred once
 	bool hasChanged() const;
 	bool isWatched() const;
+	bool isWatchisSubtree() const;
 
 private:
-	bool bIsWatched = false;
-	std::string path;
-	HANDLE changeHandle;
+	bool bIsWatched        = false;
+	bool bIsWatchedSubtree = false;
+	std::vector<std::string> paths;
+	std::vector<HANDLE> changeHandles;
 };
