@@ -5,9 +5,9 @@
 #include <app/s3CallbackManager.h>
 #include <app/s3Window.h>
 
-#define GRAPHICS_API_OPENGL
 #include <shader.h>
-#include <shader_parser_gl.h>
+
+#include <imgui.h>
 
 #include <string>
 #include <fstream>
@@ -42,10 +42,14 @@ public:
 			shader_init(info);
 
 			const char* content = shader_load("shaders/openglTest.shader");
-			printf("%s\n", content);
+			//printf("%s\n", content);
 		}
-		else if (userData->sender == &s3CallbackManager::onUpdate)
+		else if (userData->sender == &s3CallbackManager::onBeginRender)
 		{
+			ImGui::Begin("Sophia");
+			if (ImGui::Button("Print Lua Stack"))
+				shader_print_stack();
+			ImGui::End();
 		}
 		else if (userData->sender == &s3CallbackManager::onEngineDeinit)
 		{
@@ -58,7 +62,7 @@ public:
 				// hotreload
 				shader_init(info);
 				const char* content = shader_load("shaders/openglTest.shader");
-				printf("%s\n", content);
+				//printf("%s\n", content);
 			}
 		}
 	}
@@ -73,6 +77,7 @@ int main()
 	s3CallbackManager::onEngineInit    += app;
 	s3CallbackManager::onUpdate        += app;
 	s3CallbackManager::onWindowFocused += app;
+	s3CallbackManager::onBeginRender   += app;
 
 	s3Window& window = s3Window::getInstance();
 	window.init("SophiaGL", 100, 100, 1280, 720);
