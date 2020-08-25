@@ -16,8 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SophiaGL", "SophiaGL", "{01
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Thirdparty", "Thirdparty", "{EDD74236-B1E7-4B01-A35C-C89112BD31DC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fake_unity_shader", "..\..\SophiaGL\thirdparty\fakeUnityShader\fake_unity_shader\fake_unity_shader.vcxproj", "{59869EB0-F06B-42FE-8665-4237B43B9FC9}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glad", "..\..\SophiaGL\thirdparty\glad\build\glad\glad.vcxproj", "{E4A5415E-E8D7-42BF-9F8E-A3D303553E0E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "..\..\SophiaGL\thirdparty\glfw\build\glfw\glfw.vcxproj", "{916BDFE0-F5FC-4741-BE7B-9C418F2CD56D}"
@@ -29,6 +27,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stbImage", "..\..\SophiaGL\thirdparty\stb\build\stbImage\stbImage.vcxproj", "{05FEA07A-C962-4B37-A50C-35919B9AFFF8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyobjloader", "..\..\SophiaGL\thirdparty\tinyobjloader\build\tinyobjloader\tinyobjloader.vcxproj", "{737E01C3-8E41-4C60-B9A0-56FF795F1C6D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fake_unity_shader", "..\..\SophiaGL\thirdparty\fake_unity_shader\fake_unity_shader\fake_unity_shader.vcxproj", "{59869EB0-F06B-42FE-8665-4237B43B9FC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,12 +46,6 @@ Global
 		{471E369B-7AB9-48E5-94E9-D5D234C5CEF4}.Release|x64.Build.0 = Release|x64
 		{471E369B-7AB9-48E5-94E9-D5D234C5CEF4}.Release|x86.ActiveCfg = Release|Win32
 		{471E369B-7AB9-48E5-94E9-D5D234C5CEF4}.Release|x86.Build.0 = Release|Win32
-		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Debug|x64.ActiveCfg = Debug|x64
-		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Debug|x64.Build.0 = Debug|x64
-		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Debug|x86.ActiveCfg = Debug|x64
-		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Release|x64.ActiveCfg = Release|x64
-		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Release|x64.Build.0 = Release|x64
-		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Release|x86.ActiveCfg = Release|x64
 		{E4A5415E-E8D7-42BF-9F8E-A3D303553E0E}.Debug|x64.ActiveCfg = Debug|x64
 		{E4A5415E-E8D7-42BF-9F8E-A3D303553E0E}.Debug|x64.Build.0 = Debug|x64
 		{E4A5415E-E8D7-42BF-9F8E-A3D303553E0E}.Debug|x86.ActiveCfg = Debug|Win32
@@ -100,19 +94,25 @@ Global
 		{737E01C3-8E41-4C60-B9A0-56FF795F1C6D}.Release|x64.Build.0 = Release|x64
 		{737E01C3-8E41-4C60-B9A0-56FF795F1C6D}.Release|x86.ActiveCfg = Release|Win32
 		{737E01C3-8E41-4C60-B9A0-56FF795F1C6D}.Release|x86.Build.0 = Release|Win32
+		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Debug|x64.ActiveCfg = Debug|x64
+		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Debug|x64.Build.0 = Debug|x64
+		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Debug|x86.ActiveCfg = Debug|x64
+		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Release|x64.ActiveCfg = Release|x64
+		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Release|x64.Build.0 = Release|x64
+		{59869EB0-F06B-42FE-8665-4237B43B9FC9}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{471E369B-7AB9-48E5-94E9-D5D234C5CEF4} = {01748205-DCE7-40DD-8E0E-B36A5FE225FB}
-		{59869EB0-F06B-42FE-8665-4237B43B9FC9} = {EDD74236-B1E7-4B01-A35C-C89112BD31DC}
 		{E4A5415E-E8D7-42BF-9F8E-A3D303553E0E} = {EDD74236-B1E7-4B01-A35C-C89112BD31DC}
 		{916BDFE0-F5FC-4741-BE7B-9C418F2CD56D} = {EDD74236-B1E7-4B01-A35C-C89112BD31DC}
 		{7C415D5C-EC6D-4F24-A3E1-98D11E34186F} = {EDD74236-B1E7-4B01-A35C-C89112BD31DC}
 		{77EDE716-5716-479C-84E6-22DE90AED774} = {EDD74236-B1E7-4B01-A35C-C89112BD31DC}
 		{05FEA07A-C962-4B37-A50C-35919B9AFFF8} = {EDD74236-B1E7-4B01-A35C-C89112BD31DC}
 		{737E01C3-8E41-4C60-B9A0-56FF795F1C6D} = {EDD74236-B1E7-4B01-A35C-C89112BD31DC}
+		{59869EB0-F06B-42FE-8665-4237B43B9FC9} = {EDD74236-B1E7-4B01-A35C-C89112BD31DC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F4D4AC4D-8EAE-4348-84BF-4E8AB91D42E4}

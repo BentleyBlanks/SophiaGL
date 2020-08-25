@@ -24,10 +24,10 @@ public:
 		//paths.push_back("../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shaders");
 
 		shaderDirWatch = new s3UtilsDirectoryWatch();
-		shaderDirWatch->watch("../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shader_parser", false);
+		shaderDirWatch->watch("../../SophiaGL/thirdparty/fake_unity_shader/fake_unity_shader/shader_parser", false);
 
 		info.api = ShaderGraphicsAPI::OpenGL;
-		info.root_path = "../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/";
+		info.root_path = "../../SophiaGL/thirdparty/fake_unity_shader/fake_unity_shader/";
 	}
 
 	~s3App()
