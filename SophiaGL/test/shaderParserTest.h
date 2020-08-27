@@ -80,7 +80,7 @@ int main()
 	s3CallbackManager::onBeginRender   += app;
 
 	s3Window& window = s3Window::getInstance();
-	window.init("SophiaGL", 100, 100, 1280, 720);
+	window.init("SophiaGL", 100, 100, 350, 200);
 	window.run();
 	
 	return 0;
