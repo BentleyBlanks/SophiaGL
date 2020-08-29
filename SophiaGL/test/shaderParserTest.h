@@ -19,12 +19,13 @@ class s3App : public s3CallbackHandle
 public:
 	s3App()
 	{
-		//std::vector<std::string> paths;
-		//paths.push_back("../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shader_parser");
-		//paths.push_back("../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shaders");
+		std::vector<std::string> paths;
+		paths.push_back("../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shader_parser");
+		paths.push_back("../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shaders");
 
 		shaderDirWatch = new s3UtilsDirectoryWatch();
 		shaderDirWatch->watch("../../SophiaGL/thirdparty/fake_unity_shader/fake_unity_shader/shader_parser", false);
+		//shaderDirWatch->watch(paths, false);
 
 		info.api = ShaderGraphicsAPI::OpenGL;
 		info.root_path = "../../SophiaGL/thirdparty/fake_unity_shader/fake_unity_shader/";
@@ -57,7 +58,8 @@ public:
 		}
 		else if (userData->sender == &s3CallbackManager::onWindowFocused)
 		{
-			if (shaderDirWatch->hasChanged())
+			int* focused = (int*)userData->data;
+			if (shaderDirWatch->hasChanged() && *focused == 1)
 			{
 				// hotreload
 				shader_init(info);
