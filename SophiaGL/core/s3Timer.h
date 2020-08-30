@@ -9,7 +9,7 @@ public:
     double start();
     double end();
 
-	// difference of counting time between start and end
+	// difference of counting time between start and end, in seconds
     double difference();
 
     double startTime = 0.0, endTime = 0.0;
