@@ -43,7 +43,10 @@ public:
 			shader_init(info);
 
 			const char* content = shader_load("shaders/openglTest.shader");
-			//printf("%s\n", content);
+		}
+		else if (userData->sender == &s3CallbackManager::onUpdate)
+		{
+
 		}
 		else if (userData->sender == &s3CallbackManager::onBeginRender)
 		{
@@ -64,7 +67,6 @@ public:
 				// hotreload
 				shader_init(info);
 				const char* content = shader_load("shaders/openglTest.shader");
-				//printf("%s\n", content);
 			}
 		}
 	}
@@ -77,6 +79,7 @@ int main()
 {
 	s3App app;
 	s3CallbackManager::onEngineInit    += app;
+	s3CallbackManager::onEngineDeinit  += app;
 	s3CallbackManager::onUpdate        += app;
 	s3CallbackManager::onWindowFocused += app;
 	s3CallbackManager::onBeginRender   += app;
