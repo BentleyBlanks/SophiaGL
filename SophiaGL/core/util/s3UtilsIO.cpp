@@ -29,6 +29,7 @@ bool s3UtilsDirectoryWatch::watch(const std::string& _path, bool watchSubTree)
 
 	bIsWatchedSubtree = watchSubTree;
 	bIsWatched        = true;
+	timer.start();
     return true;
 }
 
@@ -60,7 +61,7 @@ bool s3UtilsDirectoryWatch::watch(const std::vector<std::string>& _paths, bool w
 
 	bIsWatchedSubtree = watchSubTree;
 	bIsWatched        = true;
-
+	timer.start();
 	return true;
 }
 
@@ -79,7 +80,7 @@ void s3UtilsDirectoryWatch::unwatch()
 }
 
 //--! ref: https://www.installsetupconfig.com/win32programming/windowsdirectoryapis3_5.html
-bool s3UtilsDirectoryWatch::hasChanged() const
+bool s3UtilsDirectoryWatch::hasChanged()
 {
 	if (!bIsWatched) return false;
 
@@ -89,8 +90,9 @@ bool s3UtilsDirectoryWatch::hasChanged() const
 		auto& handle = changeHandles[i];
 		auto& path   = paths[i];
 
-		// Wait for change notification 
-		dwWaitStatus = WaitForMultipleObjects(1, &handle, FALSE, 0);
+		// Wait for change notification
+		// triggered twice when dwMilliseconds too small
+		dwWaitStatus = WaitForMultipleObjects(1, &handle, FALSE, 1);
 
 		switch (dwWaitStatus)
 		{
@@ -98,7 +100,14 @@ bool s3UtilsDirectoryWatch::hasChanged() const
 			// restart the notification
 			if (FindNextChangeNotification(handle) == FALSE)
 				s3Log::error("s3UtilsDirectoryWatch::hasChanged() watched file: %s failed\n", path.c_str());
-			return true;
+			
+			timer.end();
+			// only process events happened in 0.5s(could recieve 2 FILE_NOTIFY_CHANGE_LAST_WRITE events when a file changed)
+			if (timer.difference() > 0.5)
+			{
+				timer.start();
+				return true;
+			}
 		}
 	}
 
