@@ -1,5 +1,6 @@
 #pragma once
 #include <core/s3Settings.h>
+#include <core/s3Timer.h>
 
 class s3UtilsDirectoryWatch
 {
@@ -14,7 +15,7 @@ public:
 
 	// return true if any file in the directory has been modified
 	// file change event could only be triggerred once
-	bool hasChanged() const;
+	bool hasChanged();
 	bool isWatched() const;
 	bool isWatchisSubtree() const;
 
@@ -23,4 +24,5 @@ private:
 	bool bIsWatchedSubtree = false;
 	std::vector<std::string> paths;
 	std::vector<HANDLE> changeHandles;
+	s3Timer timer;
 };

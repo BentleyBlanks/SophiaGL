@@ -1,7 +1,7 @@
 #include <core/s3Timer.h>
 //#include <Common/t3Test.h>
 
-// --!参考于http://nadeausoftware.com/articles/2012/04/c_c_tip_how_measure_elapsed_real_time_benchmarking
+// ref: http://nadeausoftware.com/articles/2012/04/c_c_tip_how_measure_elapsed_real_time_benchmarking
 #if defined(_WIN32)
 #include <Windows.h>
 
@@ -111,7 +111,7 @@ double s3Timer::end()
     return endTime;
 }
 
-double s3Timer::difference()
+double s3Timer::difference() const
 {
     return endTime - startTime;
 }

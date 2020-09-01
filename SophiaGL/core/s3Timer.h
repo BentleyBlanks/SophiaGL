@@ -10,7 +10,7 @@ public:
     double end();
 
 	// difference of counting time between start and end, in seconds
-    double difference();
+    double difference() const;
 
     double startTime = 0.0, endTime = 0.0;
 };

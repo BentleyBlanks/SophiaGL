@@ -4,7 +4,6 @@
 #include <core/util/s3UtilsIO.h>
 #include <app/s3CallbackManager.h>
 #include <app/s3Window.h>
-
 #include <shader.h>
 
 #include <imgui.h>
@@ -46,13 +45,19 @@ public:
 		}
 		else if (userData->sender == &s3CallbackManager::onUpdate)
 		{
-
+			if (shaderDirWatch->hasChanged())
+			{
+				// hotreload
+				shader_init(info);
+				const char* content = shader_load("shaders/openglTest.shader");
+			}
 		}
 		else if (userData->sender == &s3CallbackManager::onBeginRender)
 		{
 			ImGui::Begin("Sophia");
 			if (ImGui::Button("Print Lua Stack"))
 				shader_print_stack();
+
 			ImGui::End();
 		}
 		else if (userData->sender == &s3CallbackManager::onEngineDeinit)
@@ -61,13 +66,13 @@ public:
 		}
 		else if (userData->sender == &s3CallbackManager::onWindowFocused)
 		{
-			int* focused = (int*)userData->data;
-			if (shaderDirWatch->hasChanged() && *focused == 1)
-			{
-				// hotreload
-				shader_init(info);
-				const char* content = shader_load("shaders/openglTest.shader");
-			}
+			//int* focused = (int*)userData->data;
+			//if (shaderDirWatch->hasChanged() && *focused == 1)
+			//{
+			//	// hotreload
+			//	shader_init(info);
+			//	const char* content = shader_load("shaders/openglTest.shader");
+			//}
 		}
 	}
 
