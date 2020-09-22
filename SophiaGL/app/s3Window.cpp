@@ -48,7 +48,7 @@ bool s3Window::init(const char* title, int x, int y, int width, int height)
     window = glfwCreateWindow(width, height, title, NULL, NULL);
     if (!window)
     {
-        s3Log::error("Failed to create GLFW window/n");
+        s3Log::error("Failed to create GLFW window\n");
         glfwTerminate();
         return false;
     }
@@ -59,7 +59,7 @@ bool s3Window::init(const char* title, int x, int y, int width, int height)
     // init renderer
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        s3Log::error("Failed to initialize GLAD/n");
+        s3Log::error("Failed to initialize GLAD\n");
         return false;
     }
 
