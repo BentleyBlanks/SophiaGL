@@ -42,7 +42,7 @@ public:
 			shader_init(info);
 
 			const char* content = shader_load("shaders/openglTest.shader");
-			printf("-------------------------------------------------------------\n");
+			printf("-----------------------------------------------------------------------\n");
 		}
 		else if (userData->sender == &s3CallbackManager::onUpdate)
 		{
@@ -51,7 +51,7 @@ public:
 				// hotreload
 				shader_init(info);
 				const char* content = shader_load("shaders/openglTest.shader");
-				printf("-------------------------------------------------------------\n");
+				printf("-----------------------------------------------------------------------\n");
 			}
 		}
 		else if (userData->sender == &s3CallbackManager::onBeginRender)
