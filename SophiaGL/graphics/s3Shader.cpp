@@ -9,6 +9,7 @@
 #include <sstream>
 #include <iostream>
 
+#include <shader_parser_gl.h>
 
 // --------------------------------------------------s3ShaderField--------------------------------------------------
 void s3ShaderField::print() const
@@ -63,10 +64,15 @@ void s3ShaderField::print() const
 s3Shader::s3Shader()
 {}
 
-s3Shader::s3Shader(const char* vertexPath, const char* fragmentPath)
+s3Shader::s3Shader(const char* shaderFilePath)
 {
-    load(vertexPath, fragmentPath);
+    load(shaderFilePath);
 }
+
+//s3Shader::s3Shader(const char* vertexPath, const char* fragmentPath)
+//{
+    //load(vertexPath, fragmentPath);
+//}
 
 s3Shader::~s3Shader()
 {}
@@ -464,90 +470,92 @@ void s3Shader::print() const
     }
 }
 
-bool s3Shader::checkShader(unsigned int shader, bool isVertex)
-{
-	int success;
-	char infoLog[512];
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+//bool s3Shader::checkShader(unsigned int shader, bool isVertex)
+//{
+//	int success;
+//	char infoLog[512];
+//	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+//
+//	if (!success)
+//	{
+//		glGetShaderInfoLog(shader, 512, NULL, infoLog);
+//		s3Log::error("%s shader compile failed, %s\n", isVertex ? "Vertex" : "Fragment", infoLog);
+//		return false;
+//	}
+//
+//	return true;
+//}
 
-	if (!success)
-	{
-		glGetShaderInfoLog(shader, 512, NULL, infoLog);
-		s3Log::error("%s shader compile failed, %s\n", isVertex ? "Vertex" : "Fragment", infoLog);
-		return false;
-	}
+//bool s3Shader::checkProgram(unsigned int program)
+//{
+//	int success;
+//	char infoLog[512];
+//	glGetProgramiv(program, GL_LINK_STATUS, &success);
+//
+//	if (!success)
+//	{
+//		glGetProgramInfoLog(program, 512, NULL, infoLog);
+//		s3Log::error("Program link failed, %s\n", infoLog);
+//		return false;
+//	}
+//
+//	return true;
+//}
 
-	return true;
-}
+//bool s3Shader::loadFromSource(const char* vShaderCode, const char* fShaderCode)
+//{
+//    // vs Shader
+//    unsigned int vs;
+//    vs = glCreateShader(GL_VERTEX_SHADER);
+//    glShaderSource(vs, 1, &vShaderCode, NULL);
+//    glCompileShader(vs);
+//    if (!checkShader(vs, true))
+//    {
+//        bIsLoaded = false;
+//        return false;
+//    }
+//
+//    // fs shader
+//    unsigned int fs;
+//    fs = glCreateShader(GL_FRAGMENT_SHADER);
+//    glShaderSource(fs, 1, &fShaderCode, NULL);
+//    glCompileShader(fs);
+//    if (!checkShader(fs, false))
+//    {
+//        bIsLoaded = false;
+//        return false;
+//    }
+//
+//    // shader Program
+//    program = glCreateProgram();
+//    glAttachShader(program, vs);
+//    glAttachShader(program, fs);
+//    glLinkProgram(program);
+//    if (!checkProgram(program))
+//    {
+//        bIsLoaded = false;
+//        return false;
+//    }
+//
+//    // delete the shaders as they're linked into our program now and no longer necessery
+//    glDeleteShader(vs);
+//    glDeleteShader(fs);
+//
+//    bIsLoaded = true;
+//    return bIsLoaded;
+//}
 
-bool s3Shader::checkProgram(unsigned int program)
-{
-	int success;
-	char infoLog[512];
-	glGetProgramiv(program, GL_LINK_STATUS, &success);
-
-	if (!success)
-	{
-		glGetProgramInfoLog(program, 512, NULL, infoLog);
-		s3Log::error("Program link failed, %s\n", infoLog);
-		return false;
-	}
-
-	return true;
-}
-
-bool s3Shader::loadFromSource(const char* vShaderCode, const char* fShaderCode)
-{
-    //const char* vShaderCode = vertexSource.c_str();
-    //const char* fShaderCode = fragmentSource.c_str();
-
-    // vs Shader
-    unsigned int vs;
-    vs = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vs, 1, &vShaderCode, NULL);
-    glCompileShader(vs);
-    if (!checkShader(vs, true))
-    {
-        bIsLoaded = false;
-        return false;
-    }
-
-    // fs shader
-    unsigned int fs;
-    fs = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fs, 1, &fShaderCode, NULL);
-    glCompileShader(fs);
-    if (!checkShader(fs, false))
-    {
-        bIsLoaded = false;
-        return false;
-    }
-
-    // shader Program
-    program = glCreateProgram();
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-    if (!checkProgram(program))
-    {
-        bIsLoaded = false;
-        return false;
-    }
-
-    // delete the shaders as they're linked into our program now and no longer necessery
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-
-    bIsLoaded = true;
-    return bIsLoaded;
-}
-
-bool s3Shader::load(const char* _vertexPath, const char* _fragmentPath)
+bool s3Shader::load(const char* _shaderFilePath)
 {
     if (bIsLoaded)
     {
+        //for (auto it = programMap.begin(); it != programMap.end(); it++)
+        //{
+        //    glDeleteProgram(it->second);
+        //    it->second = 0;
+        //}
+        //programMap.clear();
         glDeleteProgram(program);
-        program = 0;
 
         vertexSource.clear();
         fragmentSource.clear();
@@ -556,89 +564,30 @@ bool s3Shader::load(const char* _vertexPath, const char* _fragmentPath)
         bIsLoaded = false;
     }
 
-    // retrieve the vs/fs source code from filePath
-    std::ifstream vShaderFile;
-    std::ifstream fShaderFile;
-    // ensure ifstream objects can throw exceptions:
-    vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    try
-    {
-        // open files
-        vShaderFile.open(_vertexPath);
-        fShaderFile.open(_fragmentPath);
-        std::stringstream vShaderStream, fShaderStream;
+    // retrieve the vs / fs source code from lua
+	const char* shaderName = shader_load_gl(_shaderFilePath);
+	if (!shaderName) return false;
 
-        // read file's buffer contents into streams
-        vShaderStream << vShaderFile.rdbuf();
-        fShaderStream << fShaderFile.rdbuf();
+    if (g_shadermap_gl.find(shaderName) == g_shadermap_gl.end()) return false;
+	auto shader = g_shadermap_gl[shaderName];
+    
+    auto subshader_list = shader.subshader_list;
+    if (subshader_list.size() <= 0) return false;
 
-        // close file handlers
-        vShaderFile.close();
-        fShaderFile.close();
+    auto pass_list = subshader_list[0].pass_list;
+    if (pass_list.size() <= 0) return false;
 
-        // convert stream into string
-        vertexSource = vShaderStream.str();
-        fragmentSource = fShaderStream.str();
-    }
-    catch (std::ifstream::failure e)
-    {
-        s3Log::error("Error::shader file not succesfully read\n");
-        bIsLoaded = false;
-    }
+    program = pass_list[0].program;
+	shaderFilePath = _shaderFilePath;
 
-    vertexPath   = _vertexPath;
-    fragmentPath = _fragmentPath;
-
-    return loadFromSource(vertexSource.c_str(), fragmentSource.c_str());
-
-    //const char* vShaderCode = vertexSource.c_str();
-    //const char* fShaderCode = fragmentSource.c_str();
-
-    //// vs Shader
-    //unsigned int vs;
-    //vs = glCreateShader(GL_VERTEX_SHADER);
-    //glShaderSource(vs, 1, &vShaderCode, NULL);
-    //glCompileShader(vs);
-    //if (!checkShader(vs, true))
-    //{
-    //    bIsLoaded = false;
-    //    return false;
-    //}
-
-    //// fs shader
-    //unsigned int fs;
-    //fs = glCreateShader(GL_FRAGMENT_SHADER);
-    //glShaderSource(fs, 1, &fShaderCode, NULL);
-    //glCompileShader(fs);
-    //if (!checkShader(fs, false))
-    //{
-    //    bIsLoaded = false;
-    //    return false;
-    //}
-
-    //// shader Program
-    //program = glCreateProgram();
-    //glAttachShader(program, vs);
-    //glAttachShader(program, fs);
-    //glLinkProgram(program);
-    //if (!checkProgram(program))
-    //{
-    //    bIsLoaded = false;
-    //    return false;
-    //}
-
-    //// delete the shaders as they're linked into our program now and no longer necessery
-    //glDeleteShader(vs);
-    //glDeleteShader(fs);
-
-    //bIsLoaded = true;
-    //return bIsLoaded;
+	return true;
+    //return loadFromSource(vertexSource.c_str(), fragmentSource.c_str());
 }
 
 bool s3Shader::reload()
 {
     if(!bIsLoaded) s3Log::warning("s3Shader::reload() need successfully called load() before\n");
     
-    return load(vertexPath.c_str(), fragmentPath.c_str());
+    //return load(vertexPath.c_str(), fragmentPath.c_str());
+    return load(shaderFilePath.c_str());
 }

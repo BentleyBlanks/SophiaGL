@@ -53,14 +53,20 @@ class s3Shader
 public:
     // constructor reads and builds the shader
     s3Shader();
-    s3Shader(const char* vertexPath, const char* fragmentPath);
+    s3Shader(const char* shaderFilePath);
+    //s3Shader(const char* vertexPath, const char* fragmentPath);
     ~s3Shader();
 
-    bool load(const char* vertexPath, const char* fragmentPath);
+    //bool load(const char* vertexPath, const char* fragmentPath);
+    bool load(const char* shaderFilePath);
     bool isLoaded() const { return bIsLoaded; }
     bool reload();
 
+    //const std::map<std::string, unsigned int>& getPrograms() const { return programMap; }
     unsigned int getProgram() const { return program; }
+    const std::string& getName() const { return name; }
+    const std::string& getVertexSource() const { return vertexSource; }
+    const std::string& getFragmentSource() const { return fragmentSource; }
 
     // debug
     void print() const;
@@ -102,16 +108,19 @@ public:
     s3ShaderField getValue(const std::string& name) const;
 
 private:
-    bool checkShader(unsigned int shader, bool isVertex);
-    bool checkProgram(unsigned int program);
-    bool loadFromSource(const char* vShaderCode, const char* fShaderCode);
+    //bool loadFromSource(const char* vShaderCode, const char* fShaderCode);
+    //bool checkShader(unsigned int shader, bool isVertex);
+    //bool checkProgram(unsigned int program);
 
+    //std::map<std::string, unsigned int> programMap;
     unsigned int program = 0;
     bool bIsLoaded = false;
 
     // vs fs shader code
     std::string vertexSource, fragmentSource;
-    std::string vertexPath, fragmentPath;
+    std::string shaderFilePath;
+    std::string name;
+    //std::string vertexPath, fragmentPath;
 
     std::map<std::string, s3ShaderField> fieldMap;
 };
