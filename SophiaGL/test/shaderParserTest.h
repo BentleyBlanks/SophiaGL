@@ -4,6 +4,8 @@
 #include <core/util/s3UtilsIO.h>
 #include <app/s3CallbackManager.h>
 #include <app/s3Window.h>
+#include <graphics/s3Shader.h>
+
 #include <shader.h>
 
 #include <imgui.h>
@@ -41,7 +43,8 @@ public:
 		{
 			shader_init(info);
 
-			const char* content = shader_load("shaders/openglTest.shader");
+			//const char* content = shader_load("shaders/openglTest.shader");
+			shader.load("shaders/openglTest.shader");
 			printf("-----------------------------------------------------------------------\n");
 		}
 		else if (userData->sender == &s3CallbackManager::onUpdate)
@@ -50,7 +53,9 @@ public:
 			{
 				// hotreload
 				shader_init(info);
-				const char* content = shader_load("shaders/openglTest.shader");
+
+				shader.load("shaders/openglTest.shader");
+				//const char* content = shader_load("shaders/openglTest.shader");
 				printf("-----------------------------------------------------------------------\n");
 			}
 		}
@@ -80,6 +85,7 @@ public:
 
 	s3UtilsDirectoryWatch* shaderDirWatch = nullptr;
 	ShaderInitInfo info;
+	s3Shader shader;
 };
 
 int main()

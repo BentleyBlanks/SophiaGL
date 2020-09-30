@@ -133,7 +133,7 @@ int main()
     //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    // configure and enabled vertex attributes, and binded shader layout
+    // configure and enabled vertex attributes, and binded shader_gl layout
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -182,7 +182,7 @@ int main()
         //trans = glm::rotate(trans, (float)glfwGetTime() / 100, glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::rotate(model, time * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
-        // activate shader and clearing
+        // activate shader_gl and clearing
         shader.begin();
         shader.setFloat("time", time);
         shader.setTexture("texture0", 0);
