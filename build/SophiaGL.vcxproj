@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\SophiaGL\3d\s3Camera.cpp" />
+    <ClCompile Include="..\SophiaGL\3d\s3Mesh.cpp" />
+    <ClCompile Include="..\SophiaGL\3d\s3ModelImporter.cpp" />
+    <ClCompile Include="..\SophiaGL\app\s3CallbackManager.cpp" />
+    <ClCompile Include="..\SophiaGL\app\s3Gui.cpp" />
+    <ClCompile Include="..\SophiaGL\app\s3Window.cpp" />
+    <ClCompile Include="..\SophiaGL\core\log\s3Log.cpp" />
+    <ClCompile Include="..\SophiaGL\core\log\s3LogFile.cpp" />
+    <ClCompile Include="..\SophiaGL\core\log\s3LogHTML.cpp" />
+    <ClCompile Include="..\SophiaGL\core\s3Callback.cpp" />
+    <ClCompile Include="..\SophiaGL\core\s3Enum.cpp" />
+    <ClCompile Include="..\SophiaGL\core\s3Event.cpp" />
+    <ClCompile Include="..\SophiaGL\core\s3Settings.cpp" />
+    <ClCompile Include="..\SophiaGL\core\s3Timer.cpp" />
+    <ClCompile Include="..\SophiaGL\core\util\s3Utils.cpp" />
+    <ClCompile Include="..\SophiaGL\core\util\s3UtilsIO.cpp" />
+    <ClCompile Include="..\SophiaGL\core\util\s3UtilsString.cpp" />
+    <ClCompile Include="..\SophiaGL\graphics\s3Material.cpp" />
+    <ClCompile Include="..\SophiaGL\graphics\s3Renderer.cpp" />
+    <ClCompile Include="..\SophiaGL\graphics\s3RenderTexture.cpp" />
+    <ClCompile Include="..\SophiaGL\graphics\s3Shader.cpp" />
+    <ClCompile Include="..\SophiaGL\graphics\s3Texture.cpp" />
+    <ClCompile Include="..\SophiaGL\graphics\s3Texture2d.cpp" />
+    <ClCompile Include="..\SophiaGL\test\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\SophiaGL\3d\s3Camera.h" />
+    <ClInclude Include="..\SophiaGL\3d\s3Mesh.h" />
+    <ClInclude Include="..\SophiaGL\3d\s3ModelImporter.h" />
+    <ClInclude Include="..\SophiaGL\app\s3CallbackManager.h" />
+    <ClInclude Include="..\SophiaGL\app\s3Gui.h" />
+    <ClInclude Include="..\SophiaGL\app\s3Window.h" />
+    <ClInclude Include="..\SophiaGL\core\log\s3Log.h" />
+    <ClInclude Include="..\SophiaGL\core\log\s3LogFile.h" />
+    <ClInclude Include="..\SophiaGL\core\log\s3LogHTML.h" />
+    <ClInclude Include="..\SophiaGL\core\s3Callback.h" />
+    <ClInclude Include="..\SophiaGL\core\s3Enum.h" />
+    <ClInclude Include="..\SophiaGL\core\s3Event.h" />
+    <ClInclude Include="..\SophiaGL\core\s3Settings.h" />
+    <ClInclude Include="..\SophiaGL\core\s3Timer.h" />
+    <ClInclude Include="..\SophiaGL\core\util\s3Utils.h" />
+    <ClInclude Include="..\SophiaGL\core\util\s3UtilsIO.h" />
+    <ClInclude Include="..\SophiaGL\core\util\s3UtilsString.h" />
+    <ClInclude Include="..\SophiaGL\graphics\s3Material.h" />
+    <ClInclude Include="..\SophiaGL\graphics\s3Renderer.h" />
+    <ClInclude Include="..\SophiaGL\graphics\s3RenderTexture.h" />
+    <ClInclude Include="..\SophiaGL\graphics\s3Shader.h" />
+    <ClInclude Include="..\SophiaGL\graphics\s3Texture.h" />
+    <ClInclude Include="..\SophiaGL\graphics\s3Texture2d.h" />
+    <ClInclude Include="..\SophiaGL\test\appTest.h" />
+    <ClInclude Include="..\SophiaGL\test\cameraTest.h" />
+    <ClInclude Include="..\SophiaGL\test\enumTest.h" />
+    <ClInclude Include="..\SophiaGL\test\imguiTest.h" />
+    <ClInclude Include="..\SophiaGL\test\mainTest.h" />
+    <ClInclude Include="..\SophiaGL\test\meshTest.h" />
+    <ClInclude Include="..\SophiaGL\test\shaderParserTest.h" />
+    <ClInclude Include="..\SophiaGL\test\shaderTest.h" />
+    <ClInclude Include="..\SophiaGL\test\textureTest.h" />
+    <ClInclude Include="..\SophiaGL\test\transformTest.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{471E369B-7AB9-48E5-94E9-D5D234C5CEF4}</ProjectGuid>
+    <RootNamespace>SophiaGL</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>../bin/debug</OutDir>
+    <TargetName>$(ProjectName).debug</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>../bin/debug/</OutDir>
+    <TargetName>$(ProjectName).debug</TargetName>
+    <IntDir>./$(Configuration)/</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>../bin/release</OutDir>
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>../bin/release/</OutDir>
+    <IntDir>./$(Configuration)/</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../SophiaGL/;../thirdparty/glfw/include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../thirdparty/glfw/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../SophiaGL;../thirdparty/glad/include;../thirdparty/glfw/include;../thirdparty/tinyobjloader/include;../thirdparty/stb/include;../thirdparty/glm/include;../thirdparty/imgui/include;../thirdparty/fake_unity_shader/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../thirdparty/fake_unity_shader/build/Debug;../thirdparty/glfw/lib;./Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;imgui.debug.x64.lib;fake_unity_shader.debug.x64.lib;glad.debug.x64.lib;tinyobjloader.debug.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>./copydll.bat</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../SophiaGL/;../thirdparty/glfw/include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../thirdparty/glfw/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../SophiaGL;../thirdparty/glad/include;../thirdparty/glfw/include;../thirdparty/tinyobjloader/include;../thirdparty/stb/include;../thirdparty/glm/include;../thirdparty/imgui/include;../thirdparty/fake_unity_shader/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../thirdparty/fake_unity_shader/build/Release;../thirdparty/glfw/lib;./Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;imgui.x64.lib;fake_unity_shader.x64.lib;glad.x64.lib;tinyobjloader.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>./copydll.bat</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
