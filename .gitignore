@@ -37,14 +37,15 @@ README~
 # *.lib
 
 # Complicated, could be replaced by other ways to ignore them
-build/SophiaGL/x64/Debug/*.lib
-build/SophiaGL/x64/Release/*.lib
-build/SophiaGL/x64/Debug/*.obj
-build/SophiaGL/x64/Release/*.obj
+build/Debug/*.lib
+build/Debug/*.obj
+build/Release/*.lib
+build/Release/*.obj
 build/thirdyparty/*.obj
-SophiaGL/thirdparty/imgui/build/imgui/x64/Debug/*.obj
-SophiaGL/thirdparty/tinyobjloader/build/tinyobjloader/x64/Debug/*.obj
-SophiaGL/thirdparty/glad/build/glad/x64/Debug/*.obj
+
+thirdparty/imgui/build/imgui/x64/Debug/*.obj
+thirdparty/tinyobjloader/build/tinyobjloader/x64/Debug/*.obj
+thirdparty/glad/build/glad/x64/Debug/*.obj
 
 # !/resources/*.obj
 # *.obj
