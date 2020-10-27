@@ -21,15 +21,15 @@ public:
 	s3App()
 	{
 		std::vector<std::string> paths;
-		paths.push_back("../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shader_parser");
-		paths.push_back("../../SophiaGL/thirdparty/fakeUnityShader/fake_unity_shader/shaders");
+		paths.push_back("../thirdparty/fake_unity_shader/src/shader_parser");
+		paths.push_back("../thirdparty/fake_unity_shader/src/shaders");
 
 		shaderDirWatch = new s3UtilsDirectoryWatch();
-		shaderDirWatch->watch("../../SophiaGL/thirdparty/fake_unity_shader/fake_unity_shader/shader_parser", false);
+		shaderDirWatch->watch("../thirdparty/fake_unity_shader/src/shader_parser", false);
 		//shaderDirWatch->watch(paths, false);
 
 		info.api = ShaderGraphicsAPI::OpenGL;
-		info.root_path = "../../SophiaGL/thirdparty/fake_unity_shader/fake_unity_shader/";
+		info.root_path = "../thirdparty/fake_unity_shader/src/";
 	}
 
 	~s3App()
