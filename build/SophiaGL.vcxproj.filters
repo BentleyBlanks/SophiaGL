@@ -102,6 +102,9 @@
     <ClCompile Include="..\SophiaGL\test\main.cpp">
       <Filter>SophiaGL\test</Filter>
     </ClCompile>
+    <ClCompile Include="..\SophiaGL\3d\s3VertexData.cpp">
+      <Filter>SophiaGL\3d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\SophiaGL\3d\s3Camera.h">
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="..\SophiaGL\test\transformTest.h">
       <Filter>SophiaGL\test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SophiaGL\3d\s3VertexData.h">
+      <Filter>SophiaGL\3d</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
