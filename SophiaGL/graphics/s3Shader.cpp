@@ -549,6 +549,7 @@ bool s3Shader::load(const char* _shaderFilePath)
 {
     if (bIsLoaded)
     {
+        // reload
         //for (auto it = programMap.begin(); it != programMap.end(); it++)
         //{
         //    glDeleteProgram(it->second);
@@ -577,9 +578,47 @@ bool s3Shader::load(const char* _shaderFilePath)
     auto pass_list = subshader_list[0].pass_list;
     if (pass_list.size() <= 0) return false;
 
+    // now only supported 1 pass
     program = pass_list[0].program;
-	shaderFilePath = _shaderFilePath;
 
+    // initialize a new, shader related, input layout
+    auto* newInputLayout = new s3InputLayout();
+    auto& inputLayoutList = pass_list[0].input_layout_list;
+    for(auto iter = inputLayoutList.begin(); iter < inputLayoutList.end(); iter++)
+    {
+        auto channel = iter->channel;
+        if (channel == eC_NONE || channel >= eC_COUNT) 
+            continue;
+
+        newInputLayout->channels[channel]   = true;
+        newInputLayout->dataTypes[channel]  = iter->data_type;
+        newInputLayout->dimensions[channel] = iter->dimension;
+    }
+
+    auto& manager = s3InputLayoutManager::getInstance();
+    bool needToAdd = true;
+    if (inputLayoutHandle > 0)
+    {
+        // check if handle is valid
+        auto oldInputLayout = manager.get(inputLayoutHandle);
+        if (!oldInputLayout.isEqual(s3InputLayout::invalid))
+        {
+            if (oldInputLayout.isEqual(*newInputLayout))
+            {
+                // no need to add repeatedly
+                S3_SAFE_DELETE(newInputLayout);
+                needToAdd = false;
+            }
+            else
+            {
+                // remove and add new input layout
+                manager.remove(inputLayoutHandle);
+            }
+        }
+    }
+    if(needToAdd) inputLayoutHandle = manager.add(*newInputLayout);
+
+	shaderFilePath = _shaderFilePath;
 	return true;
     //return loadFromSource(vertexSource.c_str(), fragmentSource.c_str());
 }

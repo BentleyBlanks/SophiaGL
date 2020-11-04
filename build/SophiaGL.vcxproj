@@ -80,6 +80,7 @@
     <ClInclude Include="..\SophiaGL\test\shaderTest.h" />
     <ClInclude Include="..\SophiaGL\test\textureTest.h" />
     <ClInclude Include="..\SophiaGL\test\transformTest.h" />
+    <ClInclude Include="..\SophiaGL\test\vertexDataTest.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

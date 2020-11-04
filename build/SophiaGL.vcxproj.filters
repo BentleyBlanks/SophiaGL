@@ -209,5 +209,8 @@
     <ClInclude Include="..\SophiaGL\3d\s3VertexData.h">
       <Filter>SophiaGL\3d</Filter>
     </ClInclude>
+    <ClInclude Include="..\SophiaGL\test\vertexDataTest.h">
+      <Filter>SophiaGL\test</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

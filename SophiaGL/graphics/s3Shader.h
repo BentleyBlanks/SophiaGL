@@ -1,9 +1,11 @@
 #pragma once
 #include <core/s3Settings.h>
+#include <core/s3Enum.h>
+#include <3d/s3VertexData.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <core/s3Enum.h>
 
 class s3Texture;
 
@@ -114,6 +116,8 @@ private:
 
     //std::map<std::string, unsigned int> programMap;
     unsigned int program = 0;
+    int inputLayoutHandle = -1;
+
     bool bIsLoaded = false;
 
     // vs fs shader code
