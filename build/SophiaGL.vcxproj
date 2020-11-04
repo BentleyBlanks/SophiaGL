@@ -22,6 +22,7 @@
     <ClCompile Include="..\SophiaGL\3d\s3Camera.cpp" />
     <ClCompile Include="..\SophiaGL\3d\s3Mesh.cpp" />
     <ClCompile Include="..\SophiaGL\3d\s3ModelImporter.cpp" />
+    <ClCompile Include="..\SophiaGL\3d\s3VertexData.cpp" />
     <ClCompile Include="..\SophiaGL\app\s3CallbackManager.cpp" />
     <ClCompile Include="..\SophiaGL\app\s3Gui.cpp" />
     <ClCompile Include="..\SophiaGL\app\s3Window.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="..\SophiaGL\3d\s3Camera.h" />
     <ClInclude Include="..\SophiaGL\3d\s3Mesh.h" />
     <ClInclude Include="..\SophiaGL\3d\s3ModelImporter.h" />
+    <ClInclude Include="..\SophiaGL\3d\s3VertexData.h" />
     <ClInclude Include="..\SophiaGL\app\s3CallbackManager.h" />
     <ClInclude Include="..\SophiaGL\app\s3Gui.h" />
     <ClInclude Include="..\SophiaGL\app\s3Window.h" />

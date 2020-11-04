@@ -19,7 +19,7 @@ std::string s3Version::get()
 
 void s3Version::print()
 {
-    std::cout << "Atmos版本:" << type << " " << major << "." << minor << "." << revision << std::endl;
+    std::cout << "SophiaGL's Version:" << type << " " << major << "." << minor << "." << revision << std::endl;
 }
 
 // Version Changes Level
