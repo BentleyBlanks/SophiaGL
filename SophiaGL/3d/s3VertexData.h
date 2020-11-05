@@ -30,6 +30,7 @@ public:
 		return true;
 	}
 
+	// could be replaced by channelMask
 	bool channels[semantic_channel::eC_COUNT];
 	semantic_data_type dataTypes[semantic_channel::eC_COUNT];
 	int dimensions[semantic_channel::eC_COUNT];
@@ -53,6 +54,7 @@ public:
 	const s3InputLayout& get(unsigned int handle) const;
 
 	bool exsited(unsigned int handle) const;
+
 private:
 	// singleton
 	s3InputLayoutManager(){}

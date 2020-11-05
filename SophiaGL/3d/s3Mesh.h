@@ -20,14 +20,18 @@ private:
 	// submesh indices
 	std::vector<unsigned int> indices;
 
+	// vertex data would be updated after called apply()
+	std::vector<float> vertices;
+
 	// vertex's buffer
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec3> normals;
+	std::vector<glm::vec3> colors;
+	std::vector<glm::vec2> texCoord0;
+	std::vector<glm::vec2> texCoord1;
+	std::vector<glm::vec2> texCoord2;
+	std::vector<glm::vec2> texCoord3;
 	std::vector<glm::vec3> tangents;
-	std::vector<glm::vec2> uvs;
-
-	// vertex data would be updated after called apply()
-	std::vector<float> vertices;
 
 	// opengl render data
 	unsigned int vao = 0, vbo = 0, ebo = 0;
