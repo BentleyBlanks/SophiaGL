@@ -57,7 +57,7 @@ s3Mesh* s3ModelImporter::load(const char* path)
                 glm::vec2 uv = glm::vec2(attrib.texcoords[2 * index.texcoord_index + 0],
                                          attrib.texcoords[2 * index.texcoord_index + 1]);
 
-                submesh->uvs.push_back(uv);
+                submesh->texCoord0.push_back(uv);
             }
 
             //mesh->vertices.push_back(vertex);

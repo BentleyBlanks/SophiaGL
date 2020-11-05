@@ -8,20 +8,20 @@ void s3Submesh::clear()
 	positions.clear();
 	normals.clear();
 	tangents.clear();
-	uvs.clear();
+	texCoord0.clear();
 }
 
 void s3Submesh::apply()
 {
 	int pCount = (int)positions.size();
 	int nCount = (int)normals.size();
-	int tCount = (int)uvs.size();
+	int tCount = (int)texCoord0.size();
 	if (pCount < 0 ||
 		(nCount > 0 && pCount != nCount) ||
 		(tCount > 0 && pCount != tCount) ||
 		(tCount > 0 && nCount > 0 && (pCount != nCount || pCount != tCount)))
 	{
-		s3Log::warning("s3Mesh's properties error, position: %d, normals: %d, uvs: %d\n", pCount, nCount, tCount);
+		s3Log::warning("s3Mesh's properties error, position: %d, normals: %d, texCoord0: %d\n", pCount, nCount, tCount);
 		return;
 	}
 
@@ -51,7 +51,7 @@ void s3Submesh::apply()
 
 		if (tCount > 0)
 		{
-			auto& uv = uvs[i];
+			auto& uv = texCoord0[i];
 			vertices.push_back(uv.x);
 			vertices.push_back(uv.y);
 		}
