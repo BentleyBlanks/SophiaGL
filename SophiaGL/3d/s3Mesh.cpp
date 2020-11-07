@@ -1,7 +1,56 @@
 #include <3d/s3Mesh.h>
 #include <glad/glad.h>
+#include <3d/s3VertexData.h>
 
 // ---------------------------------------------s3Submesh---------------------------------------------
+// Calculated in cpp instead of lua. Beacause size may different between different platform. 
+std::size_t dataTypeSize(semantic_data_type data_type)
+{
+	switch (data_type)
+	{
+	case eDT_INVALID:
+		return 0;
+	case eDT_FLOAT:
+		return sizeof(float);
+	case eDT_INT:
+		return sizeof(int);
+	case eDT_BOOL:
+		return sizeof(bool);
+	case eDT_HALF:
+		// 16 bits float not supported
+		return sizeof(float);
+	case eDT_SHORT:
+		return sizeof(short);
+	case eDT_UINT:
+		return sizeof(unsigned int);
+	}
+	return 0;
+}
+
+int dataTypeToGlType(semantic_data_type data_type)
+{
+	switch (data_type)
+	{
+	case eDT_INVALID:
+		return 0;
+	case eDT_FLOAT:
+		return GL_FLOAT;
+	case eDT_INT:
+		return GL_INT;
+	case eDT_BOOL:
+		return GL_BOOL;
+	case eDT_HALF:
+		// 16 bits float not supported
+		//return GL_HALF_FLOAT;
+		return GL_FLOAT;
+	case eDT_SHORT:
+		return GL_SHORT;
+	case eDT_UINT:
+		return GL_UNSIGNED_INT;
+	}
+	return 0;
+}
+
 void s3Submesh::clear()
 {
 	indices.clear();
@@ -11,50 +60,101 @@ void s3Submesh::clear()
 	texCoord0.clear();
 }
 
-void s3Submesh::apply()
+void s3Submesh::updateVertexStream(unsigned int handle)
 {
-	int pCount = (int)positions.size();
-	int nCount = (int)normals.size();
-	int tCount = (int)texCoord0.size();
-	if (pCount < 0 ||
-		(nCount > 0 && pCount != nCount) ||
-		(tCount > 0 && pCount != tCount) ||
-		(tCount > 0 && nCount > 0 && (pCount != nCount || pCount != tCount)))
+	auto& manager = s3InputLayoutManager::getInstance();
+	if(!manager.isValid(handle))
 	{
-		s3Log::warning("s3Mesh's properties error, position: %d, normals: %d, texCoord0: %d\n", pCount, nCount, tCount);
+		s3Log::warning("s3Submesh's related handle not valid");
 		return;
 	}
 
-	// pCount must be greater than 0, but for code unify, check it everytime
-	//unsigned long long pSize = sizeof(glm::vec3) * pCount;
-	//unsigned long long nSize = sizeof(glm::vec3) * nCount;
-	//unsigned long long tSize = sizeof(glm::vec2) * tCount;
+	// input layout's equality check only happens between handle
+	if (handle == inputLayoutHandle) return;
 
-	vertices.clear();
-	for (int i = 0; i < pCount; i++)
+	int pCount  = (int)positions.size();
+	int nCount  = (int)normals.size();
+	int cCount  = (int)colors.size();
+	int t0Count = (int)texCoord0.size();
+	int t1Count = (int)texCoord1.size();
+	int t2Count = (int)texCoord2.size();
+	int t3Count = (int)texCoord3.size();
+	int tCount  = (int)tangents.size();
+	if (pCount < 0 || pCount != vertexCount)
 	{
-		if (pCount > 0)
+		s3Log::warning("s3Submesh's position properties error\n");
+		return;
+	}
+
+	auto& inputLayout = manager.get(handle);
+	vertexStride = 0;
+	for (int i = 0; i < semantic_channel::eC_COUNT; i++)
+	{
+		if (!inputLayout.channels[i]) continue;
+
+		auto dataSize = dataTypeSize(inputLayout.dataTypes[i]);
+		auto dimension = inputLayout.dimensions[i];
+
+		vertexStride += dataSize * dimension;
+	}
+
+	S3_SAFE_FREE(vertices);
+	unsigned int verticesLength = vertexStride * vertexCount;
+	vertices = malloc(verticesLength);
+	// if no related semantic was found, use 0 instead
+	memset(vertices, 0, verticesLength);
+
+	char* vertexPtr = (char*)vertices;
+	for (int i = 0; i < vertexCount; i++)
+	{
+		int offset = 0;
+		for (int j = 0; j < semantic_channel::eC_COUNT; j++)
 		{
-			auto& position = positions[i];
-			vertices.push_back(position.x);
-			vertices.push_back(position.y);
-			vertices.push_back(position.z);
+			if (!inputLayout.channels[j]) continue;
+
+			auto dataSize = dataTypeSize(inputLayout.dataTypes[j]);
+			auto dimension = inputLayout.dimensions[j];
+
+			switch (i)
+			{
+			case eC_VERTEX:
+				for(int k = 0; k < dimension; k++)
+					vertexPtr[i * vertexStride + offset + dataSize * k] = positions[j][k];
+				break;
+			case eC_NORMAL:
+				for (int k = 0; k < dimension; k++)
+					vertexPtr[i * vertexStride + offset + dataSize * k] = normals[j][k];
+				break;
+			case eC_COLOR:
+				for (int k = 0; k < dimension; k++)
+					vertexPtr[i * vertexStride + offset + dataSize * k] = colors[j][k];
+				break;
+			case eC_TEXCOORD0:
+				for (int k = 0; k < dimension; k++)
+					vertexPtr[i * vertexStride + offset + dataSize * k] = texCoord0[j][k];
+				break;
+			case eC_TEXCOORD1:
+				for (int k = 0; k < dimension; k++)
+					vertexPtr[i * vertexStride + offset + dataSize * k] = texCoord1[j][k];
+				break;
+			case eC_TEXCOORD2:
+				for (int k = 0; k < dimension; k++)
+					vertexPtr[i * vertexStride + offset + dataSize * k] = texCoord2[j][k];
+				break;
+			case eC_TEXCOORD3:
+				for (int k = 0; k < dimension; k++)
+					vertexPtr[i * vertexStride + offset + dataSize * k] = texCoord3[j][k];
+				break;
+			case eC_TANGENT:
+				for (int k = 0; k < dimension; k++)
+					vertexPtr[i * vertexStride + offset + dataSize * k] = tangents[j][k];
+				break;
+			}
+			
+			offset += dimension * dataSize;
 		}
 
-		if (nCount > 0)
-		{
-			auto& normal = normals[i];
-			vertices.push_back(normal.x);
-			vertices.push_back(normal.y);
-			vertices.push_back(normal.z);
-		}
-
-		if (tCount > 0)
-		{
-			auto& uv = texCoord0[i];
-			vertices.push_back(uv.x);
-			vertices.push_back(uv.y);
-		}
+		vertexPtr += vertexStride;
 	}
 
 	// vao generation and bind
@@ -64,7 +164,8 @@ void s3Submesh::apply()
 	// vbo, vertex buffer
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertexStride * vertexCount, vertices, GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
 
 	// ebo, index buffer
 	glGenBuffers(1, &ebo);
@@ -73,37 +174,53 @@ void s3Submesh::apply()
 
 	// input layout
 	int index = 0;
+	int attrOffset = 0;
+	for (int i = 0; i < semantic_channel::eC_COUNT; i++)
+	{
+		if (!inputLayout.channels[i]) continue;
+
+		auto dataSize   = dataTypeSize(inputLayout.dataTypes[i]);
+		auto dimension  = inputLayout.dimensions[i];
+		auto glDataType = dataTypeToGlType(inputLayout.dataTypes[i]);
+		auto stride     = dataSize * dimension;
+
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, dimension, glDataType, GL_FALSE, stride, (void*)attrOffset);
+
+		attrOffset += stride;
+		index++;
+	}
+
+	int index = 0;
 	unsigned long long offset = 0;
-	int stride = ((int)(pCount > 0) * 3 + (int)(nCount > 0) * 3 + (int)(tCount > 0) * 2) * sizeof(float);
+	int stride = ((int)(pCount > 0) * 3 + (int)(nCount > 0) * 3 + (int)(t0Count > 0) * 2) * sizeof(float);
 
-	if (pCount > 0)
-	{
-		int size = sizeof(float) * 3;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
-		index += 1;
-		offset += size;
-	}
+	//if (pCount > 0)
+	//{
+	//	int size = sizeof(float) * 3;
+	//	glEnableVertexAttribArray(index);
+	//	glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+	//	index += 1;
+	//	offset += size;
+	//}
 
-	if (nCount > 0)
-	{
-		int size = sizeof(float) * 3;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
-		index += 1;
-		offset += size;
-	}
+	//if (nCount > 0)
+	//{
+	//	int size = sizeof(float) * 3;
+	//	glEnableVertexAttribArray(index);
+	//	glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+	//	index += 1;
+	//	offset += size;
+	//}
 
-	if (tCount > 0)
-	{
-		int size = sizeof(float) * 2;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, stride, (void*)offset);
-		index += 1;
-		offset += size;
-	}
-
-	// not supported tangents now
+	//if (t0Count > 0)
+	//{
+	//	int size = sizeof(float) * 2;
+	//	glEnableVertexAttribArray(index);
+	//	glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+	//	index += 1;
+	//	offset += size;
+	//}
 
 	// unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -131,18 +248,18 @@ void s3Mesh::clear()
 
 //void s3Mesh::setTriangles(const std::vector<unsigned int>& subIndices, int submesh)
 //{
-//	if (submesh < 0 || submesh >= indexRangeList.size())
+//	if (submesh < 0 || submesh >= indexRangeList.channelCount())
 //	{
 //		s3Log::warning("s3Mesh::setTriangles() invalid submesh index: %d\n", submesh);
 //		return;
 //	}
 //
-//	int newCount = (int)subIndices.size();
+//	int newCount = (int)subIndices.channelCount();
 //	auto& range = indexRangeList[submesh];
 //
 //	// std::copy won't alloc mem when exceeded, ensure enough space mannually
 //	std::vector<unsigned int> temp;
-//	auto tempSize = indices.size() - range.start - range.count;
+//	auto tempSize = indices.channelCount() - range.start - range.count;
 //	if (tempSize > 0)
 //	{
 //		temp.resize(tempSize);
@@ -154,7 +271,7 @@ void s3Mesh::clear()
 //
 //	// diffCount could be < 0, smaller than before is acceptable
 //	auto diffCount = newCount - range.count;
-//	indices.resize(indices.size() + diffCount);
+//	indices.resize(indices.channelCount() + diffCount);
 //
 //	auto subIndicesStart = indices.begin() + range.start;
 //	std::copy(subIndices.begin(), subIndices.end(), subIndicesStart);
@@ -163,7 +280,7 @@ void s3Mesh::clear()
 //	range.count = newCount;
 //	updateRangeList();
 //
-//	if (temp.size() > 0)
+//	if (temp.channelCount() > 0)
 //	{
 //		auto copyBackStart = indices.begin() + range.start + newCount;
 //		std::copy(temp.begin(), temp.end(), copyBackStart);
@@ -172,17 +289,17 @@ void s3Mesh::clear()
 //
 //void s3Mesh::setSubMeshCount(int subMeshCount)
 //{
-//	int currentCount = (int)indexRangeList.size();
+//	int currentCount = (int)indexRangeList.channelCount();
 //	indexRangeList.resize(subMeshCount);
 //	updateRangeList();
 //}
 //
 //void s3Mesh::updateRangeList()
 //{
-//	if (indexRangeList.size() <= 0) return;
+//	if (indexRangeList.channelCount() <= 0) return;
 //
 //	auto lastRange = indexRangeList[0];
-//	for (int i = 1; i < indexRangeList.size(); i++)
+//	for (int i = 1; i < indexRangeList.channelCount(); i++)
 //	{
 //		auto& range = indexRangeList[i];
 //		range.start = lastRange.start + lastRange.count;
@@ -195,7 +312,7 @@ void s3Mesh::clear()
 //{
 //	static std::vector<unsigned int> temp;
 //
-//	if (submesh < 0 || submesh >= indexRangeList.size())
+//	if (submesh < 0 || submesh >= indexRangeList.channelCount())
 //	{
 //		s3Log::warning("s3Mesh::getTriangles() invalid submesh index: %d\n", submesh);
 //		return temp;
@@ -211,10 +328,13 @@ void s3Mesh::clear()
 // input layout  = vao
 // vertex buffer = vbo
 // index buffer  = ebo
-void s3Mesh::apply()
+void s3Mesh::updateVertexStream(unsigned int handle)
 {
 	for (auto submesh : submeshes)
-		submesh->apply();
+	{
+		// Update submesh's vertex stream if possible
+		submesh->updateVertexStream(handle);
+	}
 }
 
 s3Mesh& s3Mesh::createCube()

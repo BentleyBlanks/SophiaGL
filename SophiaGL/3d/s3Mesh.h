@@ -12,30 +12,34 @@ public:
 	~s3Submesh() {}
 
 	void clear();
-	void apply();
+	void updateVertexStream(unsigned int inputLayoutHandle);
 
 	friend class s3ModelImporter;
 	friend class s3Renderer;
 private:
+	unsigned int inputLayoutHandle;
+
 	// submesh indices
 	std::vector<unsigned int> indices;
 
-	// vertex data would be updated after called apply()
-	std::vector<float> vertices;
+	// vertex data would be updated after called updateVertexStream()
+	//std::vector<float> vertices;
+	unsigned int vertexStride = 0;
+	void* vertices = nullptr;
 
 	// vertex's buffer
-	std::vector<glm::vec3> positions;
-	std::vector<glm::vec3> normals;
-	std::vector<glm::vec3> colors;
-	std::vector<glm::vec2> texCoord0;
-	std::vector<glm::vec2> texCoord1;
-	std::vector<glm::vec2> texCoord2;
-	std::vector<glm::vec2> texCoord3;
-	std::vector<glm::vec3> tangents;
+	std::vector<glm::vec4> positions;
+	std::vector<glm::vec4> normals;
+	std::vector<glm::vec4> colors;
+	std::vector<glm::vec4> texCoord0;
+	std::vector<glm::vec4> texCoord1;
+	std::vector<glm::vec4> texCoord2;
+	std::vector<glm::vec4> texCoord3;
+	std::vector<glm::vec4> tangents;
 
 	// opengl render data
 	unsigned int vao = 0, vbo = 0, ebo = 0;
-
+	unsigned int vertexCount = 0;
 	std::string name;
 };
 
@@ -68,7 +72,7 @@ public:
 
 	// //Gets the index buffer for the specified sub mesh on this instance.
 	//const std::vector<unsigned int>& getTriangles(int submesh) const;
-	//int getSubmeshCount() const { return (int)submeshes.size(); }
+	//int getSubmeshCount() const { return (int)submeshes.channelCount(); }
 
 	const glm::vec3& getPosition() const { return positionWS; }
 	const glm::mat4& getRotation() const { return rotationWS; }
@@ -81,8 +85,8 @@ public:
 	static s3Mesh& createCylinder();
 
 	// called mannually after changing any of the mesh's property
-	// Unity Mesh no need to called apply() after changing properties
-	void apply();
+	// Unity Mesh no need to called updateVertexStream() after changing properties
+	void updateVertexStream(unsigned int inputLayoutHandle);
 
 	friend class s3Renderer;
 	friend class s3ModelImporter;

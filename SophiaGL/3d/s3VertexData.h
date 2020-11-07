@@ -7,6 +7,10 @@ class s3InputLayout
 public:
 	s3InputLayout()
 	{
+		//channels.resize(semantic_channel::eC_COUNT);
+		//dataTypes.resize(semantic_channel::eC_COUNT);
+		//dimensions.resize(semantic_channel::eC_COUNT);
+
 		for (int i = 0; i < semantic_channel::eC_COUNT; i++)
 		{
 			channels[i]   = false;
@@ -31,6 +35,10 @@ public:
 	}
 
 	// could be replaced by channelMask
+	//std::vector<bool> channels;
+	//std::vector<semantic_data_type> dataTypes;
+	//std::vector<int> dimensions;
+
 	bool channels[semantic_channel::eC_COUNT];
 	semantic_data_type dataTypes[semantic_channel::eC_COUNT];
 	int dimensions[semantic_channel::eC_COUNT];
@@ -53,7 +61,7 @@ public:
 	unsigned int find(const s3InputLayout& inputlayout) const;
 	const s3InputLayout& get(unsigned int handle) const;
 
-	bool exsited(unsigned int handle) const;
+	bool isValid(unsigned int handle) const;
 
 private:
 	// singleton
@@ -66,4 +74,10 @@ private:
 
 	// simple uuid
 	unsigned int uuidGenerator = 1;
+};
+
+class s3VertexStream
+{
+public:
+
 };

@@ -7,7 +7,7 @@ unsigned int s3InputLayoutManager::add(const s3InputLayout& newInputLayout)
 {
     auto handle = find(newInputLayout);
 
-    // newInputLayout already exsited
+    // newInputLayout already isValid
     if (handle != 0) return handle;
 
     inputLayoutMap[uuidGenerator] = newInputLayout;
@@ -69,7 +69,7 @@ const s3InputLayout& s3InputLayoutManager::get(unsigned int handle) const
     }
 }
 
-bool s3InputLayoutManager::exsited(unsigned int handle) const
+bool s3InputLayoutManager::isValid(unsigned int handle) const
 {
     auto iter = inputLayoutMap.find(handle);
     if (iter != inputLayoutMap.end())

@@ -122,6 +122,15 @@ enum s3ImageType
 };
 
 // ------------------------Macro Function------------------------
+void S3_SAFE_FREE(void* a)
+{
+    if (a)
+    {
+        free(a);
+        a = NULL;
+    }
+}
+
 template<typename T>
 void S3_SAFE_DELETE(T*& a)
 {
