@@ -34,7 +34,9 @@ s3Mesh* s3ModelImporter::load(const char* path)
         auto submesh = new s3Submesh(shape.name);
         for (const auto& index : shape.mesh.indices)
         {
-            // -1 means not used
+            submesh->vertexCount = attrib.vertices.size();
+
+            // index -1 means not used
             if (attrib.vertices.size() > 0 && index.vertex_index != -1)
             {
 				glm::vec3 position = glm::vec3(attrib.vertices[3 * index.vertex_index + 0],
@@ -60,12 +62,13 @@ s3Mesh* s3ModelImporter::load(const char* path)
                 submesh->texCoord0.push_back(uv);
             }
 
-            //mesh->vertices.push_back(vertex);
+            // colors not supported currently
+
             submesh->indices.push_back((unsigned int)submesh->indices.size());
         }
         mesh->submeshes.push_back(submesh);
     }
-    mesh->apply();
+    //mesh->updateVertexStream();
 
     s3Log::success("Model loaded successfully\n", path);
 	return mesh;

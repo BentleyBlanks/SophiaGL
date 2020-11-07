@@ -52,7 +52,7 @@ int main()
 	mesh.positions = p;
 	mesh.normals   = n;
 	mesh.uvs       = t;
-	mesh.apply();
+	mesh.updateVertexStream();
 #endif
 
 	s3Window& window = s3Window::getInstance();
