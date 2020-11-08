@@ -82,6 +82,13 @@
     <ClInclude Include="..\SophiaGL\test\transformTest.h" />
     <ClInclude Include="..\SophiaGL\test\vertexDataTest.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shaders\basicFS.glsl" />
+    <None Include="..\shaders\basicVS.glsl" />
+    <None Include="..\shaders\coordinateFS.glsl" />
+    <None Include="..\shaders\coordinateVS.glsl" />
+    <None Include="..\shaders\mainTexture.shader" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{471E369B-7AB9-48E5-94E9-D5D234C5CEF4}</ProjectGuid>

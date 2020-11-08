@@ -122,7 +122,7 @@ enum s3ImageType
 };
 
 // ------------------------Macro Function------------------------
-void S3_SAFE_FREE(void* a)
+inline void S3_SAFE_FREE(void* a)
 {
     if (a)
     {

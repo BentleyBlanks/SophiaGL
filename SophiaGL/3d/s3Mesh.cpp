@@ -4,7 +4,7 @@
 
 // ---------------------------------------------s3Submesh---------------------------------------------
 // Calculated in cpp instead of lua. Beacause size may different between different platform. 
-std::size_t dataTypeSize(semantic_data_type data_type)
+std::size_t getDataTypeSize(semantic_data_type data_type)
 {
 	switch (data_type)
 	{
@@ -27,7 +27,7 @@ std::size_t dataTypeSize(semantic_data_type data_type)
 	return 0;
 }
 
-int dataTypeToGlType(semantic_data_type data_type)
+GLsizei ConvertDataTypeToGLType(semantic_data_type data_type)
 {
 	switch (data_type)
 	{
@@ -80,7 +80,7 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 	int t2Count = (int)texCoord2.size();
 	int t3Count = (int)texCoord3.size();
 	int tCount  = (int)tangents.size();
-	if (pCount < 0 || pCount != vertexCount)
+	if (pCount < 0/* || pCount != vertexCount*/)
 	{
 		s3Log::warning("s3Submesh's position properties error\n");
 		return;
@@ -92,10 +92,10 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 	{
 		if (!inputLayout.channels[i]) continue;
 
-		auto dataSize = dataTypeSize(inputLayout.dataTypes[i]);
+		auto dataSize = getDataTypeSize(inputLayout.dataTypes[i]);
 		auto dimension = inputLayout.dimensions[i];
 
-		vertexStride += dataSize * dimension;
+		vertexStride += (unsigned int)(dataSize * dimension);
 	}
 
 	S3_SAFE_FREE(vertices);
@@ -105,53 +105,54 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 	memset(vertices, 0, verticesLength);
 
 	char* vertexPtr = (char*)vertices;
-	for (int i = 0; i < vertexCount; i++)
+	for (unsigned int i = 0; i < vertexCount; i++)
 	{
 		int offset = 0;
 		for (int j = 0; j < semantic_channel::eC_COUNT; j++)
 		{
 			if (!inputLayout.channels[j]) continue;
 
-			auto dataSize = dataTypeSize(inputLayout.dataTypes[j]);
+			auto dataTypeSize = (unsigned )getDataTypeSize(inputLayout.dataTypes[j]);
 			auto dimension = inputLayout.dimensions[j];
 
-			switch (i)
-			{
-			case eC_VERTEX:
-				for(int k = 0; k < dimension; k++)
-					vertexPtr[i * vertexStride + offset + dataSize * k] = positions[j][k];
-				break;
-			case eC_NORMAL:
-				for (int k = 0; k < dimension; k++)
-					vertexPtr[i * vertexStride + offset + dataSize * k] = normals[j][k];
-				break;
-			case eC_COLOR:
-				for (int k = 0; k < dimension; k++)
-					vertexPtr[i * vertexStride + offset + dataSize * k] = colors[j][k];
-				break;
-			case eC_TEXCOORD0:
-				for (int k = 0; k < dimension; k++)
-					vertexPtr[i * vertexStride + offset + dataSize * k] = texCoord0[j][k];
-				break;
-			case eC_TEXCOORD1:
-				for (int k = 0; k < dimension; k++)
-					vertexPtr[i * vertexStride + offset + dataSize * k] = texCoord1[j][k];
-				break;
-			case eC_TEXCOORD2:
-				for (int k = 0; k < dimension; k++)
-					vertexPtr[i * vertexStride + offset + dataSize * k] = texCoord2[j][k];
-				break;
-			case eC_TEXCOORD3:
-				for (int k = 0; k < dimension; k++)
-					vertexPtr[i * vertexStride + offset + dataSize * k] = texCoord3[j][k];
-				break;
-			case eC_TANGENT:
-				for (int k = 0; k < dimension; k++)
-					vertexPtr[i * vertexStride + offset + dataSize * k] = tangents[j][k];
-				break;
-			}
+			memcpy(vertexPtr + i * vertexStride + offset, &positions[j], dimension * dataTypeSize);
+			//switch (i)
+			//{
+			//case eC_VERTEX:
+			//	for(int k = 0; k < dimension; k++)
+			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = positions[j][k];
+			//	break;
+			//case eC_NORMAL:
+			//	for (int k = 0; k < dimension; k++)
+			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = normals[j][k];
+			//	break;
+			//case eC_COLOR:
+			//	for (int k = 0; k < dimension; k++)
+			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = colors[j][k];
+			//	break;
+			//case eC_TEXCOORD0:
+			//	for (int k = 0; k < dimension; k++)
+			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = texCoord0[j][k];
+			//	break;
+			//case eC_TEXCOORD1:
+			//	for (int k = 0; k < dimension; k++)
+			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = texCoord1[j][k];
+			//	break;
+			//case eC_TEXCOORD2:
+			//	for (int k = 0; k < dimension; k++)
+			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = texCoord2[j][k];
+			//	break;
+			//case eC_TEXCOORD3:
+			//	for (int k = 0; k < dimension; k++)
+			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = texCoord3[j][k];
+			//	break;
+			//case eC_TANGENT:
+			//	for (int k = 0; k < dimension; k++)
+			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = tangents[j][k];
+			//	break;
+			//}
 			
-			offset += dimension * dataSize;
+			offset += dimension * dataTypeSize;
 		}
 
 		vertexPtr += vertexStride;
@@ -174,26 +175,27 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 
 	// input layout
 	int index = 0;
-	int attrOffset = 0;
+	unsigned long long attrOffset = 0;
+
 	for (int i = 0; i < semantic_channel::eC_COUNT; i++)
 	{
 		if (!inputLayout.channels[i]) continue;
 
-		auto dataSize   = dataTypeSize(inputLayout.dataTypes[i]);
+		auto dataSize   = (int)getDataTypeSize(inputLayout.dataTypes[i]);
 		auto dimension  = inputLayout.dimensions[i];
-		auto glDataType = dataTypeToGlType(inputLayout.dataTypes[i]);
+		auto glDataType = ConvertDataTypeToGLType(inputLayout.dataTypes[i]);
 		auto stride     = dataSize * dimension;
 
 		glEnableVertexAttribArray(index);
 		glVertexAttribPointer(index, dimension, glDataType, GL_FALSE, stride, (void*)attrOffset);
 
-		attrOffset += stride;
+		attrOffset += (int)stride;
 		index++;
 	}
 
-	int index = 0;
-	unsigned long long offset = 0;
-	int stride = ((int)(pCount > 0) * 3 + (int)(nCount > 0) * 3 + (int)(t0Count > 0) * 2) * sizeof(float);
+	//int index = 0;
+	//unsigned long long offset = 0;
+	//int stride = ((int)(pCount > 0) * 3 + (int)(nCount > 0) * 3 + (int)(t0Count > 0) * 2) * sizeof(float);
 
 	//if (pCount > 0)
 	//{

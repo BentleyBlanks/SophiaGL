@@ -86,6 +86,7 @@ public:
 	s3UtilsDirectoryWatch* shaderDirWatch = nullptr;
 	ShaderInitInfo info;
 	s3Shader shader;
+	
 };
 
 int main()

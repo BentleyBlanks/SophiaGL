@@ -109,6 +109,9 @@ public:
     bool setValue(const std::string& name, s3ShaderField value);
     s3ShaderField getValue(const std::string& name) const;
 
+    // input layout getter
+    unsigned int getInputLayoutHandle() const { return inputLayoutHandle; }
+
 private:
     //bool loadFromSource(const char* vShaderCode, const char* fShaderCode);
     //bool checkShader(unsigned int shader, bool isVertex);
