@@ -34,30 +34,35 @@ s3Mesh* s3ModelImporter::load(const char* path)
         auto submesh = new s3Submesh(shape.name);
         for (const auto& index : shape.mesh.indices)
         {
-            submesh->vertexCount = attrib.vertices.size();
+            // Suppose 3 vertcies per face
+            submesh->vertexCount = (unsigned int)attrib.vertices.size() / 3;
 
             // index -1 means not used
             if (attrib.vertices.size() > 0 && index.vertex_index != -1)
             {
-				glm::vec3 position = glm::vec3(attrib.vertices[3 * index.vertex_index + 0],
+				glm::vec4 position = glm::vec4(attrib.vertices[3 * index.vertex_index + 0],
 											   attrib.vertices[3 * index.vertex_index + 1],
-											   attrib.vertices[3 * index.vertex_index + 2]);
+											   attrib.vertices[3 * index.vertex_index + 2],
+                                               1.0f);
 
                 submesh->positions.push_back(position);
             }
 
             if (attrib.normals.size() > 0 && index.normal_index != -1)
             {
-                glm::vec3 normal = glm::vec3(attrib.normals[3 * index.normal_index + 0],
+                glm::vec4 normal = glm::vec4(attrib.normals[3 * index.normal_index + 0],
                                              attrib.normals[3 * index.normal_index + 1],
-                                             attrib.normals[3 * index.normal_index + 2]);
+                                             attrib.normals[3 * index.normal_index + 2],
+                                             1.0f);
                 submesh->normals.push_back(normal);
             }
 
             if (attrib.texcoords.size() > 0 && index.texcoord_index != -1)
             {
-                glm::vec2 uv = glm::vec2(attrib.texcoords[2 * index.texcoord_index + 0],
-                                         attrib.texcoords[2 * index.texcoord_index + 1]);
+                glm::vec4 uv = glm::vec4(attrib.texcoords[2 * index.texcoord_index + 0],
+                                         attrib.texcoords[2 * index.texcoord_index + 1],
+                                         0.0f,
+                                         0.0f);
 
                 submesh->texCoord0.push_back(uv);
             }

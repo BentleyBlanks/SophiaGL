@@ -619,8 +619,8 @@ bool s3Shader::load(const char* _shaderFilePath)
     if(needToAdd) inputLayoutHandle = manager.add(*newInputLayout);
 
 	shaderFilePath = _shaderFilePath;
+    s3Log::success("Shader:%s build succeed", shaderFilePath.c_str());
 	return true;
-    //return loadFromSource(vertexSource.c_str(), fragmentSource.c_str());
 }
 
 bool s3Shader::reload()

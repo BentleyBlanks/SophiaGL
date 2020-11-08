@@ -1,6 +1,7 @@
 #include <3d/s3Camera.h>
 #include <app/s3CallbackManager.h>
 #include <core/s3Event.h>
+#include <core/s3Settings.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

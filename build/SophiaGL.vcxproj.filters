@@ -213,4 +213,21 @@
       <Filter>SophiaGL\test</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shaders\basicFS.glsl">
+      <Filter>SophiaGL\shaders</Filter>
+    </None>
+    <None Include="..\shaders\basicVS.glsl">
+      <Filter>SophiaGL\shaders</Filter>
+    </None>
+    <None Include="..\shaders\coordinateFS.glsl">
+      <Filter>SophiaGL\shaders</Filter>
+    </None>
+    <None Include="..\shaders\coordinateVS.glsl">
+      <Filter>SophiaGL\shaders</Filter>
+    </None>
+    <None Include="..\shaders\mainTexture.shader">
+      <Filter>SophiaGL\shaders</Filter>
+    </None>
+  </ItemGroup>
 </Project>
