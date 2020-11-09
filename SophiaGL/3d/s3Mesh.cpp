@@ -98,13 +98,13 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 		vertexStride += (unsigned int)(dataSize * dimension);
 	}
 
-	S3_SAFE_FREE(vertices);
+	S3_SAFE_FREE(vertexStream);
 	unsigned int verticesLength = vertexStride * vertexCount;
-	vertices = malloc(verticesLength);
+	vertexStream = malloc(verticesLength);
 	// if no related semantic was found, use 0 instead
-	memset(vertices, 0, verticesLength);
+	memset(vertexStream, 0, verticesLength);
 
-	char* vertexPtr = (char*)vertices;
+	char* vertexPtr = (char*)vertexStream;
 	for (unsigned int i = 0; i < vertexCount; i++)
 	{
 		int offset = 0;
@@ -115,47 +115,36 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 			auto dataTypeSize = (unsigned )getDataTypeSize(inputLayout.dataTypes[j]);
 			auto dimension = inputLayout.dimensions[j];
 
-			memcpy(vertexPtr + i * vertexStride + offset, &positions[j], dimension * dataTypeSize);
-			//switch (i)
-			//{
-			//case eC_VERTEX:
-			//	for(int k = 0; k < dimension; k++)
-			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = positions[j][k];
-			//	break;
-			//case eC_NORMAL:
-			//	for (int k = 0; k < dimension; k++)
-			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = normals[j][k];
-			//	break;
-			//case eC_COLOR:
-			//	for (int k = 0; k < dimension; k++)
-			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = colors[j][k];
-			//	break;
-			//case eC_TEXCOORD0:
-			//	for (int k = 0; k < dimension; k++)
-			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = texCoord0[j][k];
-			//	break;
-			//case eC_TEXCOORD1:
-			//	for (int k = 0; k < dimension; k++)
-			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = texCoord1[j][k];
-			//	break;
-			//case eC_TEXCOORD2:
-			//	for (int k = 0; k < dimension; k++)
-			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = texCoord2[j][k];
-			//	break;
-			//case eC_TEXCOORD3:
-			//	for (int k = 0; k < dimension; k++)
-			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = texCoord3[j][k];
-			//	break;
-			//case eC_TANGENT:
-			//	for (int k = 0; k < dimension; k++)
-			//		vertexPtr[i * vertexStride + offset + dataTypeSize * k] = tangents[j][k];
-			//	break;
-			//}
+			switch (j)
+			{
+			case eC_VERTEX:
+				memcpy(vertexPtr + i * vertexStride + offset, &(positions[i][0]), dimension * dataTypeSize);
+				break;
+			case eC_NORMAL:
+				memcpy(vertexPtr + i * vertexStride + offset, &(normals[i][0]), dimension * dataTypeSize);
+				break;
+			case eC_COLOR:
+				memcpy(vertexPtr + i * vertexStride + offset, &(colors[i][0]), dimension * dataTypeSize);
+				break;
+			case eC_TEXCOORD0:
+				memcpy(vertexPtr + i * vertexStride + offset, &(texCoord0[i][0]), dimension * dataTypeSize);
+				break;
+			case eC_TEXCOORD1:
+				memcpy(vertexPtr + i * vertexStride + offset, &(texCoord1[i][0]), dimension * dataTypeSize);
+				break;
+			case eC_TEXCOORD2:
+				memcpy(vertexPtr + i * vertexStride + offset, &(texCoord2[i][0]), dimension * dataTypeSize);
+				break;
+			case eC_TEXCOORD3:
+				memcpy(vertexPtr + i * vertexStride + offset, &(texCoord3[i][0]), dimension * dataTypeSize);
+				break;
+			case eC_TANGENT:
+				memcpy(vertexPtr + i * vertexStride + offset, &(tangents[i][0]), dimension * dataTypeSize);
+				break;
+			}
 			
 			offset += dimension * dataTypeSize;
 		}
-
-		vertexPtr += vertexStride;
 	}
 
 	// vao generation and bind
@@ -165,7 +154,7 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 	// vbo, vertex buffer
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertexStride * vertexCount, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertexStride * vertexCount, vertexStream, GL_STATIC_DRAW);
 	//glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
 
 	// ebo, index buffer

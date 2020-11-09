@@ -35,7 +35,8 @@ s3Mesh* s3ModelImporter::load(const char* path)
         for (const auto& index : shape.mesh.indices)
         {
             // Suppose 3 vertcies per face
-            submesh->vertexCount = (unsigned int)attrib.vertices.size() / 3;
+            //submesh->vertexCount = (unsigned int)attrib.vertices.size() / 3;
+            submesh->vertexCount = (unsigned int)shape.mesh.indices.size();
 
             // index -1 means not used
             if (attrib.vertices.size() > 0 && index.vertex_index != -1)
