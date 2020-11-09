@@ -619,7 +619,7 @@ bool s3Shader::load(const char* _shaderFilePath)
     if(needToAdd) inputLayoutHandle = manager.add(*newInputLayout);
 
 	shaderFilePath = _shaderFilePath;
-    s3Log::success("Shader:%s build succeed", shaderFilePath.c_str());
+    s3Log::success("Shader:%s build succeed\n", shaderFilePath.c_str());
 	return true;
 }
 

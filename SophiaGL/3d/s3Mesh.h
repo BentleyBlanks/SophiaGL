@@ -23,9 +23,8 @@ private:
 	std::vector<unsigned int> indices;
 
 	// vertex data would be updated after called updateVertexStream()
-	//std::vector<float> vertices;
 	unsigned int vertexStride = 0;
-	void* vertices = nullptr;
+	void* vertexStream = nullptr;
 
 	// vertex's buffer
 	std::vector<glm::vec4> positions;
