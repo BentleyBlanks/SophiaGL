@@ -8,3 +8,4 @@
 #include <test/appTest.h>
 //#include <test/imguiTest.h>
 //#include <test/shaderParserTest.h>
+//#include <test/filePathTest.h>

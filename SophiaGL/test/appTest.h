@@ -102,11 +102,11 @@ public:
         if (userData->sender == &s3CallbackManager::onEngineInit)
         {
             shaderDirWatch = new s3UtilsDirectoryWatch();
-            shaderDirWatch->watch("../thirdparty/fake_unity_shader/src/shader_parser", false);
+            shaderDirWatch->watch("../../thirdparty/fake_unity_shader/src/shader_parser", false);
             //shaderDirWatch->watch(paths, false);
 
             info.api = ShaderGraphicsAPI::OpenGL;
-            info.root_path = "../thirdparty/fake_unity_shader/src/";
+            info.root_path = "../../thirdparty/fake_unity_shader/src/";
             shader_init(info);
 
             camera = new s3Camera();
@@ -116,8 +116,8 @@ public:
 
             texture0 = new s3Texture2d();
             texture1 = new s3Texture2d();
-            texture0->load("../resources/images/lulu.jpg");
-            texture1->load("../resources/images/lulu2.jpg");
+            texture0->load("../../resources/images/lulu.jpg");
+            texture1->load("../../resources/images/lulu2.jpg");
             // could be removed when shader parser added
             texture0->setLocation(0);
             texture1->setLocation(1);
@@ -131,7 +131,7 @@ public:
             //mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
             //mesh = s3ModelImporter::load("../../resources/models/cornellBox/CornellBox-Sphere.obj");
             //mesh = s3ModelImporter::load("../../resources/models/cornellBox/water.obj");
-            mesh = s3ModelImporter::load("../resources/models/cube/cube.obj");
+            mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
 
             s3Renderer::setDepthTest(true);
         }

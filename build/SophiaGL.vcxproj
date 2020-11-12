@@ -73,6 +73,7 @@
     <ClInclude Include="..\SophiaGL\test\appTest.h" />
     <ClInclude Include="..\SophiaGL\test\cameraTest.h" />
     <ClInclude Include="..\SophiaGL\test\enumTest.h" />
+    <ClInclude Include="..\SophiaGL\test\filePathTest.h" />
     <ClInclude Include="..\SophiaGL\test\imguiTest.h" />
     <ClInclude Include="..\SophiaGL\test\mainTest.h" />
     <ClInclude Include="..\SophiaGL\test\meshTest.h" />

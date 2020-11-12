@@ -35,6 +35,9 @@ bool s3Window::init(const char* title, int x, int y, int width, int height)
 
     s3CallbackInit();
 
+    // Set current directory to process's
+    setCurrentDirectory();
+
     glfwSetErrorCallback(errorCB);
 
     // init window
@@ -106,6 +109,32 @@ void s3Window::render()
 
     // Present
     glfwSwapBuffers(window);
+}
+
+void s3Window::setCurrentDirectory()
+{
+    // Ref: https://docs.microsoft.com/en-us/windows/win32/devnotes/-getmodulefilename
+    TCHAR pathPtr[MAX_PATH];
+    GetModuleFileName(NULL, pathPtr, MAX_PATH);
+
+    std::wstring pathStr = (std::wstring)(pathPtr);
+    int index = (int)pathStr.find_last_of(TEXT("\\"));
+
+    // Ref: https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setcurrentdirectory
+    std::wstring directoryPathStr = pathStr.substr(0, index);
+    SetCurrentDirectory(directoryPathStr.c_str());
+
+    //char pathStr[1024];
+    //char* directoryPathStr;
+    //if (GetModuleFileNameA(NULL, pathStr, sizeof(pathStr)))
+    //{
+    //	// Ref: http://www.cplusplus.com/reference/cstring/strrchr/
+    //	directoryPathStr = strrchr(pathStr, '\\');
+
+    //	// Change the last \\ into \0. Instead of get rid of 
+    //	if (directoryPathStr) *directoryPathStr = '\0';
+    //	SetCurrentDirectoryA(pathStr);
+    //}
 }
 
 void s3Window::functionKey(GLFWwindow* window, bool& control, bool& shift, bool& alt)
