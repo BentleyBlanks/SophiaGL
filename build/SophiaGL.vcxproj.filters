@@ -212,6 +212,9 @@
     <ClInclude Include="..\SophiaGL\test\vertexDataTest.h">
       <Filter>SophiaGL\test</Filter>
     </ClInclude>
+    <ClInclude Include="..\SophiaGL\test\filePathTest.h">
+      <Filter>SophiaGL\test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shaders\basicFS.glsl">

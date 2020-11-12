@@ -38,6 +38,7 @@ private:
     ~s3Window();
 
     void render();
+    void setCurrentDirectory();
 
     static void keyInput(GLFWwindow* window);
     static void functionKey(GLFWwindow* window, bool& control, bool& shift, bool& alt);
