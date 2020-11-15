@@ -29,7 +29,7 @@ public:
 		//shaderDirWatch->watch(paths, false);
 
 		info.api = ShaderGraphicsAPI::OpenGL;
-		info.root_path = "../thirdparty/fake_unity_shader/src/";
+		info.shader_path = "../thirdparty/fake_unity_shader/src/";
 	}
 
 	~s3App()
