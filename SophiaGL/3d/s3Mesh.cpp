@@ -176,7 +176,7 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 		auto stride     = dataSize * dimension;
 
 		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, dimension, glDataType, GL_FALSE, stride, (void*)attrOffset);
+		glVertexAttribPointer(index, dimension, glDataType, GL_FALSE, vertexStride, (void*)attrOffset);
 
 		attrOffset += (int)stride;
 		index++;
