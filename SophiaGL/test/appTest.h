@@ -137,6 +137,14 @@ public:
         }
         else if (userData->sender == &s3CallbackManager::onUpdate)
         {
+            if (shaderDirWatch->hasChanged())
+            {
+                // hotreload
+                shader_init(info);
+                shader->reload();
+                printf("-----------------------------------------------------------------------\n");
+            }
+
             // time update
             float currentFrame = window.getTime();
             deltaTime = currentFrame - lastFrameTime;

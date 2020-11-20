@@ -113,9 +113,7 @@ public:
     unsigned int getInputLayoutHandle() const { return inputLayoutHandle; }
 
 private:
-    //bool loadFromSource(const char* vShaderCode, const char* fShaderCode);
-    //bool checkShader(unsigned int shader, bool isVertex);
-    //bool checkProgram(unsigned int program);
+    void updateInputLayout(const std::vector<shader_input_layout_elem_gl>& inputLayoutList);
 
     //std::map<std::string, unsigned int> programMap;
     unsigned int program = 0;
