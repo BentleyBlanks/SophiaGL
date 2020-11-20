@@ -149,6 +149,10 @@ void s3Log::log(s3LogLevel logLevel, const char* message, va_list args)
         va_end(temp_args);
     }
 #endif
+    
+    // revert console output color
+    attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
+    SetConsoleTextAttribute(GetStdHandle(STD_ERROR_HANDLE), attr);
 }
 
 void s3Log::log(s3LogLevel logLevel, const char* message, ...)

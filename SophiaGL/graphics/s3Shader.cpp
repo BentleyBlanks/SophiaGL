@@ -470,81 +470,6 @@ void s3Shader::print() const
     }
 }
 
-//bool s3Shader::checkShader(unsigned int shader, bool isVertex)
-//{
-//	int success;
-//	char infoLog[512];
-//	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-//
-//	if (!success)
-//	{
-//		glGetShaderInfoLog(shader, 512, NULL, infoLog);
-//		s3Log::error("%s shader compile failed, %s\n", isVertex ? "Vertex" : "Fragment", infoLog);
-//		return false;
-//	}
-//
-//	return true;
-//}
-
-//bool s3Shader::checkProgram(unsigned int program)
-//{
-//	int success;
-//	char infoLog[512];
-//	glGetProgramiv(program, GL_LINK_STATUS, &success);
-//
-//	if (!success)
-//	{
-//		glGetProgramInfoLog(program, 512, NULL, infoLog);
-//		s3Log::error("Program link failed, %s\n", infoLog);
-//		return false;
-//	}
-//
-//	return true;
-//}
-
-//bool s3Shader::loadFromSource(const char* vShaderCode, const char* fShaderCode)
-//{
-//    // vs Shader
-//    unsigned int vs;
-//    vs = glCreateShader(GL_VERTEX_SHADER);
-//    glShaderSource(vs, 1, &vShaderCode, NULL);
-//    glCompileShader(vs);
-//    if (!checkShader(vs, true))
-//    {
-//        bIsLoaded = false;
-//        return false;
-//    }
-//
-//    // fs shader
-//    unsigned int fs;
-//    fs = glCreateShader(GL_FRAGMENT_SHADER);
-//    glShaderSource(fs, 1, &fShaderCode, NULL);
-//    glCompileShader(fs);
-//    if (!checkShader(fs, false))
-//    {
-//        bIsLoaded = false;
-//        return false;
-//    }
-//
-//    // shader Program
-//    program = glCreateProgram();
-//    glAttachShader(program, vs);
-//    glAttachShader(program, fs);
-//    glLinkProgram(program);
-//    if (!checkProgram(program))
-//    {
-//        bIsLoaded = false;
-//        return false;
-//    }
-//
-//    // delete the shaders as they're linked into our program now and no longer necessery
-//    glDeleteShader(vs);
-//    glDeleteShader(fs);
-//
-//    bIsLoaded = true;
-//    return bIsLoaded;
-//}
-
 bool s3Shader::load(const char* _shaderFilePath)
 {
     if (bIsLoaded)
@@ -581,17 +506,27 @@ bool s3Shader::load(const char* _shaderFilePath)
     // now only supported 1 pass
     program = pass_list[0].program;
 
+    updateInputLayout(pass_list[0].input_layout_list);
+
+	shaderFilePath = _shaderFilePath;
+    s3Log::success("Shader:%s build succeed\n", shaderFilePath.c_str());
+
+    bIsLoaded = true;
+	return true;
+}
+
+void s3Shader::updateInputLayout(const std::vector<shader_input_layout_elem_gl>& inputLayoutList)
+{
     // initialize a new, shader related, input layout
     auto* newInputLayout = new s3InputLayout();
-    auto& inputLayoutList = pass_list[0].input_layout_list;
-    for(auto iter = inputLayoutList.begin(); iter < inputLayoutList.end(); iter++)
+    for (auto iter = inputLayoutList.begin(); iter < inputLayoutList.end(); iter++)
     {
         auto channel = iter->channel;
-        if (channel == eC_NONE || channel >= eC_COUNT) 
+        if (channel == eC_NONE || channel >= eC_COUNT)
             continue;
 
-        newInputLayout->channels[channel]   = true;
-        newInputLayout->dataTypes[channel]  = iter->data_type;
+        newInputLayout->channels[channel] = true;
+        newInputLayout->dataTypes[channel] = iter->data_type;
         newInputLayout->dimensions[channel] = iter->dimension;
     }
 
@@ -616,11 +551,7 @@ bool s3Shader::load(const char* _shaderFilePath)
             }
         }
     }
-    if(needToAdd) inputLayoutHandle = manager.add(*newInputLayout);
-
-	shaderFilePath = _shaderFilePath;
-    s3Log::success("Shader:%s build succeed\n", shaderFilePath.c_str());
-	return true;
+    if (needToAdd) inputLayoutHandle = manager.add(*newInputLayout);
 }
 
 bool s3Shader::reload()
