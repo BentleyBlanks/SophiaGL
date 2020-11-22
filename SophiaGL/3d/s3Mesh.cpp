@@ -65,7 +65,7 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 	auto& manager = s3InputLayoutManager::getInstance();
 	if(!manager.isValid(handle))
 	{
-		s3Log::warning("s3Submesh's related handle not valid");
+		s3Log::warning("s3Submesh's related handle not valid\n");
 		return;
 	}
 
@@ -170,10 +170,10 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 	{
 		if (!inputLayout.channels[i]) continue;
 
-		auto dataSize   = (int)getDataTypeSize(inputLayout.dataTypes[i]);
-		auto dimension  = inputLayout.dimensions[i];
+		auto dataSize = (int)getDataTypeSize(inputLayout.dataTypes[i]);
+		auto dimension = inputLayout.dimensions[i];
 		auto glDataType = ConvertDataTypeToGLType(inputLayout.dataTypes[i]);
-		auto stride     = dataSize * dimension;
+		auto stride = dataSize * dimension;
 
 		glEnableVertexAttribArray(index);
 		glVertexAttribPointer(index, dimension, glDataType, GL_FALSE, vertexStride, (void*)attrOffset);
@@ -181,37 +181,6 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 		attrOffset += (int)stride;
 		index++;
 	}
-
-	//int index = 0;
-	//unsigned long long offset = 0;
-	//int stride = ((int)(pCount > 0) * 3 + (int)(nCount > 0) * 3 + (int)(t0Count > 0) * 2) * sizeof(float);
-
-	//if (pCount > 0)
-	//{
-	//	int size = sizeof(float) * 3;
-	//	glEnableVertexAttribArray(index);
-	//	glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
-	//	index += 1;
-	//	offset += size;
-	//}
-
-	//if (nCount > 0)
-	//{
-	//	int size = sizeof(float) * 3;
-	//	glEnableVertexAttribArray(index);
-	//	glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
-	//	index += 1;
-	//	offset += size;
-	//}
-
-	//if (t0Count > 0)
-	//{
-	//	int size = sizeof(float) * 2;
-	//	glEnableVertexAttribArray(index);
-	//	glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, stride, (void*)offset);
-	//	index += 1;
-	//	offset += size;
-	//}
 
 	// unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
