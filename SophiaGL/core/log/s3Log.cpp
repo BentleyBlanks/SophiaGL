@@ -96,6 +96,8 @@ void s3Log::log(s3LogLevel logLevel, const char* message, va_list args)
         strncpy(content, contentBuffer, t);
         content[t] = '\0';
 
+        // Ref: https://blog.csdn.net/ustccw/article/details/79038403
+        // Need to add \n, or use fflush(stdout). Or it would be stucked if the output buffer is full, only restart VS could help
         vprintf(content, args);
 
         delete[] content;
