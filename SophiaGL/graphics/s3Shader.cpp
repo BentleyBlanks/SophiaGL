@@ -525,8 +525,8 @@ void s3Shader::updateInputLayout(const std::vector<shader_input_layout_elem_gl>&
         if (channel == eC_NONE || channel >= eC_COUNT)
             continue;
 
-        newInputLayout->channels[channel] = true;
-        newInputLayout->dataTypes[channel] = iter->data_type;
+        newInputLayout->channels[channel]   = true;
+        newInputLayout->dataTypes[channel]  = iter->data_type;
         newInputLayout->dimensions[channel] = iter->dimension;
     }
 
