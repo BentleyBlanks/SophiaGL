@@ -11,54 +11,71 @@
 
 #include <shader_parser_gl.h>
 
-// --------------------------------------------------s3ShaderField--------------------------------------------------
-void s3ShaderField::print() const
-{
-    s3Log::print("Type: %s, ", s3EnumUtil(s3ShaderFieldType).toString(type).c_str());
+// Just for simplify the code
+#define S3_GET_VALUE(typeClassStr, typeNameStr) glm::typeClassStr value; \
+                                       std::string typeName = typeNameStr; \
+                                       getValue(typeName, name, (void*)(&value.x), getTypeSize(typeName)); \
+                                       return value
 
-    switch (type)
-    {
-    case s3ShaderFieldType::none:
-        break;
-    case s3ShaderFieldType::texture:
-        s3Log::print("Value: %d\n", texture);
-        break;
-    case s3ShaderFieldType::bool1:
-        s3Log::print("Value: %d\n", bool1);
-        break;
-    case s3ShaderFieldType::int1:
-        s3Log::print("Value: %d\n", int1);
-        break;
-    case s3ShaderFieldType::int2:
-        s3Log::print("Value: [%d, %d]\n", int2.x, int2.y);
-        break;
-    case s3ShaderFieldType::int3:
-        s3Log::print("Value: [%d, %d, %d]\n", int3.x, int3.y, int3.z);
-        break;
-    case s3ShaderFieldType::int4:
-        s3Log::print("Value: [%d, %d, %d, %d]\n", int4.x, int4.y, int4.z, int4.w);
-        break;
-    case s3ShaderFieldType::float1:
-        s3Log::print("Value: %f\n", float1);
-        break;
-    case s3ShaderFieldType::float2:
-        s3Log::print("Value: [%f, %f]\n", float2.x, float2.y);
-        break;
-    case s3ShaderFieldType::float3:
-        s3Log::print("Value: [%f, %f, %f]\n", float3.x, float3.y, float3.z);
-        break;
-    case s3ShaderFieldType::float4:
-        s3Log::print("Value: [%f, %f, %f, %f]\n", float4.x, float4.y, float4.z, float4.w);
-        break;
-    case s3ShaderFieldType::mat4:
-        s3Log::print("Value: [%f, %f, %f, %f][%f, %f, %f, %f][%f, %f, %f, %f][%f, %f, %f, %f]\n", 
-                     mat4[0].x, mat4[0].y, mat4[0].z, mat4[0].w,
-                     mat4[1].x, mat4[1].y, mat4[1].z, mat4[1].w, 
-                     mat4[2].x, mat4[2].y, mat4[2].z, mat4[2].w, 
-                     mat4[3].x, mat4[3].y, mat4[3].z, mat4[3].w);
-        break;
-    }
-}
+#define S3_GET_MAT_VALUE(typeClassStr, typeNameStr) glm::typeClassStr value; \
+                                           std::string typeName = typeNameStr; \
+                                           getValue(typeName, name, (void*)(&value[0].x), getTypeSize(typeName)); \
+                                           return value
+
+#define S3_SET_VALUE(typeNameStr) std::string typeName = typeNameStr; \
+                                  return setValue(typeName, name, (void*)(&value.x), getTypeSize(typeName))
+
+#define S3_SET_MAT_VALUE(typeNameStr) std::string typeName = typeNameStr; \
+                                      return setValue(typeName, name, (void*)(&value[0].x), getTypeSize(typeName))
+
+// --------------------------------------------------s3ShaderField--------------------------------------------------
+//void s3ShaderField::print() const
+//{
+//    s3Log::print("Type: %s, ", s3EnumUtil(s3ShaderFieldType).toString(type).c_str());
+//
+//    switch (type)
+//    {
+//    case s3ShaderFieldType::none:
+//        break;
+//    case s3ShaderFieldType::texture:
+//        s3Log::print("Value: %d\n", texture);
+//        break;
+//    case s3ShaderFieldType::bool1:
+//        s3Log::print("Value: %d\n", bool1);
+//        break;
+//    case s3ShaderFieldType::int1:
+//        s3Log::print("Value: %d\n", int1);
+//        break;
+//    case s3ShaderFieldType::int2:
+//        s3Log::print("Value: [%d, %d]\n", int2.x, int2.y);
+//        break;
+//    case s3ShaderFieldType::int3:
+//        s3Log::print("Value: [%d, %d, %d]\n", int3.x, int3.y, int3.z);
+//        break;
+//    case s3ShaderFieldType::int4:
+//        s3Log::print("Value: [%d, %d, %d, %d]\n", int4.x, int4.y, int4.z, int4.w);
+//        break;
+//    case s3ShaderFieldType::float1:
+//        s3Log::print("Value: %f\n", float1);
+//        break;
+//    case s3ShaderFieldType::float2:
+//        s3Log::print("Value: [%f, %f]\n", float2.x, float2.y);
+//        break;
+//    case s3ShaderFieldType::float3:
+//        s3Log::print("Value: [%f, %f, %f]\n", float3.x, float3.y, float3.z);
+//        break;
+//    case s3ShaderFieldType::float4:
+//        s3Log::print("Value: [%f, %f, %f, %f]\n", float4.x, float4.y, float4.z, float4.w);
+//        break;
+//    case s3ShaderFieldType::mat4:
+//        s3Log::print("Value: [%f, %f, %f, %f][%f, %f, %f, %f][%f, %f, %f, %f][%f, %f, %f, %f]\n", 
+//                     mat4[0].x, mat4[0].y, mat4[0].z, mat4[0].w,
+//                     mat4[1].x, mat4[1].y, mat4[1].z, mat4[1].w, 
+//                     mat4[2].x, mat4[2].y, mat4[2].z, mat4[2].w, 
+//                     mat4[3].x, mat4[3].y, mat4[3].z, mat4[3].w);
+//        break;
+//    }
+//}
 
 // --------------------------------------------------s3Shader--------------------------------------------------
 s3Shader::s3Shader()
@@ -81,393 +98,393 @@ void s3Shader::begin()
 {
 	glUseProgram(program);
 
-    // bind all the cached field into pipeline
-    for (auto it = fieldMap.begin(); it != fieldMap.end(); it++)
+    // bind all the textures
+    for (auto t : textureMap)
     {
-        const std::string& name = it->first;
-        s3ShaderField& field    = it->second;
-        switch (field.type)
-        {
-        case s3ShaderFieldType::none:
-        {
-            s3Log::warning("s3Shader field type: none\n");
-            break;
-        }
-        case s3ShaderFieldType::texture:
-        {
-            s3Texture* tex = field.texture;
-            int location = tex->getLocation();
-            int textureID = tex->getTextureID();
+        auto tex       = t.second;
+        auto location  = tex->getLocation();
+        auto textureID = tex->getTextureID();
 
-            glActiveTexture(GL_TEXTURE0 + location);
-            glBindTexture(GL_TEXTURE_2D, textureID);
-            break;
-        }
-        case s3ShaderFieldType::bool1:
-        {
-            bool& bool1 = field.bool1;
-            glUniform1i(glGetUniformLocation(program, name.c_str()), bool1);
-            break;
-        }
-        case s3ShaderFieldType::int1:
-        {
-            int& int1 = field.int1;
-            glUniform1i(glGetUniformLocation(program, name.c_str()), int1);
-            break;
-        }
-        case s3ShaderFieldType::int2:
-        {
-            glm::ivec2& int2 = field.int2;
-            glUniform2i(glGetUniformLocation(program, name.c_str()), int2.x, int2.y);
-            break;
-        }
-        case s3ShaderFieldType::int3:
-        {
-            glm::ivec3& int3 = field.int3;
-            glUniform3i(glGetUniformLocation(program, name.c_str()), int3.x, int3.y, int3.z);
-            break;
-        }
-        case s3ShaderFieldType::int4:
-        {
-            glm::ivec4& int4 = field.int4;
-            glUniform4i(glGetUniformLocation(program, name.c_str()), int4.x, int4.y, int4.z, int4.w);
-            break;
-        }
-        case s3ShaderFieldType::float1:
-        {
-            float& float1 = field.float1;
-            glUniform1f(glGetUniformLocation(program, name.c_str()), float1);
-            break;
-        }
-        case s3ShaderFieldType::float2:
-        {
-            glm::vec2& float2 = field.float2;
-            glUniform2f(glGetUniformLocation(program, name.c_str()), float2.x, float2.y);
-            break;
-        }
-        case s3ShaderFieldType::float3:
-        {
-            glm::vec3& float3 = field.float3;
-            glUniform3f(glGetUniformLocation(program, name.c_str()), float3.x, float3.y, float3.z);
-            break;
-        }
-        case s3ShaderFieldType::float4:
-        {
-            glm::vec4& float4 = field.float4;
-            glUniform4f(glGetUniformLocation(program, name.c_str()), float4.x, float4.y, float4.z, float4.w);
-            break;
-        }
-        case s3ShaderFieldType::mat4:
-        {
-            glm::mat4& mat4 = field.mat4;
-            glUniformMatrix4fv(glGetUniformLocation(program, name.c_str()), 1, false, glm::value_ptr(mat4));
-            break;
-        }
-        }
+        glActiveTexture(GL_TEXTURE0 + location);
+        glBindTexture(GL_TEXTURE_2D, textureID);
     }
+
+    //// bind all the cached field into pipeline
+    //for (auto it = fieldMap.begin(); it != fieldMap.end(); it++)
+    //{
+    //    const std::string& name = it->first;
+    //    s3ShaderField& field    = it->second;
+    //    switch (field.type)
+    //    {
+    //    case s3ShaderFieldType::none:
+    //    {
+    //        s3Log::warning("s3Shader field type: none\n");
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::texture:
+    //    {
+    //        s3Texture* tex = field.texture;
+    //        int location = tex->getLocation();
+    //        int textureID = tex->getTextureID();
+
+    //        glActiveTexture(GL_TEXTURE0 + location);
+    //        glBindTexture(GL_TEXTURE_2D, textureID);
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::bool1:
+    //    {
+    //        bool& bool1 = field.bool1;
+    //        glUniform1i(glGetUniformLocation(program, name.c_str()), bool1);
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::int1:
+    //    {
+    //        int& int1 = field.int1;
+    //        glUniform1i(glGetUniformLocation(program, name.c_str()), int1);
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::int2:
+    //    {
+    //        glm::ivec2& int2 = field.int2;
+    //        glUniform2i(glGetUniformLocation(program, name.c_str()), int2.x, int2.y);
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::int3:
+    //    {
+    //        glm::ivec3& int3 = field.int3;
+    //        glUniform3i(glGetUniformLocation(program, name.c_str()), int3.x, int3.y, int3.z);
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::int4:
+    //    {
+    //        glm::ivec4& int4 = field.int4;
+    //        glUniform4i(glGetUniformLocation(program, name.c_str()), int4.x, int4.y, int4.z, int4.w);
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::float1:
+    //    {
+    //        float& float1 = field.float1;
+    //        glUniform1f(glGetUniformLocation(program, name.c_str()), float1);
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::float2:
+    //    {
+    //        glm::vec2& float2 = field.float2;
+    //        glUniform2f(glGetUniformLocation(program, name.c_str()), float2.x, float2.y);
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::float3:
+    //    {
+    //        glm::vec3& float3 = field.float3;
+    //        glUniform3f(glGetUniformLocation(program, name.c_str()), float3.x, float3.y, float3.z);
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::float4:
+    //    {
+    //        glm::vec4& float4 = field.float4;
+    //        glUniform4f(glGetUniformLocation(program, name.c_str()), float4.x, float4.y, float4.z, float4.w);
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::mat4:
+    //    {
+    //        glm::mat4& mat4 = field.mat4;
+    //        glUniformMatrix4fv(glGetUniformLocation(program, name.c_str()), 1, false, glm::value_ptr(mat4));
+    //        break;
+    //    }
+    //    }
+    //}
 }
 
 void s3Shader::end()
 {
 	glUseProgram(0);
 
-    // unbind all the cached field from pipeline
-    for (auto it = fieldMap.begin(); it != fieldMap.end(); it++)
+    // unbind all textures
+    for (auto tex : textureMap)
     {
-        const std::string& name = it->first;
-        const s3ShaderField& field = it->second;
+        int location = tex.second->getLocation();
 
-        switch (field.type)
-        {
-        case s3ShaderFieldType::none:
-        {
-            s3Log::warning("s3Shader field type: none\n");
-            break;
-        }
-        case s3ShaderFieldType::texture:
-        {
-            glBindTexture(GL_TEXTURE_2D, 0);
-            glActiveTexture(GL_TEXTURE0);
-            break;
-        }
-        case s3ShaderFieldType::bool1:
-            break;
-        case s3ShaderFieldType::int1:
-            break;
-        case s3ShaderFieldType::int2:
-            break;
-        case s3ShaderFieldType::int3:
-            break;
-        case s3ShaderFieldType::int4:
-            break;
-        case s3ShaderFieldType::float1:
-            break;
-        case s3ShaderFieldType::float2:
-            break;
-        case s3ShaderFieldType::float3:
-            break;
-        case s3ShaderFieldType::float4:
-            break;
-        case s3ShaderFieldType::mat4:
-            break;
-        }
+        glActiveTexture(GL_TEXTURE0 + location);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
+
+    //// unbind all the cached field from pipeline
+    //for (auto it = fieldMap.begin(); it != fieldMap.end(); it++)
+    //{
+    //    const std::string& name = it->first;
+    //    const s3ShaderField& field = it->second;
+
+    //    switch (field.type)
+    //    {
+    //    case s3ShaderFieldType::none:
+    //    {
+    //        s3Log::warning("s3Shader field type: none\n");
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::texture:
+    //    {
+    //        glBindTexture(GL_TEXTURE_2D, 0);
+    //        glActiveTexture(GL_TEXTURE0);
+    //        break;
+    //    }
+    //    case s3ShaderFieldType::bool1:
+    //        break;
+    //    case s3ShaderFieldType::int1:
+    //        break;
+    //    case s3ShaderFieldType::int2:
+    //        break;
+    //    case s3ShaderFieldType::int3:
+    //        break;
+    //    case s3ShaderFieldType::int4:
+    //        break;
+    //    case s3ShaderFieldType::float1:
+    //        break;
+    //    case s3ShaderFieldType::float2:
+    //        break;
+    //    case s3ShaderFieldType::float3:
+    //        break;
+    //    case s3ShaderFieldType::float4:
+    //        break;
+    //    case s3ShaderFieldType::mat4:
+    //        break;
+    //    }
+    //}
+}
+glm::bvec1 s3Shader::getBool1(const std::string& name) const
+{
+    S3_GET_VALUE(bvec1, "bool1");
 }
 
-float s3Shader::getFloat(const std::string& name) const
+glm::bvec2 s3Shader::getBool2(const std::string& name) const
 {
-    s3ShaderField field = getValue(name);
-
-    if (field.type == s3ShaderFieldType::none ||
-        field.type != s3ShaderFieldType::float1)
-        return 0.0f;
-
-    return field.float1;
+    S3_GET_VALUE(bvec2, "bool2");
 }
 
-glm::vec2 s3Shader::getFloat2(const std::string& name) const
+glm::bvec3 s3Shader::getBool3(const std::string& name) const
 {
-    s3ShaderField field = getValue(name);
-
-    if (field.type == s3ShaderFieldType::none ||
-        field.type != s3ShaderFieldType::float2)
-        return glm::vec2();
-
-    return field.float2;
+    S3_GET_VALUE(bvec3, "bool3");
 }
 
-glm::vec3 s3Shader::getFloat3(const std::string& name) const
+glm::bvec4 s3Shader::getBool4(const std::string& name) const
 {
-    s3ShaderField field = getValue(name);
-
-    if (field.type == s3ShaderFieldType::none ||
-        field.type != s3ShaderFieldType::float3)
-        return glm::vec3();
-
-    return field.float3;
+    S3_GET_VALUE(bvec4, "bool4");
 }
 
-glm::vec4 s3Shader::getFloat4(const std::string& name) const
+glm::ivec1 s3Shader::getInt1(const std::string& name) const
 {
-    s3ShaderField field = getValue(name);
-
-    if (field.type == s3ShaderFieldType::none ||
-        field.type != s3ShaderFieldType::float4)
-        return glm::vec4();
-
-    return field.float4;
-}
-
-int s3Shader::getInt(const std::string& name) const
-{
-    s3ShaderField field = getValue(name);
-
-    if (field.type == s3ShaderFieldType::none ||
-        field.type != s3ShaderFieldType::int1)
-        return 0;
-
-    return field.int1;
+    S3_GET_VALUE(ivec1, "int1");
 }
 
 glm::ivec2 s3Shader::getInt2(const std::string& name) const
 {
-    s3ShaderField field = getValue(name);
-
-    if (field.type == s3ShaderFieldType::none ||
-        field.type != s3ShaderFieldType::int2)
-        return glm::ivec2();
-
-    return field.int2;
+    S3_GET_VALUE(ivec2, "int2");
 }
 
 glm::ivec3 s3Shader::getInt3(const std::string& name) const
 {
-    s3ShaderField field = getValue(name);
-
-    if (field.type == s3ShaderFieldType::none ||
-        field.type != s3ShaderFieldType::int3)
-        return glm::ivec3();
-
-    return field.int3;
+    S3_GET_VALUE(ivec3, "int3");
 }
 
 glm::ivec4 s3Shader::getInt4(const std::string& name) const
 {
-    s3ShaderField field = getValue(name);
-
-    if (field.type == s3ShaderFieldType::none || 
-        field.type != s3ShaderFieldType::int4)
-        return glm::ivec4();
-
-    return field.int4;
+    S3_GET_VALUE(ivec4, "int4");
 }
 
-glm::mat4 s3Shader::getMatrix(const std::string& name) const
+glm::vec1 s3Shader::getFloat1(const std::string& name) const
 {
-    s3ShaderField field = getValue(name);
-
-    if (field.type == s3ShaderFieldType::none ||
-        field.type != s3ShaderFieldType::mat4)
-        return glm::mat4();
-
-    return field.mat4;
+    S3_GET_VALUE(vec1, "float1");
 }
 
-bool s3Shader::getBool(const std::string& name) const
+glm::vec2 s3Shader::getFloat2(const std::string& name) const
 {
-    s3ShaderField field = getValue(name);
+    S3_GET_VALUE(vec2, "float2");
+}
 
-    if (field.type == s3ShaderFieldType::none ||
-        field.type != s3ShaderFieldType::bool1)
-        return false;
+glm::vec3 s3Shader::getFloat3(const std::string& name) const
+{
+    S3_GET_VALUE(vec3, "float3");
+}
 
-    return field.bool1;
+glm::vec4 s3Shader::getFloat4(const std::string& name) const
+{
+    S3_GET_VALUE(vec4, "float4");
+}
+
+glm::dvec1 s3Shader::getDouble(const std::string& name) const
+{
+    S3_GET_VALUE(dvec1, "double1");
+}
+
+glm::dvec2 s3Shader::getDouble2(const std::string& name) const
+{
+    S3_GET_VALUE(dvec2, "double2");
+}
+
+glm::dvec3 s3Shader::getDouble3(const std::string& name) const
+{
+    S3_GET_VALUE(dvec3, "double3");
+}
+
+glm::dvec4 s3Shader::getDouble4(const std::string& name) const
+{
+    S3_GET_VALUE(dvec4, "double4");
+}
+
+glm::mat3 s3Shader::getMatrix3(const std::string& name) const
+{
+    S3_GET_MAT_VALUE(mat3, "float3x3");
+}
+
+glm::mat4 s3Shader::getMatrix4(const std::string& name) const
+{
+    S3_GET_MAT_VALUE(mat4, "float4x4");
 }
 
 s3Texture* s3Shader::getTexture(const std::string& name) const
 {
-    s3ShaderField field = getValue(name);
+    auto iter = textureMap.find(name);
+    if (iter == textureMap.end()) 
+        return nullptr;
 
-    if (field.type == s3ShaderFieldType::none ||
-        field.type != s3ShaderFieldType::texture)
-        return NULL;
-
-    return field.texture;
+    return iter->second;
 }
 
-bool s3Shader::setBool(const std::string& name, const bool& value)
+bool s3Shader::setBool1(const std::string& name, const glm::bvec1& value)
 {
-    s3ShaderField commonValue;
-    commonValue.type = s3ShaderFieldType::bool1;
-    commonValue.bool1 = value;
-    setValue(name, commonValue);
-    return true;
+    S3_SET_VALUE("bool1");
 }
 
-bool s3Shader::setInt(const std::string& name, const int& value)
+bool s3Shader::setBool2(const std::string& name, const glm::bvec2& value)
 {
-    s3ShaderField commonValue;
-    commonValue.type = s3ShaderFieldType::int1;
-    commonValue.int1 = value;
-    setValue(name, commonValue);
-    return true;
+    S3_SET_VALUE("bool2");
+}
+
+bool s3Shader::setBool3(const std::string& name, const glm::bvec3& value)
+{
+    S3_SET_VALUE("bool3");
+}
+
+bool s3Shader::setBool4(const std::string& name, const glm::bvec4& value)
+{
+    S3_SET_VALUE("bool4");
+}
+
+bool s3Shader::setInt1(const std::string& name, const glm::ivec1& value)
+{
+    S3_SET_VALUE("int1");
 }
 
 bool s3Shader::setInt2(const std::string& name, const glm::ivec2& value)
 {
-    s3ShaderField commonValue;
-    commonValue.type = s3ShaderFieldType::int2;
-    commonValue.int2 = value;
-    setValue(name, commonValue);
-    return true;
+    S3_SET_VALUE("int2");
 }
 
 bool s3Shader::setInt3(const std::string& name, const glm::ivec3& value)
 {
-    s3ShaderField commonValue;
-    commonValue.type = s3ShaderFieldType::int3;
-    commonValue.int3 = value;
-    setValue(name, commonValue);
-    return true;
+    S3_SET_VALUE("int3");
 }
 
 bool s3Shader::setInt4(const std::string& name, const glm::ivec4& value)
 {
-    s3ShaderField commonValue;
-    commonValue.type = s3ShaderFieldType::int4;
-    commonValue.int4 = value;
-    setValue(name, commonValue);
-    return true;
+    S3_SET_VALUE("int4");
 }
 
-bool s3Shader::setFloat(const std::string& name, const float& value)
+bool s3Shader::setFloat1(const std::string& name, const glm::vec1& value)
 {
-    s3ShaderField commonValue;
-    commonValue.type = s3ShaderFieldType::float1;
-    commonValue.float1 = value;
-    setValue(name, commonValue);
-    return true;
+    S3_SET_VALUE("float1");
 }
 
 bool s3Shader::setFloat2(const std::string& name, const glm::vec2& value)
 {
-    s3ShaderField commonValue;
-    commonValue.type = s3ShaderFieldType::float2;
-    commonValue.float2 = value;
-    setValue(name, commonValue);
-    return true;
+    S3_SET_VALUE("float2");
 }
 
 bool s3Shader::setFloat3(const std::string& name, const glm::vec3& value)
 {
-    s3ShaderField commonValue;
-    commonValue.type = s3ShaderFieldType::float3;
-    commonValue.float3 = value;
-    setValue(name, commonValue);
-    return true;
+    S3_SET_VALUE("float3");
 }
 
 bool s3Shader::setFloat4(const std::string& name, const glm::vec4& value)
 {
-    s3ShaderField commonValue;
-    commonValue.type = s3ShaderFieldType::float4;
-    commonValue.float4 = value;
-    setValue(name, commonValue);
-    return true;
+    S3_SET_VALUE("float4");
 }
 
-bool s3Shader::setMatrix(const std::string& name, const glm::mat4& value)
+bool s3Shader::setDouble1(const std::string& name, const glm::vec1& value)
 {
-    s3ShaderField commonValue;
-    commonValue.type = s3ShaderFieldType::mat4;
-    commonValue.mat4 = value;
-    setValue(name, commonValue);
-    return true;
+    S3_SET_VALUE("double1");
+}
+
+bool s3Shader::setDouble2(const std::string& name, const glm::vec2& value)
+{
+    S3_SET_VALUE("double2");
+}
+
+bool s3Shader::setDouble3(const std::string& name, const glm::vec3& value)
+{
+    S3_SET_VALUE("double3");
+}
+
+bool s3Shader::setDouble4(const std::string& name, const glm::vec4& value)
+{
+    S3_SET_VALUE("double4");
+}
+
+bool s3Shader::setMatrix3(const std::string& name, const glm::mat3& value)
+{
+    S3_SET_MAT_VALUE("float3x3");
+}
+
+bool s3Shader::setMatrix4(const std::string& name, const glm::mat4& value)
+{
+    S3_SET_MAT_VALUE("float4x4");
 }
 
 bool s3Shader::setTexture(const std::string& name, s3Texture* value)
 {
     if (!value) return false;
 
+    // Ref: https://learnopengl.com/Getting-started/Textures
+    // only need to set once
+    // (uniform localtion, texture location)
     glUniform1i(glGetUniformLocation(program, name.c_str()), value->getLocation());
+    
+    textureMap[name] = value;
 
-    s3ShaderField commonValue;
-    commonValue.type = s3ShaderFieldType::texture;
-    commonValue.texture = value;
-    setValue(name, commonValue);
     return true;
 }
 
-bool s3Shader::setValue(const std::string& name, s3ShaderField value)
-{
-    fieldMap[name] = value;
-    return true;
-}
-
-s3ShaderField s3Shader::getValue(const std::string& name) const
-{
-    static s3ShaderField defaultField;
-
-    auto it = fieldMap.find(name);
-    if (it != fieldMap.end())
-        return it->second;
-
-    return defaultField;
-}
+//bool s3Shader::setValue(const std::string& name, s3ShaderField value)
+//{
+//    if (!findValueInUniformElemList(name)) return false;
+//
+//    fieldMap[name] = value;
+//    return true;
+//}
+//
+//s3ShaderField s3Shader::getValue(const std::string& name) const
+//{
+//    static s3ShaderField defaultField;
+//
+//    auto it = fieldMap.find(name);
+//    if (it != fieldMap.end())
+//        return it->second;
+//
+//    return defaultField;
+//}
 
 void s3Shader::print() const
 {
     //s3Log::debug("VS: %s, FS: %s\n", vertexSource.c_str(), fragmentSource.c_str());
     s3Log::debug("Program: %d\n", program);
 
-    for (auto it = fieldMap.begin(); it != fieldMap.end(); it++)
-    {
-        const std::string& name    = it->first;
-        const s3ShaderField& field = it->second;
+    //for (auto it = fieldMap.begin(); it != fieldMap.end(); it++)
+    //{
+    //    const std::string& name    = it->first;
+    //    const s3ShaderField& field = it->second;
 
-        s3Log::debug("FieldName: %s, ", name.c_str());
-        field.print();
-    }
+    //    s3Log::debug("FieldName: %s, ", name.c_str());
+    //    field.print();
+    //}
 }
 
 bool s3Shader::load(const char* _shaderFilePath)
@@ -485,7 +502,7 @@ bool s3Shader::load(const char* _shaderFilePath)
 
         vertexSource.clear();
         fragmentSource.clear();
-        fieldMap.clear();
+        //fieldMap.clear();
 
         bIsLoaded = false;
     }
@@ -494,25 +511,100 @@ bool s3Shader::load(const char* _shaderFilePath)
 	const char* shaderName = shader_load_gl(_shaderFilePath);
 	if (!shaderName) return false;
 
+    shaderFilePath = _shaderFilePath;
+    name = shaderName;
+
     if (g_shadermap_gl.find(shaderName) == g_shadermap_gl.end()) return false;
-	auto shader = g_shadermap_gl[shaderName];
+	auto& shader = g_shadermap_gl[shaderName];
     
-    auto subshader_list = shader.subshader_list;
+    auto& subshader_list = shader.subshader_list;
     if (subshader_list.size() <= 0) return false;
 
-    auto pass_list = subshader_list[0].pass_list;
+    auto& pass_list = subshader_list[0].pass_list;
     if (pass_list.size() <= 0) return false;
 
     // now only supported 1 pass
     program = pass_list[0].program;
 
     updateInputLayout(pass_list[0].input_layout_list);
+    updateUniformData(pass_list[0].uniform_buffer_elem_list);
 
-	shaderFilePath = _shaderFilePath;
     s3Log::success("Shader:%s build succeed\n", shaderFilePath.c_str());
 
     bIsLoaded = true;
 	return true;
+}
+
+bool s3Shader::setValue(const std::string& typeName, const std::string& attrName, const void* dataPtr, unsigned int dataSize)
+{
+    if (!bIsLoaded || !dataPtr || dataSize <= 0) return false;
+
+    int offset = findValueInUniformElemList(attrName);
+    if (offset == 0) return false;
+
+    memcpy((char*)uniformData + offset, dataPtr, dataSize);
+
+    return false;
+}
+
+void s3Shader::getValue(const std::string& typeName, const std::string& attrName, void* dataPtr, unsigned int dataSize) const
+{
+    if (!bIsLoaded || !dataPtr || dataSize <= 0) return;
+
+    int offset = findValueInUniformElemList(attrName);
+    if (offset == 0) return;
+
+    memcpy(dataPtr, (char*)uniformData + offset, dataSize);
+}
+
+int s3Shader::getTypeSize(const std::string& typeName) const
+{
+    // Sync with Lua
+    static std::map<std::string, int> typeList =
+    {
+		{"float1"  , 4},
+		{"float2"  , 8},
+		{"float3"  , 16},
+		{"float4"  , 16},
+		{"bool1"   , 4},
+		{"bool2"   , 8},
+		{"bool3"   , 16},
+		{"bool4"   , 16},
+		{"int1"    , 4},
+		{"int2"    , 8},
+		{"int3"    , 16},
+		{"int4"    , 16},
+		{"double1" , 8},
+		{"double2" , 16},
+		{"double3" , 32},
+		{"double4" , 32},
+		{"float3x3", 36},
+		{"float4x4", 64}
+    };
+
+    auto iter = typeList.find(typeName);
+    if (iter == typeList.end()) return 0;
+
+    return iter->second;
+}
+
+int s3Shader::findValueInUniformElemList(const std::string& attrName) const
+{
+    if (!bIsLoaded) return false;
+
+    auto& shader          = g_shadermap_gl[name];
+    auto& subshaderList   = shader.subshader_list;
+    auto& passList        = subshaderList[0].pass_list;
+    auto& uniformElemList = passList[0].uniform_buffer_elem_list;
+
+    int offset = 0;
+    for (auto& elem : uniformElemList)
+    {
+        if (elem.attr_name == attrName)
+            break;
+        offset += elem.type_size;
+    }
+    return offset;
 }
 
 void s3Shader::updateInputLayout(const std::vector<shader_input_layout_elem_gl>& inputLayoutList)
@@ -552,6 +644,22 @@ void s3Shader::updateInputLayout(const std::vector<shader_input_layout_elem_gl>&
         }
     }
     if (needToAdd) inputLayoutHandle = manager.add(*newInputLayout);
+}
+
+void s3Shader::updateUniformData(const std::vector<shader_uniform_buffer_elem_gl>& uniformElemList)
+{
+    S3_SAFE_DELETE(uniformData);
+
+    unsigned int length = 0;
+    for (auto& elem : uniformElemList)
+    {
+        // calculate sizeof(type) maybe better, instead of in lua
+        length += elem.type_size;
+    }
+
+    // initialize uniform buffer data
+    uniformData = malloc(length);
+    memset(uniformData, 0, length);
 }
 
 bool s3Shader::reload()

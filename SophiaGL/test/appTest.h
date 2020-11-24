@@ -165,8 +165,8 @@ public:
 
             material->setTexture("texture0", texture0);
             material->setTexture("texture1", texture1);
-            material->setMatrix("projection", camera->getProjectionMatrix());
-            material->setMatrix("view", camera->getViewMatrix());
+            material->setMatrix4("projection", camera->getProjectionMatrix());
+            material->setMatrix4("view", camera->getViewMatrix());
 
 			// activate shader and clearing
 			if (bFirst)
@@ -185,7 +185,7 @@ public:
                 model = glm::translate(model, cubePositions[i]);
                 model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 
-                material->setMatrix("model", model);
+                material->setMatrix4("model", model);
                 s3Renderer::drawMesh(*mesh, *material);
             }
         }
