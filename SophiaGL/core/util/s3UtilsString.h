@@ -1,6 +1,11 @@
 #pragma once
 #include <core/s3Settings.h>
 
+// simply version of path analys, getting infos from file path 
+std::string s3GetFileNameWithExt(const std::string& path);
+std::string s3GetFileName(const std::string& path);
+std::string s3GetFileExtName(const std::string& path);
+
 // wstring string convert
 std::wstring s3S2WS(const std::string& str);
 
@@ -17,7 +22,7 @@ std::string s3ToUpper(const std::string& src);
 // s3ToString does its best to convert any value to a string. If the data type
 // implements a stream << operator, then it will be converted.
 template <class T>
-std::string s3ToString(const T& value)
+inline std::string s3ToString(const T& value)
 {
     std::ostringstream out;
     out << value;
@@ -26,7 +31,7 @@ std::string s3ToString(const T& value)
 
 // bool need to return "true/false" not "1/0"
 template <>
-std::string s3ToString<bool>(const bool& b)
+inline std::string s3ToString<bool>(const bool& b)
 {
     if (b)
         return "true";
@@ -37,7 +42,7 @@ std::string s3ToString<bool>(const bool& b)
 // Convert a value to a string with a specific precision.
 // Like sprintf "%4f" format, in this example precision=4
 template <class T>
-std::string s3ToString(const T& value, int precision)
+inline std::string s3ToString(const T& value, int precision)
 {
     std::ostringstream out;
     out << std::fixed << std::setprecision(precision) << value;
@@ -47,7 +52,7 @@ std::string s3ToString(const T& value, int precision)
 // Convert a value to a string with a specific width and fill
 // Like sprintf "% 4d" or "% 4f" format, in this example width=4, fill=' '
 template <class T>
-std::string s3ToString(const T& value, int width, char fill)
+inline std::string s3ToString(const T& value, int width, char fill)
 {
     std::ostringstream out;
     out << std::fixed << std::setfill(fill) << std::setw(width) << value;
@@ -57,7 +62,7 @@ std::string s3ToString(const T& value, int width, char fill)
 // Convert a value to a string with a specific precision, width and filll
 // Like sprintf "%04.2d" or "%04.2f" format, in this example precision=2, width=4, fill='0'
 template <class T>
-std::string s3ToString(const T& value, int precision, int width, char fill)
+inline std::string s3ToString(const T& value, int precision, int width, char fill)
 {
     std::ostringstream out;
     out << std::fixed << std::setfill(fill) << std::setw(width) << std::setprecision(precision) << value;
@@ -68,7 +73,7 @@ std::string s3ToString(const T& value, int precision, int width, char fill)
 // This method will take any vector of values and output a list of the values
 // as a comma-delimited string.
 template<class T>
-std::string s3ToString(const std::vector<T>& values)
+inline std::string s3ToString(const std::vector<T>& values)
 {
     std::stringstream out;
     int n = values.size();

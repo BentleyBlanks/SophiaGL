@@ -27,7 +27,7 @@ public:
     glm::vec2 getFloat2(const std::string& name) const;
     glm::vec3 getFloat3(const std::string& name) const;
     glm::vec4 getFloat4(const std::string& name) const;
-    glm::dvec1 getDouble(const std::string& name) const;
+    glm::dvec1 getDouble1(const std::string& name) const;
     glm::dvec2 getDouble2(const std::string& name) const;
     glm::dvec3 getDouble3(const std::string& name) const;
     glm::dvec4 getDouble4(const std::string& name) const;
