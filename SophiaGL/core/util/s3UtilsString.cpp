@@ -1,10 +1,45 @@
 #include <core/util/s3UtilsString.h>
+#include <core/log/s3Log.h>
 
 #include <iostream>  
 #include <sstream>
 #include <iomanip>
 #include <iterator>
 #include <codecvt>
+
+std::string s3GetFileNameWithExt(const std::string& path)
+{   
+    // get file name without path
+    std::string::size_type index = path.find_last_of('/') + 1;
+    if (index == std::string::npos)
+    {
+        s3Log::warning("wrong param of s3GetFileNameWithExt()\n");
+        return "";
+    }
+
+    std::string fileNameWithExt = path.substr(index, path.length() - index);
+    return fileNameWithExt;
+}
+
+std::string s3GetFileName(const std::string& path)
+{
+    // get file name without suffix
+    std::string fileNameWithExt = s3GetFileNameWithExt(path);
+    if (fileNameWithExt == "") return "";
+
+    std::string fileName = fileNameWithExt.substr(0, fileNameWithExt.rfind("."));
+    return fileName;
+}
+
+std::string s3GetFileExtName(const std::string& path)
+{
+    // getting file suffix
+    std::string fileNameWithExt = s3GetFileNameWithExt(path);
+    if (fileNameWithExt == "") return "";
+
+    std::string suffix = fileNameWithExt.substr(fileNameWithExt.find_last_of('.') + 1);
+    return suffix;
+}
 
 std::wstring s3S2WS(const std::string& str)
 {

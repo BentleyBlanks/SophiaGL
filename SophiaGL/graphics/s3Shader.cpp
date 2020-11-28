@@ -1,6 +1,8 @@
 #include <graphics/s3Shader.h>
 #include <graphics/s3Texture.h>
 #include <core/log/s3Log.h>
+#include <core/util/s3UtilsString.h>
+
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -81,9 +83,9 @@
 s3Shader::s3Shader()
 {}
 
-s3Shader::s3Shader(const char* shaderFilePath)
+s3Shader::s3Shader(const char* filePath)
 {
-    load(shaderFilePath);
+    load(filePath);
 }
 
 //s3Shader::s3Shader(const char* vertexPath, const char* fragmentPath)
@@ -252,7 +254,7 @@ void s3Shader::end()
 }
 glm::bvec1 s3Shader::getBool1(const std::string& name) const
 {
-    S3_GET_VALUE(bvec1, "bool1");
+    S3_GET_VALUE(bvec1, "bool");
 }
 
 glm::bvec2 s3Shader::getBool2(const std::string& name) const
@@ -272,7 +274,7 @@ glm::bvec4 s3Shader::getBool4(const std::string& name) const
 
 glm::ivec1 s3Shader::getInt1(const std::string& name) const
 {
-    S3_GET_VALUE(ivec1, "int1");
+    S3_GET_VALUE(ivec1, "int");
 }
 
 glm::ivec2 s3Shader::getInt2(const std::string& name) const
@@ -292,7 +294,7 @@ glm::ivec4 s3Shader::getInt4(const std::string& name) const
 
 glm::vec1 s3Shader::getFloat1(const std::string& name) const
 {
-    S3_GET_VALUE(vec1, "float1");
+    S3_GET_VALUE(vec1, "float");
 }
 
 glm::vec2 s3Shader::getFloat2(const std::string& name) const
@@ -310,9 +312,9 @@ glm::vec4 s3Shader::getFloat4(const std::string& name) const
     S3_GET_VALUE(vec4, "float4");
 }
 
-glm::dvec1 s3Shader::getDouble(const std::string& name) const
+glm::dvec1 s3Shader::getDouble1(const std::string& name) const
 {
-    S3_GET_VALUE(dvec1, "double1");
+    S3_GET_VALUE(dvec1, "double");
 }
 
 glm::dvec2 s3Shader::getDouble2(const std::string& name) const
@@ -351,7 +353,7 @@ s3Texture* s3Shader::getTexture(const std::string& name) const
 
 bool s3Shader::setBool1(const std::string& name, const glm::bvec1& value)
 {
-    S3_SET_VALUE("bool1");
+    S3_SET_VALUE("bool");
 }
 
 bool s3Shader::setBool2(const std::string& name, const glm::bvec2& value)
@@ -371,7 +373,7 @@ bool s3Shader::setBool4(const std::string& name, const glm::bvec4& value)
 
 bool s3Shader::setInt1(const std::string& name, const glm::ivec1& value)
 {
-    S3_SET_VALUE("int1");
+    S3_SET_VALUE("int");
 }
 
 bool s3Shader::setInt2(const std::string& name, const glm::ivec2& value)
@@ -391,7 +393,7 @@ bool s3Shader::setInt4(const std::string& name, const glm::ivec4& value)
 
 bool s3Shader::setFloat1(const std::string& name, const glm::vec1& value)
 {
-    S3_SET_VALUE("float1");
+    S3_SET_VALUE("float");
 }
 
 bool s3Shader::setFloat2(const std::string& name, const glm::vec2& value)
@@ -411,7 +413,7 @@ bool s3Shader::setFloat4(const std::string& name, const glm::vec4& value)
 
 bool s3Shader::setDouble1(const std::string& name, const glm::vec1& value)
 {
-    S3_SET_VALUE("double1");
+    S3_SET_VALUE("double");
 }
 
 bool s3Shader::setDouble2(const std::string& name, const glm::vec2& value)
@@ -511,8 +513,8 @@ bool s3Shader::load(const char* _shaderFilePath)
 	const char* shaderName = shader_load_gl(_shaderFilePath);
 	if (!shaderName) return false;
 
-    shaderFilePath = _shaderFilePath;
-    name = shaderName;
+    filePath = _shaderFilePath;
+    name           = shaderName;
 
     if (g_shadermap_gl.find(shaderName) == g_shadermap_gl.end()) return false;
 	auto& shader = g_shadermap_gl[shaderName];
@@ -529,7 +531,7 @@ bool s3Shader::load(const char* _shaderFilePath)
     updateInputLayout(pass_list[0].input_layout_list);
     updateUniformData(pass_list[0].uniform_buffer_elem_list);
 
-    s3Log::success("Shader:%s build succeed\n", shaderFilePath.c_str());
+    s3Log::success("Shader:%s build succeed\n", filePath.c_str());
 
     bIsLoaded = true;
 	return true;
@@ -542,7 +544,13 @@ bool s3Shader::setValue(const std::string& typeName, const std::string& attrName
     int offset = findValueInUniformElemList(attrName);
     if (offset == 0) return false;
 
+    // CPU Mem for getter / setter
     memcpy((char*)uniformData + offset, dataPtr, dataSize);
+
+    // copy to GPU Mem
+    glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, dataSize, dataPtr);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     return false;
 }
@@ -562,23 +570,23 @@ int s3Shader::getTypeSize(const std::string& typeName) const
     // Sync with Lua
     static std::map<std::string, int> typeList =
     {
-		{"float1"  , 4},
+		{"float"   , 4},
 		{"float2"  , 8},
 		{"float3"  , 16},
 		{"float4"  , 16},
-		{"bool1"   , 4},
+		{"bool"    , 4},
 		{"bool2"   , 8},
 		{"bool3"   , 16},
 		{"bool4"   , 16},
-		{"int1"    , 4},
+		{"int"     , 4},
 		{"int2"    , 8},
 		{"int3"    , 16},
 		{"int4"    , 16},
-		{"double1" , 8},
+		{"double"  , 8},
 		{"double2" , 16},
 		{"double3" , 32},
 		{"double4" , 32},
-		{"float3x3", 36},
+		{"float3x3", 48},
 		{"float4x4", 64}
     };
 
@@ -660,6 +668,29 @@ void s3Shader::updateUniformData(const std::vector<shader_uniform_buffer_elem_gl
     // initialize uniform buffer data
     uniformData = malloc(length);
     memset(uniformData, 0, length);
+
+    // ShaderConductor's default uniform block's name = 'type_cb_' + fileName + '_' + index
+    std::string ubName("type_cb_");
+    ubName += s3GetFileName(filePath);
+    ubName += "_1";
+
+    // supporse there is only 1 binding point
+    GLuint uniformBlockIndex = glGetUniformBlockIndex(program, ubName.c_str());
+    if (uniformBlockIndex == GL_INVALID_INDEX)
+    {
+        s3Log::error("Could not get index of uniform block %s check if such uniform block really exists!\n", ubName.c_str());
+        return;
+    }
+    glUniformBlockBinding(program, uniformBlockIndex, 0);
+
+    // uniform buffer object
+    glGenBuffers(1, &ubo);
+    glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+    glBufferData(GL_UNIFORM_BUFFER, length, NULL, GL_STATIC_DRAW);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+    // only 0 binding point is working
+    glBindBufferRange(GL_UNIFORM_BUFFER, 0, ubo, 0, length);
 }
 
 bool s3Shader::reload()
@@ -667,5 +698,5 @@ bool s3Shader::reload()
     if(!bIsLoaded) s3Log::warning("s3Shader::reload() need successfully called load() before\n");
     
     //return load(vertexPath.c_str(), fragmentPath.c_str());
-    return load(shaderFilePath.c_str());
+    return load(filePath.c_str());
 }

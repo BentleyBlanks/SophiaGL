@@ -123,7 +123,7 @@ public:
             texture1->setLocation(1);
 
             shader = new s3Shader();
-            shader->load("./shaders/mainTexture.shader");
+            shader->load("./shaders/mainFuckTexture.shader");
 
             // replaced by Shader::find() in the future
             material = new s3Material(*shader);
@@ -165,8 +165,17 @@ public:
 
             material->setTexture("texture0", texture0);
             material->setTexture("texture1", texture1);
-            material->setMatrix4("projection", camera->getProjectionMatrix());
-            material->setMatrix4("view", camera->getViewMatrix());
+
+            auto projectionMat = camera->getProjectionMatrix();
+            auto viewMat       = camera->getViewMatrix();
+            material->setMatrix4("projection", projectionMat);
+            material->setMatrix4("view", viewMat);
+
+            glm::dvec1 fuck(3.1415);
+            material->setDouble1("testDouble", fuck);
+            material->setDouble3("testDouble2", glm::dvec3(-2, 3, 4));
+            material->setFloat3("testValue0", glm::vec3(-5.0f, 6.0f, -7.0f));
+            material->setBool1("testValue1", glm::bvec1(true));
 
 			// activate shader and clearing
 			if (bFirst)
