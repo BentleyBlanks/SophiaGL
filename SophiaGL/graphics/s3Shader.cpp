@@ -541,7 +541,7 @@ bool s3Shader::setValue(const std::string& typeName, const std::string& attrName
 {
     if (!bIsLoaded || !dataPtr || dataSize <= 0) return false;
 
-    int offset = findValueInUniformElemList(attrName);
+    int offset = findValueInUniformElemList(typeName, attrName);
     if (offset == 0) return false;
 
     // CPU Mem for getter / setter
@@ -559,7 +559,7 @@ void s3Shader::getValue(const std::string& typeName, const std::string& attrName
 {
     if (!bIsLoaded || !dataPtr || dataSize <= 0) return;
 
-    int offset = findValueInUniformElemList(attrName);
+    int offset = findValueInUniformElemList(typeName, attrName);
     if (offset == 0) return;
 
     memcpy(dataPtr, (char*)uniformData + offset, dataSize);
@@ -596,7 +596,7 @@ int s3Shader::getTypeSize(const std::string& typeName) const
     return iter->second;
 }
 
-int s3Shader::findValueInUniformElemList(const std::string& attrName) const
+int s3Shader::findValueInUniformElemList(const std::string& typeName, const std::string& attrName) const
 {
     if (!bIsLoaded) return false;
 
@@ -605,14 +605,14 @@ int s3Shader::findValueInUniformElemList(const std::string& attrName) const
     auto& passList        = subshaderList[0].pass_list;
     auto& uniformElemList = passList[0].uniform_buffer_elem_list;
 
-    int offset = 0;
     for (auto& elem : uniformElemList)
     {
-        if (elem.attr_name == attrName)
-            break;
-        offset += elem.type_size;
+        if (elem.attr_name == attrName && elem.type_name == typeName)
+            return elem.type_offset;
     }
-    return offset;
+
+    s3Log::warning("Not found attribute: %s %s in uniform block\n", typeName.c_str(), attrName.c_str());
+    return 0;
 }
 
 void s3Shader::updateInputLayout(const std::vector<shader_input_layout_elem_gl>& inputLayoutList)
@@ -656,14 +656,14 @@ void s3Shader::updateInputLayout(const std::vector<shader_input_layout_elem_gl>&
 
 void s3Shader::updateUniformData(const std::vector<shader_uniform_buffer_elem_gl>& uniformElemList)
 {
+    if (uniformElemList.size() <= 0) return;
+
     S3_SAFE_DELETE(uniformData);
 
-    unsigned int length = 0;
-    for (auto& elem : uniformElemList)
-    {
-        // calculate sizeof(type) maybe better, instead of in lua
-        length += elem.type_size;
-    }
+    // last node store uniform buffer's special info
+    // calculate attributes offset by std140 layout
+    auto lastAttr = uniformElemList[uniformElemList.size() - 1];
+    unsigned int length = lastAttr.type_offset;
 
     // initialize uniform buffer data
     uniformData = malloc(length);
