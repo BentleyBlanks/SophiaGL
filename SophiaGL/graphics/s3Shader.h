@@ -143,7 +143,7 @@ private:
 
     int getTypeSize(const std::string& typeName) const;
 
-    int findValueInUniformElemList(const std::string& attrName) const;
+    int findValueInUniformElemList(const std::string& typeName, const std::string& attrName) const;
     void updateInputLayout(const std::vector<shader_input_layout_elem_gl>& inputLayoutList);
     void updateUniformData(const std::vector<shader_uniform_buffer_elem_gl>& uniformElemList);
 
