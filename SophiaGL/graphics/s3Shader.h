@@ -122,11 +122,11 @@ public:
     bool setFloat2(const std::string& name, const glm::vec2& value);
     bool setFloat3(const std::string& name, const glm::vec3& value);
     bool setFloat4(const std::string& name, const glm::vec4& value);
-    bool setDouble1(const std::string& name, const glm::vec1& value);
-    bool setDouble2(const std::string& name, const glm::vec2& value);
-    bool setDouble3(const std::string& name, const glm::vec3& value);
-    bool setDouble4(const std::string& name, const glm::vec4& value);
-    bool setMatrix3(const std::string& name, const glm::mat3& value);
+    bool setDouble1(const std::string& name, const glm::dvec1& value);
+    bool setDouble2(const std::string& name, const glm::dvec2& value);
+    bool setDouble3(const std::string& name, const glm::dvec3& value);
+    bool setDouble4(const std::string& name, const glm::dvec4& value);
+    //bool setMatrix3(const std::string& name, const glm::mat3& value);
     bool setMatrix4(const std::string& name, const glm::mat4& value);
     bool setTexture(const std::string& name, s3Texture* value);
 
@@ -138,12 +138,12 @@ public:
     unsigned int getInputLayoutHandle() const { return inputLayoutHandle; }
 
 private:
-    bool setValue(const std::string& typeName, const std::string& attrName, const void* dataPtr, unsigned int dataSize);
-    void getValue(const std::string& typeName, const std::string& attrName, void* dataPtr, unsigned int dataSize) const;
+    bool setValue(const std::string& typeName, const std::string& attrName, const void* dataPtr);
+    void getValue(const std::string& typeName, const std::string& attrName, void* dataPtr) const;
 
-    int getTypeSize(const std::string& typeName) const;
+    //int getTypeSize(const std::string& typeName) const;
 
-    int findValueInUniformElemList(const std::string& typeName, const std::string& attrName) const;
+    const shader_uniform_buffer_elem_gl* findValueInUniformElemList(const std::string& typeName, const std::string& attrName) const;
     void updateInputLayout(const std::vector<shader_input_layout_elem_gl>& inputLayoutList);
     void updateUniformData(const std::vector<shader_uniform_buffer_elem_gl>& uniformElemList);
 

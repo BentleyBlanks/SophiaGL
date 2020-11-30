@@ -85,10 +85,10 @@ glm::dvec4 s3Material::getDouble4(const std::string& name) const
 	return shader->getDouble4(name);
 }
 
-glm::mat3 s3Material::getMatrix3(const std::string& name) const
-{
-	return shader->getMatrix3(name);
-}
+//glm::mat3 s3Material::getMatrix3(const std::string& name) const
+//{
+//	return shader->getMatrix3(name);
+//}
 
 glm::mat4 s3Material::getMatrix4(const std::string& name) const
 {
@@ -160,30 +160,30 @@ bool s3Material::setFloat4(const std::string& name, const glm::vec4& value)
 	return shader->setFloat4(name, value);
 }
 
-bool s3Material::setDouble1(const std::string& name, const glm::vec1& value)
+bool s3Material::setDouble1(const std::string& name, const glm::dvec1& value)
 {
 	return shader->setDouble1(name, value);
 }
 
-bool s3Material::setDouble2(const std::string& name, const glm::vec2& value)
+bool s3Material::setDouble2(const std::string& name, const glm::dvec2& value)
 {
 	return shader->setDouble2(name, value);
 }
 
-bool s3Material::setDouble3(const std::string& name, const glm::vec3& value)
+bool s3Material::setDouble3(const std::string& name, const glm::dvec3& value)
 {
 	return shader->setDouble3(name, value);
 }
 
-bool s3Material::setDouble4(const std::string& name, const glm::vec4& value)
+bool s3Material::setDouble4(const std::string& name, const glm::dvec4& value)
 {
 	return shader->setDouble4(name, value);
 }
 
-bool s3Material::setMatrix3(const std::string& name, const glm::mat3& value)
-{
-	return shader->setMatrix3(name, value);
-}
+//bool s3Material::setMatrix3(const std::string& name, const glm::mat3& value)
+//{
+//	return shader->setMatrix3(name, value);
+//}
 
 bool s3Material::setMatrix4(const std::string& name, const glm::mat4& value)
 {

@@ -16,19 +16,19 @@
 // Just for simplify the code
 #define S3_GET_VALUE(typeClassStr, typeNameStr) glm::typeClassStr value; \
                                        std::string typeName = typeNameStr; \
-                                       getValue(typeName, name, (void*)(&value.x), getTypeSize(typeName)); \
+                                       getValue(typeName, name, (void*)(&value.x)); \
                                        return value
 
 #define S3_GET_MAT_VALUE(typeClassStr, typeNameStr) glm::typeClassStr value; \
                                            std::string typeName = typeNameStr; \
-                                           getValue(typeName, name, (void*)(&value[0].x), getTypeSize(typeName)); \
+                                           getValue(typeName, name, (void*)(&value[0].x)); \
                                            return value
 
 #define S3_SET_VALUE(typeNameStr) std::string typeName = typeNameStr; \
-                                  return setValue(typeName, name, (void*)(&value.x), getTypeSize(typeName))
+                                  return setValue(typeName, name, (void*)(&value.x))
 
 #define S3_SET_MAT_VALUE(typeNameStr) std::string typeName = typeNameStr; \
-                                      return setValue(typeName, name, (void*)(&value[0].x), getTypeSize(typeName))
+                                      return setValue(typeName, name, (void*)(&value[0].x))
 
 // --------------------------------------------------s3ShaderField--------------------------------------------------
 //void s3ShaderField::print() const
@@ -411,30 +411,30 @@ bool s3Shader::setFloat4(const std::string& name, const glm::vec4& value)
     S3_SET_VALUE("float4");
 }
 
-bool s3Shader::setDouble1(const std::string& name, const glm::vec1& value)
+bool s3Shader::setDouble1(const std::string& name, const glm::dvec1& value)
 {
     S3_SET_VALUE("double");
 }
 
-bool s3Shader::setDouble2(const std::string& name, const glm::vec2& value)
+bool s3Shader::setDouble2(const std::string& name, const glm::dvec2& value)
 {
     S3_SET_VALUE("double2");
 }
 
-bool s3Shader::setDouble3(const std::string& name, const glm::vec3& value)
+bool s3Shader::setDouble3(const std::string& name, const glm::dvec3& value)
 {
     S3_SET_VALUE("double3");
 }
 
-bool s3Shader::setDouble4(const std::string& name, const glm::vec4& value)
+bool s3Shader::setDouble4(const std::string& name, const glm::dvec4& value)
 {
     S3_SET_VALUE("double4");
 }
 
-bool s3Shader::setMatrix3(const std::string& name, const glm::mat3& value)
-{
-    S3_SET_MAT_VALUE("float3x3");
-}
+//bool s3Shader::setMatrix3(const std::string& name, const glm::mat3& value)
+//{
+//    S3_SET_MAT_VALUE("float3x3");
+//}
 
 bool s3Shader::setMatrix4(const std::string& name, const glm::mat4& value)
 {
@@ -514,7 +514,7 @@ bool s3Shader::load(const char* _shaderFilePath)
 	if (!shaderName) return false;
 
     filePath = _shaderFilePath;
-    name           = shaderName;
+    name     = shaderName;
 
     if (g_shadermap_gl.find(shaderName) == g_shadermap_gl.end()) return false;
 	auto& shader = g_shadermap_gl[shaderName];
@@ -537,68 +537,68 @@ bool s3Shader::load(const char* _shaderFilePath)
 	return true;
 }
 
-bool s3Shader::setValue(const std::string& typeName, const std::string& attrName, const void* dataPtr, unsigned int dataSize)
+bool s3Shader::setValue(const std::string& typeName, const std::string& attrName, const void* dataPtr)
 {
-    if (!bIsLoaded || !dataPtr || dataSize <= 0) return false;
+    if (!bIsLoaded || !dataPtr) return false;
 
-    int offset = findValueInUniformElemList(typeName, attrName);
-    if (offset == 0) return false;
+    auto elem = findValueInUniformElemList(typeName, attrName);
+    if (!elem) return false;
 
     // CPU Mem for getter / setter
-    memcpy((char*)uniformData + offset, dataPtr, dataSize);
+    memcpy((char*)uniformData + elem->type_offset, dataPtr, elem->type_size);
 
     // copy to GPU Mem
     glBindBuffer(GL_UNIFORM_BUFFER, ubo);
-    glBufferSubData(GL_UNIFORM_BUFFER, offset, dataSize, dataPtr);
+    glBufferSubData(GL_UNIFORM_BUFFER, elem->type_offset, elem->type_size, dataPtr);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     return false;
 }
 
-void s3Shader::getValue(const std::string& typeName, const std::string& attrName, void* dataPtr, unsigned int dataSize) const
+void s3Shader::getValue(const std::string& typeName, const std::string& attrName, void* dataPtr) const
 {
-    if (!bIsLoaded || !dataPtr || dataSize <= 0) return;
+    if (!bIsLoaded || !dataPtr) return;
 
-    int offset = findValueInUniformElemList(typeName, attrName);
-    if (offset == 0) return;
+    auto elem = findValueInUniformElemList(typeName, attrName);
+    if (!elem) return;
 
-    memcpy(dataPtr, (char*)uniformData + offset, dataSize);
+    memcpy(dataPtr, (char*)uniformData + elem->type_offset, elem->type_size);
 }
 
-int s3Shader::getTypeSize(const std::string& typeName) const
+//int s3Shader::getTypeSize(const std::string& typeName) const
+//{
+//    // Sync with Lua
+//    static std::map<std::string, int> typeList =
+//    {
+//		{"float"   , 4},
+//		{"float2"  , 8},
+//		{"float3"  , 16},
+//		{"float4"  , 16},
+//		{"bool"    , 4},
+//		{"bool2"   , 8},
+//		{"bool3"   , 16},
+//		{"bool4"   , 16},
+//		{"int"     , 4},
+//		{"int2"    , 8},
+//		{"int3"    , 16},
+//		{"int4"    , 16},
+//		{"double"  , 8},
+//		{"double2" , 16},
+//		{"double3" , 32},
+//		{"double4" , 32},
+//		{"float3x3", 48},
+//		{"float4x4", 64}
+//    };
+//
+//    auto iter = typeList.find(typeName);
+//    if (iter == typeList.end()) return 0;
+//
+//    return iter->second;
+//}
+
+const shader_uniform_buffer_elem_gl* s3Shader::findValueInUniformElemList(const std::string& typeName, const std::string& attrName) const
 {
-    // Sync with Lua
-    static std::map<std::string, int> typeList =
-    {
-		{"float"   , 4},
-		{"float2"  , 8},
-		{"float3"  , 16},
-		{"float4"  , 16},
-		{"bool"    , 4},
-		{"bool2"   , 8},
-		{"bool3"   , 16},
-		{"bool4"   , 16},
-		{"int"     , 4},
-		{"int2"    , 8},
-		{"int3"    , 16},
-		{"int4"    , 16},
-		{"double"  , 8},
-		{"double2" , 16},
-		{"double3" , 32},
-		{"double4" , 32},
-		{"float3x3", 48},
-		{"float4x4", 64}
-    };
-
-    auto iter = typeList.find(typeName);
-    if (iter == typeList.end()) return 0;
-
-    return iter->second;
-}
-
-int s3Shader::findValueInUniformElemList(const std::string& typeName, const std::string& attrName) const
-{
-    if (!bIsLoaded) return false;
+    if (!bIsLoaded) return nullptr;
 
     auto& shader          = g_shadermap_gl[name];
     auto& subshaderList   = shader.subshader_list;
@@ -608,11 +608,11 @@ int s3Shader::findValueInUniformElemList(const std::string& typeName, const std:
     for (auto& elem : uniformElemList)
     {
         if (elem.attr_name == attrName && elem.type_name == typeName)
-            return elem.type_offset;
+            return &elem;
     }
 
     s3Log::warning("Not found attribute: %s %s in uniform block\n", typeName.c_str(), attrName.c_str());
-    return 0;
+    return nullptr;
 }
 
 void s3Shader::updateInputLayout(const std::vector<shader_input_layout_elem_gl>& inputLayoutList)
