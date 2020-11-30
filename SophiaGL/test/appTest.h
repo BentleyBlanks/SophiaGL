@@ -171,7 +171,8 @@ public:
             material->setMatrix4("projection", projectionMat);
             material->setMatrix4("view", viewMat);
 
-            material->setDouble1("testDouble", glm::dvec1(3.1415));
+            glm::dvec1 xxx(3.1415);
+            material->setDouble1("testDouble", xxx);
             material->setDouble3("testDouble2", glm::dvec3(-2, 3, 4));
             material->setFloat3("testValue0", glm::vec3(-5.0f, 6.0f, -7.0f));
             material->setBool1("testValue1", glm::bvec1(true));

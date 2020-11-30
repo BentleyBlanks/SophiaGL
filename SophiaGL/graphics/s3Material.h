@@ -31,7 +31,7 @@ public:
     glm::dvec2 getDouble2(const std::string& name) const;
     glm::dvec3 getDouble3(const std::string& name) const;
     glm::dvec4 getDouble4(const std::string& name) const;
-    glm::mat3 getMatrix3(const std::string& name) const;
+    //glm::mat3 getMatrix3(const std::string& name) const;
     glm::mat4 getMatrix4(const std::string& name) const;
     s3Texture* getTexture(const std::string& name) const;
     //bool getKeyword(std::string name) const;
@@ -49,11 +49,11 @@ public:
     bool setFloat2(const std::string& name, const glm::vec2& value);
     bool setFloat3(const std::string& name, const glm::vec3& value);
     bool setFloat4(const std::string& name, const glm::vec4& value);
-    bool setDouble1(const std::string& name, const glm::vec1& value);
-    bool setDouble2(const std::string& name, const glm::vec2& value);
-    bool setDouble3(const std::string& name, const glm::vec3& value);
-    bool setDouble4(const std::string& name, const glm::vec4& value);
-    bool setMatrix3(const std::string& name, const glm::mat3& value);
+    bool setDouble1(const std::string& name, const glm::dvec1& value);
+    bool setDouble2(const std::string& name, const glm::dvec2& value);
+    bool setDouble3(const std::string& name, const glm::dvec3& value);
+    bool setDouble4(const std::string& name, const glm::dvec4& value);
+    //bool setMatrix3(const std::string& name, const glm::mat3& value);
     bool setMatrix4(const std::string& name, const glm::mat4& value);
     bool setTexture(const std::string& name, s3Texture* value);
 
