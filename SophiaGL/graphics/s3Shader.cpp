@@ -549,7 +549,7 @@ bool s3Shader::setValue(const std::string& typeName, const std::string& attrName
 
     // copy to GPU Mem
     glBindBuffer(GL_UNIFORM_BUFFER, ubo);
-    glBufferSubData(GL_UNIFORM_BUFFER, elem->type_offset, elem->type_size, dataPtr);
+    glBufferSubData(GL_UNIFORM_BUFFER, elem->type_offset, elem->type_size, uniformData);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     return false;
