@@ -158,9 +158,20 @@ public:
         else if (userData->sender == &s3CallbackManager::onBeginRender)
         {
             ImGui::Begin("Sophia");
-            ImGui::DragFloat("Camera Speed", &cameraSpeed, 1.0f, 0.0f, 200.0f);
-            ImGui::DragFloat("Camera Near Plane", &camera->nearClip, 1.0f, 0.1f, 10.0f);
-            ImGui::DragFloat("Camera Far Plane", &camera->farClip, 1.0f, 0.0f, 100000.0f);
+            ImGui::Text("Camera");
+            ImGui::DragFloat("Speed", &cameraSpeed, 1.0f, 0.0f, 200.0f);
+            ImGui::DragFloat("Near Plane", &camera->nearClip, 1.0f, 0.1f, 10.0f);
+            ImGui::DragFloat("Far Plane", &camera->farClip, 1.0f, 0.0f, 100000.0f);
+            ImGui::DragFloat3("Position", &camera->position.x, 1.0f, -10000.0f, 10000.0f);
+            ImGui::DragFloat3("Direction", &camera->direction.x, 1.0f, -1.0f, 1.0f);
+
+            ImGui::Text("Shader");
+            ImGui::Text(shader->getVertexSource().c_str());
+            ImGui::Text(shader->getFragmentSource().c_str());
+            if (ImGui::Button("Print"))
+            {
+                shader->print();
+            }
             ImGui::End();
 
             material->setTexture("texture0", texture0);

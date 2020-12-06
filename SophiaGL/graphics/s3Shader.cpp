@@ -13,7 +13,42 @@
 
 #include <shader_parser_gl.h>
 
-// Just for simplify the code
+// --------------------------------------------------print function helper--------------------------------------------------
+#define S3_UNIFORMDATA_PRINT_1(dataTypeName, formatStr) glm::dataTypeName##1 dataTypeName##1; \
+memcpy(&dataTypeName##1.x, (char*)uniformData + elem.type_offset, elem.type_offset); \
+s3Log::print("%s %s : [%formatStr]\n", \
+             elem.type_name.c_str(), \
+             elem.attr_name.c_str(), \
+             dataTypeName##1)
+
+#define S3_UNIFORMDATA_PRINT_2(dataTypeName, formatStr) glm::dataTypeName##2 dataTypeName##2; \
+memcpy(&dataTypeName##2.x, (char*)uniformData + elem.type_offset, elem.type_offset); \
+s3Log::print("%s %s : [%formatStr, %formatStr]\n", \
+             elem.type_name.c_str(), \
+             elem.attr_name.c_str(), \
+             dataTypeName##2.x, \
+             dataTypeName##2.y)
+
+#define S3_UNIFORMDATA_PRINT_3(dataTypeName, formatStr) glm::dataTypeName##3 dataTypeName##3; \
+memcpy(&dataTypeName##3.x, (char*)uniformData + elem.type_offset, elem.type_offset); \
+s3Log::print("%s %s : [%formatStr, %formatStr, %formatStr]\n", \
+             elem.type_name.c_str(), \
+             elem.attr_name.c_str(), \
+             dataTypeName##3.x, \
+             dataTypeName##3.y, \
+             dataTypeName##3.z)
+
+#define S3_UNIFORMDATA_PRINT_4(dataTypeName, formatStr) glm::dataTypeName##4 dataTypeName##4; \
+memcpy(&dataTypeName##4.x, (char*)uniformData + elem.type_offset, elem.type_offset); \
+s3Log::print("%s %s : [%formatStr, %formatStr, %formatStr, %formatStr]\n", \
+             elem.type_name.c_str(), \
+             elem.attr_name.c_str(), \
+             dataTypeName##4.x, \
+             dataTypeName##4.y, \
+             dataTypeName##4.z, \
+             dataTypeName##4.w)
+
+// --------------------------------------------------Just for simplify the code--------------------------------------------------
 #define S3_GET_VALUE(typeClassStr, typeNameStr) glm::typeClassStr value; \
                                        std::string typeName = typeNameStr; \
                                        getValue(typeName, name, (void*)(&value.x)); \
@@ -31,6 +66,7 @@
                                       return setValue(typeName, name, (void*)(&value[0].x))
 
 // --------------------------------------------------s3ShaderField--------------------------------------------------
+
 //void s3ShaderField::print() const
 //{
 //    s3Log::print("Type: %s, ", s3EnumUtil(s3ShaderFieldType).toString(type).c_str());
@@ -476,17 +512,63 @@ bool s3Shader::setTexture(const std::string& name, s3Texture* value)
 
 void s3Shader::print() const
 {
-    //s3Log::debug("VS: %s, FS: %s\n", vertexSource.c_str(), fragmentSource.c_str());
+    if (!bIsLoaded) return;
+
+    s3Log::debug("VS: %s\n", vertexSource.c_str(), fragmentSource.c_str());
+    s3Log::debug("FS: %s\n", vertexSource.c_str(), fragmentSource.c_str());
     s3Log::debug("Program: %d\n", program);
 
-    //for (auto it = fieldMap.begin(); it != fieldMap.end(); it++)
-    //{
-    //    const std::string& name    = it->first;
-    //    const s3ShaderField& field = it->second;
+    auto& shader = g_shadermap_gl[name];
+    auto& subshaderList = shader.subshader_list;
+    auto& passList = subshaderList[0].pass_list;
+    auto& uniformElemList = passList[0].uniform_buffer_elem_list;
 
-    //    s3Log::debug("FieldName: %s, ", name.c_str());
-    //    field.print();
-    //}
+    // Data field
+    //static char* valuePtr = (char*)malloc(16 * sizeof(float));
+    for (auto& elem : uniformElemList)
+    {
+        // last node stored special info of uniform buffer
+        if (elem.type_count == 0) continue;
+
+        std::string printTypeStr = "ErrorDataType";
+        //memcpy(valuePtr, (char*)uniformData + elem.type_offset, elem.type_size);
+        if (elem.type_name == "int")
+        {
+            switch (elem.type_count)
+            {
+            case 1:
+                S3_UNIFORMDATA_PRINT_1(ivec, d);
+                break;
+            case 2:
+                S3_UNIFORMDATA_PRINT_2(ivec, d);
+                break;
+            case 3:
+                S3_UNIFORMDATA_PRINT_3(ivec, d);
+                break;
+            case 4:
+                S3_UNIFORMDATA_PRINT_4(ivec, d);
+                break;
+        }
+        else if (elem.type_name == "double")
+        {
+            printTypeStr = "%f";
+        }
+        else if (elem.type_name == "float")
+        {
+
+            printTypeStr = "%f";
+        }
+        else if (elem.type_name == "bool")
+        {
+            printTypeStr = "%b";
+        }
+    }
+
+    // Texture binding
+    for (auto it = textureMap.begin(); it != textureMap.end(); it++)
+    {
+        s3Log::print("Texture: Name%s, Width: %d, Height: %d\n", it->first, it->second->getWidth(), it->second->getHeight());
+    }
 }
 
 bool s3Shader::load(const char* _shaderFilePath)
@@ -526,10 +608,14 @@ bool s3Shader::load(const char* _shaderFilePath)
     if (pass_list.size() <= 0) return false;
 
     // now only supported 1 pass
-    program = pass_list[0].program;
+    auto& pass     = pass_list[0];
+    program        = pass.program;
+    vertexSource   = pass.vs_source;
+    fragmentSource = pass.fs_source;
 
     updateInputLayout(pass_list[0].input_layout_list);
     updateUniformData(pass_list[0].uniform_buffer_elem_list);
+    
 
     s3Log::success("Shader:%s build succeed\n", filePath.c_str());
 
@@ -564,37 +650,6 @@ void s3Shader::getValue(const std::string& typeName, const std::string& attrName
 
     memcpy(dataPtr, (char*)uniformData + elem->type_offset, elem->type_size);
 }
-
-//int s3Shader::getTypeSize(const std::string& typeName) const
-//{
-//    // Sync with Lua
-//    static std::map<std::string, int> typeList =
-//    {
-//		{"float"   , 4},
-//		{"float2"  , 8},
-//		{"float3"  , 16},
-//		{"float4"  , 16},
-//		{"bool"    , 4},
-//		{"bool2"   , 8},
-//		{"bool3"   , 16},
-//		{"bool4"   , 16},
-//		{"int"     , 4},
-//		{"int2"    , 8},
-//		{"int3"    , 16},
-//		{"int4"    , 16},
-//		{"double"  , 8},
-//		{"double2" , 16},
-//		{"double3" , 32},
-//		{"double4" , 32},
-//		{"float3x3", 48},
-//		{"float4x4", 64}
-//    };
-//
-//    auto iter = typeList.find(typeName);
-//    if (iter == typeList.end()) return 0;
-//
-//    return iter->second;
-//}
 
 const shader_uniform_buffer_elem_gl* s3Shader::findValueInUniformElemList(const std::string& typeName, const std::string& attrName) const
 {
