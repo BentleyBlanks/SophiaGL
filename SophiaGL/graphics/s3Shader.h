@@ -8,57 +8,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 class s3Texture;
-
-//s3Enum(s3ShaderFieldType,
-//       none,
-//       float1,
-//       float2,
-//       float3,
-//       float4,
-//       bool1,
-//       bool2,
-//       bool3,
-//       bool4,
-//       int1,
-//       int2,
-//       int3,
-//       int4,
-//       double1,
-//       double2,
-//       double3,
-//       double4,
-//       float3x3,
-//       float3x4,
-//       float4x3,
-//       float4x4);
-
-//class s3ShaderField
-//{
-//public:
-//    void print() const;
-//
-//    union
-//    {
-//        s3Texture* texture;
-//
-//        bool bool1;
-//        float float1;
-//        int int1;
-//
-//        glm::ivec2 int2;
-//        glm::ivec3 int3;
-//        glm::ivec4 int4;
-//
-//        glm::vec2 float2;
-//        glm::vec3 float3;
-//        glm::vec4 float4;
-//
-//        glm::mat4 mat4;
-//    };
-//
-//    s3ShaderFieldType type = s3ShaderFieldType::int1;
-//};
-
 class s3Shader
 {
 public:
