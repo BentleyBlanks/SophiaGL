@@ -162,13 +162,20 @@ public:
             ImGui::DragFloat("Speed", &cameraSpeed, 1.0f, 0.0f, 200.0f);
             ImGui::DragFloat("Near Plane", &camera->nearClip, 1.0f, 0.1f, 10.0f);
             ImGui::DragFloat("Far Plane", &camera->farClip, 1.0f, 0.0f, 100000.0f);
+            ImGui::DragFloat("FOV", &camera->fov, 1.0f, 1.0f, 180.0f);
             ImGui::DragFloat3("Position", &camera->position.x, 1.0f, -10000.0f, 10000.0f);
             ImGui::DragFloat3("Direction", &camera->direction.x, 1.0f, -1.0f, 1.0f);
+            ImGui::Separator();
 
-            ImGui::Text("Shader");
+            ImGui::Text("Vertex Shader");
             ImGui::Text(shader->getVertexSource().c_str());
+            ImGui::Separator();
+            ImGui::Text("Fragment Shader");
             ImGui::Text(shader->getFragmentSource().c_str());
-            if (ImGui::Button("Print"))
+
+            ImGui::Separator();
+
+            if (ImGui::Button("Print", ImVec2(ImGui::GetWindowSize().x, 0)))
             {
                 shader->print();
             }
