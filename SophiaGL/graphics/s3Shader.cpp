@@ -43,35 +43,6 @@ s3Shader::s3Shader(const char* filePath)
 s3Shader::~s3Shader()
 {}
 
-void s3Shader::begin()
-{
-	glUseProgram(program);
-
-    // bind all the textures
-    for (auto t : textureMap)
-    {
-        auto tex       = t.second;
-        auto location  = tex->getLocation();
-        auto textureID = tex->getTextureID();
-
-        glActiveTexture(GL_TEXTURE0 + location);
-        glBindTexture(GL_TEXTURE_2D, textureID);
-    }
-}
-
-void s3Shader::end()
-{
-	glUseProgram(0);
-
-    // unbind all textures
-    for (auto tex : textureMap)
-    {
-        int location = tex.second->getLocation();
-
-        glActiveTexture(GL_TEXTURE0 + location);
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
-}
 glm::bvec1 s3Shader::getBool1(const std::string& name) const
 {
     S3_GET_VALUE(bvec1, "bool");
@@ -414,6 +385,36 @@ void s3Shader::print() const
     }
 }
 
+void s3Shader::begin()
+{
+    glUseProgram(program);
+
+    // bind all the textures
+    for (auto t : textureMap)
+    {
+        auto tex = t.second;
+        auto location = tex->getLocation();
+        auto textureID = tex->getTextureID();
+
+        glActiveTexture(GL_TEXTURE0 + location);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+    }
+}
+
+void s3Shader::end()
+{
+    glUseProgram(0);
+
+    // unbind all textures
+    for (auto tex : textureMap)
+    {
+        int location = tex.second->getLocation();
+
+        glActiveTexture(GL_TEXTURE0 + location);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+}
+
 bool s3Shader::load(const char* _shaderFilePath)
 {
     if (bIsLoaded)
@@ -458,7 +459,6 @@ bool s3Shader::load(const char* _shaderFilePath)
 
     updateInputLayout(pass_list[0].input_layout_list);
     updateUniformData(pass_list[0].uniform_buffer_elem_list);
-    
 
     s3Log::success("Shader:%s build succeed\n", filePath.c_str());
 
@@ -478,7 +478,7 @@ bool s3Shader::setValue(const std::string& typeName, const std::string& attrName
 
     // copy to GPU Mem
     glBindBuffer(GL_UNIFORM_BUFFER, ubo);
-    glBufferSubData(GL_UNIFORM_BUFFER, elem->type_offset, elem->type_size, uniformData);
+    glBufferSubData(GL_UNIFORM_BUFFER, elem->type_offset, elem->type_size, dataPtr);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     return false;
@@ -581,7 +581,7 @@ void s3Shader::updateUniformData(const std::vector<shader_uniform_buffer_elem_gl
     }
     glUniformBlockBinding(program, uniformBlockIndex, 0);
 
-    // uniform buffer object
+    // uniform buffer object, glBufferData will allocate and store the data
     glGenBuffers(1, &ubo);
     glBindBuffer(GL_UNIFORM_BUFFER, ubo);
     glBufferData(GL_UNIFORM_BUFFER, length, NULL, GL_STATIC_DRAW);
