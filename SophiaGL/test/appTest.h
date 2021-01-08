@@ -184,17 +184,18 @@ public:
             material->setTexture("texture0", texture0);
             material->setTexture("texture1", texture1);
 
-            auto projectionMat = camera->getProjectionMatrix();
-            auto viewMat       = camera->getViewMatrix();
-            material->setMatrix4("projection", projectionMat);
-            material->setMatrix4("view", viewMat);
-
-            material->setDouble1("testDouble", glm::dvec1(3.1415));
-            material->setDouble3("testDouble2", glm::dvec3(-2, 3, 4));
+            material->setDouble3("fuckGLSL0", glm::dvec3(-2, 3, 4));
+            material->setDouble3("fuckGLSL1", glm::dvec3(-2, 3, 4));
+            material->setDouble1("fuckDouble0", glm::dvec1(3.1415));
+            material->setDouble1("fuckDouble1", glm::dvec1(3.1415));
             material->setFloat3("testValue0", glm::vec3(-5.0f, 6.0f, -7.0f));
             material->setBool1("testValue1", glm::bvec1(true));
             material->setFloat1("testFloat", glm::vec1(15.0f));
 
+            auto projectionMat = camera->getProjectionMatrix();
+            auto viewMat       = camera->getViewMatrix();
+            material->setMatrix4("projection", projectionMat);
+            material->setMatrix4("view", viewMat);
 			// activate shader and clearing
 			if (bFirst)
 			{
