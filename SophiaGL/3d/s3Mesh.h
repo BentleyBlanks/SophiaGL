@@ -9,7 +9,7 @@ class s3Submesh
 {
 public:
 	s3Submesh(const std::string& name = "") : name(name) {}
-	~s3Submesh() {}
+	~s3Submesh();
 
 	void clear();
 	void updateVertexStream(unsigned int inputLayoutHandle);
@@ -24,7 +24,9 @@ private:
 
 	// vertex data would be updated after called updateVertexStream()
 	unsigned int vertexStride = 0;
-	void* vertexStream = nullptr;
+	unsigned int vertexCount  = 0;
+	void* vertexStream        = nullptr;
+	bool bIsInited            = false;
 
 	// vertex's buffer
 	std::vector<glm::vec4> positions;
@@ -38,7 +40,6 @@ private:
 
 	// opengl render data
 	unsigned int vao = 0, vbo = 0, ebo = 0;
-	unsigned int vertexCount = 0;
 	std::string name;
 };
 

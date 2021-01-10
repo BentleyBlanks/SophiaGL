@@ -51,6 +51,25 @@ GLsizei ConvertDataTypeToGLType(semantic_data_type data_type)
 	return 0;
 }
 
+s3Submesh::~s3Submesh()
+{
+	if (vbo != 0)
+	{
+		glDeleteBuffers(1, &vbo);
+		vbo = 0;
+	}
+	if (ebo != 0)
+	{
+		glDeleteBuffers(1, &ebo);
+		ebo = 0;
+	}
+	if (vao != 0)
+	{
+		glDeleteBuffers(1, &vao);
+		vao = 0;
+	}
+}
+
 void s3Submesh::clear()
 {
 	indices.clear();
@@ -87,7 +106,7 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 	}
 
 	auto& inputLayout = manager.get(handle);
-	vertexStride = 0;
+	auto newVertexStride = 0;
 	for (int i = 0; i < semantic_channel::eC_COUNT; i++)
 	{
 		if (!inputLayout.channels[i]) continue;
@@ -95,15 +114,22 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 		auto dataSize = getDataTypeSize(inputLayout.dataTypes[i]);
 		auto dimension = inputLayout.dimensions[i];
 
-		vertexStride += (unsigned int)(dataSize * dimension);
+		newVertexStride += (unsigned int)(dataSize * dimension);
 	}
 
-	S3_SAFE_FREE(vertexStream);
-	unsigned int verticesLength = vertexStride * vertexCount;
-	vertexStream = malloc(verticesLength);
-	// if no related semantic was found, use 0 instead
-	memset(vertexStream, 0, verticesLength);
+	// Reallocate CPU / GPU resources
+	if (!bIsInited || newVertexStride != vertexStride)
+	{
+		vertexStride = newVertexStride;
+		S3_SAFE_FREE(vertexStream);
 
+		unsigned int verticesLength = vertexStride * vertexCount;
+		vertexStream = malloc(verticesLength);
+		// if no related semantic was found, use 0 instead
+		memset(vertexStream, 0, verticesLength);
+	}
+
+	// Update mesh data into vertex stream
 	char* vertexPtr = (char*)vertexStream;
 	for (unsigned int i = 0; i < vertexCount; i++)
 	{
@@ -112,7 +138,7 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 		{
 			if (!inputLayout.channels[j]) continue;
 
-			auto dataTypeSize = (unsigned )getDataTypeSize(inputLayout.dataTypes[j]);
+			auto dataTypeSize = (unsigned)getDataTypeSize(inputLayout.dataTypes[j]);
 			auto dimension = inputLayout.dimensions[j];
 
 			switch (j)
@@ -142,25 +168,37 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 				memcpy(vertexPtr + i * vertexStride + offset, &(tangents[i][0]), dimension * dataTypeSize);
 				break;
 			}
-			
+
 			offset += dimension * dataTypeSize;
 		}
 	}
 
 	// vao generation and bind
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
 	// vbo, vertex buffer
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertexStride * vertexCount, vertexStream, GL_STATIC_DRAW);
-	//glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
-
 	// ebo, index buffer
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	if (vao == 0) glGenVertexArrays(1, &vao);
+	if (vbo == 0) glGenBuffers(1, &vbo);
+	if (ebo == 0) glGenBuffers(1, &ebo);
+
+	glBindVertexArray(vao);
+	if (bIsInited)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, vertexStride * vertexCount, vertexStream);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, indices.size() * sizeof(unsigned int), &indices[0]);
+	}
+	else
+	{
+		// Ref: https://community.khronos.org/t/will-glbufferdata-leak-memory/66421 
+		// For modifying the data in the buffer object, use glBufferSubData or glMapBufferRange functions
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, vertexStride * vertexCount, vertexStream, GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	}
 
 	// input layout
 	int index = 0;
@@ -185,6 +223,9 @@ void s3Submesh::updateVertexStream(unsigned int handle)
 	// unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	inputLayoutHandle = handle;
+	bIsInited = true;
 }
 
 // ---------------------------------------------s3Mesh---------------------------------------------
