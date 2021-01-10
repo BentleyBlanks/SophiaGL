@@ -101,9 +101,11 @@ public:
 
         if (userData->sender == &s3CallbackManager::onEngineInit)
         {
+            dirWatchPaths.push_back("../../thirdparty/fake_unity_shader/src/shader_parser");
+            dirWatchPaths.push_back("../../thirdparty/fake_unity_shader/src/shaders");
             shaderDirWatch = new s3UtilsDirectoryWatch();
-            shaderDirWatch->watch("../../thirdparty/fake_unity_shader/src/shader_parser", false);
-            //shaderDirWatch->watch(paths, false);
+            //shaderDirWatch->watch("../../thirdparty/fake_unity_shader/src/shader_parser", false);
+            shaderDirWatch->watch(dirWatchPaths, false);
 
             info.api = ShaderGraphicsAPI::OpenGL;
             info.root_path = "../../thirdparty/fake_unity_shader/src/";
@@ -116,7 +118,7 @@ public:
 
             texture0 = new s3Texture2d();
             texture1 = new s3Texture2d();
-            texture0->load("../../resources/images/lulu.jpg");
+            texture0->load("../../resources/images/sophia.jpg");
             texture1->load("../../resources/images/lulu2.jpg");
             // could be removed when shader parser added
             texture0->setLocation(0);
@@ -182,7 +184,7 @@ public:
             ImGui::End();
 
             material->setTexture("texture0", texture0);
-            material->setTexture("texture1", texture1);
+            //material->setTexture("texture1", texture1);
 
             material->setDouble3("fuckGLSL0", glm::dvec3(-2, 3, 4));
             material->setDouble3("fuckGLSL1", glm::dvec3(-2, 3, 4));
@@ -247,6 +249,7 @@ public:
     s3UtilsDirectoryWatch* shaderDirWatch = nullptr;
 
     ShaderInitInfo info;
+    std::vector<std::string> dirWatchPaths;
 
     unsigned int vao = 0, vbo = 0;
 };
