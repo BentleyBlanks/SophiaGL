@@ -120,9 +120,6 @@ public:
             texture1 = new s3Texture2d();
             texture0->load("../../resources/images/sophia.jpg");
             texture1->load("../../resources/images/lulu2.jpg");
-            // could be removed when shader parser added
-            texture0->setLocation(0);
-            texture1->setLocation(1);
 
             shader = new s3Shader();
             shader->load("./shaders/mainFuckTexture.shader");
@@ -130,10 +127,10 @@ public:
             // replaced by Shader::find() in the future
             material = new s3Material(*shader);
 
-            //mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
+            mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
             //mesh = s3ModelImporter::load("../../resources/models/cornellBox/CornellBox-Sphere.obj");
             //mesh = s3ModelImporter::load("../../resources/models/cornellBox/water.obj");
-            mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
+            //mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
 
             s3Renderer::setDepthTest(true);
         }
@@ -184,7 +181,7 @@ public:
             ImGui::End();
 
             material->setTexture("texture0", texture0);
-            //material->setTexture("texture1", texture1);
+            material->setTexture("texture1", texture1);
 
             material->setDouble3("fuckGLSL0", glm::dvec3(-2, 3, 4));
             material->setDouble3("fuckGLSL1", glm::dvec3(-2, 3, 4));

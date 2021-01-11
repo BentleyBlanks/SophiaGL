@@ -123,10 +123,10 @@ glm::dvec4 s3Shader::getDouble4(const std::string& name) const
     S3_GET_VALUE(dvec4, "double4");
 }
 
-glm::mat3 s3Shader::getMatrix3(const std::string& name) const
-{
-    S3_GET_MAT_VALUE(mat3, "float3x3");
-}
+//glm::mat3 s3Shader::getMatrix3(const std::string& name) const
+//{
+//    S3_GET_MAT_VALUE(mat3, "float3x3");
+//}
 
 glm::mat4 s3Shader::getMatrix4(const std::string& name) const
 {
@@ -139,7 +139,7 @@ s3Texture* s3Shader::getTexture(const std::string& name) const
     if (iter == textureMap.end()) 
         return nullptr;
 
-    return iter->second;
+    return iter->second.texture;
 }
 
 bool s3Shader::setBool1(const std::string& name, const glm::bvec1& value)
@@ -239,9 +239,9 @@ bool s3Shader::setTexture(const std::string& name, s3Texture* value)
     // Ref: https://learnopengl.com/Getting-started/Textures
     // only need to set once
     // (uniform localtion, texture location)
-    glUniform1i(glGetUniformLocation(program, name.c_str()), value->getLocation());
+    glUniform1i(glGetUniformLocation(program, name.c_str()), textureMap[name].location);
     
-    textureMap[name] = value;
+    textureMap[name].texture = value;
 
     return true;
 }
@@ -375,13 +375,15 @@ void s3Shader::print() const
     // Texture binding
     for (auto it = textureMap.begin(); it != textureMap.end(); it++)
     {
-        auto tex = it->second;
-        s3Log::print("[Texture]: Name: %s, Width: %d, Height: %d, Location: %d, ID: %d\n", 
+        auto texObj   = it->second;
+        auto tex      = texObj.texture;
+        auto location = texObj.location;
+        s3Log::print("[Texture]: Name: %s, Width: %d, Height: %d, ID: %d\n, Location: %d",
                      it->first.c_str(), 
                      tex->getWidth(), 
                      tex->getHeight(),
-                     tex->getLocation(),
-                     tex->getTextureID());
+                     tex->getTextureID(),
+                     location);
     }
 }
 
@@ -392,9 +394,9 @@ void s3Shader::begin()
     // bind all the textures
     for (auto t : textureMap)
     {
-        auto tex = t.second;
-        auto location = tex->getLocation();
-        auto textureID = tex->getTextureID();
+        auto tex       = t.second;
+        auto location  = tex.location;
+        auto textureID = tex.texture->getTextureID();
 
         glActiveTexture(GL_TEXTURE0 + location);
         glBindTexture(GL_TEXTURE_2D, textureID);
@@ -408,7 +410,7 @@ void s3Shader::end()
     // unbind all textures
     for (auto tex : textureMap)
     {
-        int location = tex.second->getLocation();
+        int location = tex.second.location;
 
         glActiveTexture(GL_TEXTURE0 + location);
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -459,6 +461,7 @@ bool s3Shader::load(const char* _shaderFilePath)
 
     updateInputLayout(pass_list[0].input_layout_list);
     updateUniformData(pass_list[0].uniform_buffer_elem_list);
+    updateTextureMap(pass_list[0].texture_list);
 
     s3Log::success("Shader:%s build succeed\n", filePath.c_str());
 
@@ -589,6 +592,18 @@ void s3Shader::updateUniformData(const std::vector<shader_uniform_buffer_elem_gl
 
     // only 0 binding point is working
     glBindBufferRange(GL_UNIFORM_BUFFER, 0, ubo, 0, length);
+}
+
+void s3Shader::updateTextureMap(const std::vector<shader_texture_gl>& textureList)
+{
+    for (auto tex : textureList)
+    {
+        s3TextureGLInfo texInfo;
+        texInfo.location = tex.location;
+        texInfo.texture  = nullptr;
+
+        textureMap[tex.name] = texInfo;
+    }
 }
 
 bool s3Shader::reload()

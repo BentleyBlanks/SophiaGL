@@ -53,7 +53,7 @@ public:
     glm::dvec2 getDouble2(const std::string& name) const;
     glm::dvec3 getDouble3(const std::string& name) const;
     glm::dvec4 getDouble4(const std::string& name) const;
-    glm::mat3 getMatrix3(const std::string& name) const;
+    //glm::mat3 getMatrix3(const std::string& name) const;
     glm::mat4 getMatrix4(const std::string& name) const;
     s3Texture* getTexture(const std::string& name) const;
     //bool getKeyword(std::string name) const;
@@ -79,10 +79,6 @@ public:
     bool setMatrix4(const std::string& name, const glm::mat4& value);
     bool setTexture(const std::string& name, s3Texture* value);
 
-    // common setter / getter
-    //bool setValue(const std::string& name, s3ShaderField value);
-    //s3ShaderField getValue(const std::string& name) const;
-
     // input layout getter
     unsigned int getInputLayoutHandle() const { return inputLayoutHandle; }
 
@@ -95,6 +91,7 @@ private:
     const shader_uniform_buffer_elem_gl* findValueInUniformElemList(const std::string& typeName, const std::string& attrName) const;
     void updateInputLayout(const std::vector<shader_input_layout_elem_gl>& inputLayoutList);
     void updateUniformData(const std::vector<shader_uniform_buffer_elem_gl>& uniformElemList);
+    void updateTextureMap(const std::vector<shader_texture_gl>& textureList);
 
     //std::map<std::string, unsigned int> programMap;
     unsigned int program = 0;
@@ -109,7 +106,12 @@ private:
     //std::string vertexPath, fragmentPath;
 
     //std::map<std::string, s3ShaderField> fieldMap;
-    std::map<std::string, s3Texture*> textureMap;
+    struct s3TextureGLInfo
+    {
+        unsigned int location = 0;
+        s3Texture* texture = nullptr;
+    };
+    std::map<std::string, s3TextureGLInfo> textureMap;
     void* uniformData = nullptr;
     unsigned int ubo;
 };
