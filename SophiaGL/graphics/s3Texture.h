@@ -19,13 +19,9 @@ public:
 	s3Texture() {}
 	~s3Texture() {}
 
-	// could be removed when shader parser added
-	void setLocation(int _location) { location = _location; }
-
 	int getWidth() const { return width; }
 	int getHeight() const { return height; }
 	int getChannels() const { return channels; }
-	int getLocation() const { return location; }
 	int getMipCount() const { return mipCount; }
 
 	s3WarpMode getWarpMode() const { return warpMode; }
@@ -44,5 +40,4 @@ protected:
 
 	// opengl render data
 	unsigned int textureID = 0;
-	int location = 0;
 };
