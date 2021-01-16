@@ -391,6 +391,63 @@ void s3Shader::begin()
 {
     glUseProgram(program);
 
+    // Cull
+    switch(cull)
+    {
+    case eCULL_FRONT:
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+        break;
+    case eCULL_OFF:
+        glDisable(GL_CULL_FACE);
+        break;
+    case eCULL_BACK:
+    default:
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+        break;
+    }
+
+    // ZTest
+    glEnable(GL_DEPTH_TEST);
+    switch (ztest)
+    {
+    case eZTEST_LESS:
+        glDepthFunc(GL_LESS);
+        break;
+    case eZTEST_GREATER:
+        glDepthFunc(GL_GREATER);
+        break;
+    case eZTEST_GEQUAL:
+        glDepthFunc(GL_GEQUAL);
+        break;
+    case eZTEST_EQUAL:
+        glDepthFunc(GL_EQUAL);
+        break;
+    case eZTEST_NOTEQUAL:
+        glDepthFunc(GL_NOTEQUAL);
+        break;
+    case eZTEST_ALWAYS:
+        glDepthFunc(GL_ALWAYS);
+        break;
+    case eZTEST_LEQUAL:
+    default:
+        glDepthFunc(GL_LEQUAL);
+        break;
+    }
+
+    // ZWrite
+    switch (zwrite)
+    {
+    case eWRITE_OFF:
+        glDepthMask(GL_FALSE);
+        break;
+    case eWRITE_ON:
+    default:
+        glDepthMask(GL_TRUE);
+        break;
+    }
+    
     // bind all the textures
     for (auto t : textureMap)
     {
@@ -456,6 +513,9 @@ bool s3Shader::load(const char* _shaderFilePath)
     // now only supported 1 pass
     auto& pass     = pass_list[0];
     program        = pass.program;
+    cull           = pass.cull;
+    ztest          = pass.ztest;
+    zwrite         = pass.zwrite;
     vertexSource   = pass.vs_source;
     fragmentSource = pass.fs_source;
 

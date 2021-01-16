@@ -127,10 +127,10 @@ public:
             // replaced by Shader::find() in the future
             material = new s3Material(*shader);
 
-            mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
+            //mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
             //mesh = s3ModelImporter::load("../../resources/models/cornellBox/CornellBox-Sphere.obj");
             //mesh = s3ModelImporter::load("../../resources/models/cornellBox/water.obj");
-            //mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
+            mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
 
             s3Renderer::setDepthTest(true);
         }
