@@ -93,7 +93,6 @@ private:
     void updateUniformData(const std::vector<shader_uniform_buffer_elem_gl>& uniformElemList);
     void updateTextureMap(const std::vector<shader_texture_gl>& textureList);
 
-    //std::map<std::string, unsigned int> programMap;
     unsigned int program = 0;
     int inputLayoutHandle = -1;
 
@@ -103,9 +102,11 @@ private:
     std::string vertexSource, fragmentSource;
     std::string filePath;
     std::string name;
-    //std::string vertexPath, fragmentPath;
 
-    //std::map<std::string, s3ShaderField> fieldMap;
+    state_cull cull     = eCULL_BACK;
+    state_zwrite zwrite = eWRITE_ON;
+    state_ztest ztest   = eZTEST_LEQUAL;
+    
     struct s3TextureGLInfo
     {
         unsigned int location = 0;
