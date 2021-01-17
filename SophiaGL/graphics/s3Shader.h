@@ -103,6 +103,7 @@ private:
     std::string filePath;
     std::string name;
 
+    // shader context state cache
     state_cull cull     = eCULL_BACK;
     state_zwrite zwrite = eWRITE_ON;
     state_ztest ztest   = eZTEST_LEQUAL;
