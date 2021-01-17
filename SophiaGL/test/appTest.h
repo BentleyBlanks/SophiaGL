@@ -93,6 +93,42 @@ glm::vec3 cubePositions[] =
 class s3App : public s3CallbackHandle
 {
 public:
+    void gui()
+    {
+        ImGui::Begin("Sophia");
+        ImGui::Text("Camera");
+        ImGui::DragFloat("Speed", &cameraSpeed, 1.0f, 0.0f, 200.0f);
+        ImGui::DragFloat("Near Plane", &camera->nearClip, 1.0f, 0.1f, 10.0f);
+        ImGui::DragFloat("Far Plane", &camera->farClip, 1.0f, 0.0f, 100000.0f);
+        ImGui::DragFloat("FOV", &camera->fov, 1.0f, 1.0f, 180.0f);
+        ImGui::DragFloat3("Position", &camera->position.x, 1.0f, -10000.0f, 10000.0f);
+        ImGui::DragFloat3("Direction", &camera->direction.x, 1.0f, -1.0f, 1.0f);
+        ImGui::Separator();
+
+        ImGui::Text("Vertex Shader");
+        ImGui::Text(shader->getVertexSource().c_str());
+        ImGui::Separator();
+        ImGui::Text("Fragment Shader");
+        ImGui::Text(shader->getFragmentSource().c_str());
+
+        ImGui::Separator();
+
+        if (ImGui::Button("Print", ImVec2(ImGui::GetWindowSize().x, 0)))
+        {
+            shader->print();
+        }
+        ImGui::End();
+
+        ImGui::Begin("Hierachy");
+        if (ImGui::TreeNode("Hierachy"))
+        {
+            for (auto submesh : mesh->submeshes)
+                ImGui::Checkbox(submesh->name.c_str(), &submesh->visible);
+            ImGui::TreePop();
+        }
+        ImGui::End();
+    }
+
     void onHandle(const s3CallbackUserData* userData)
     {
         static auto bFirst = true;
@@ -127,10 +163,10 @@ public:
             // replaced by Shader::find() in the future
             material = new s3Material(*shader);
 
-            //mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
+            mesh = s3ModelImporter::load("../../resources/models/sponza/sponza.obj");
             //mesh = s3ModelImporter::load("../../resources/models/cornellBox/CornellBox-Sphere.obj");
             //mesh = s3ModelImporter::load("../../resources/models/cornellBox/water.obj");
-            mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
+            //mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
         }
         else if (userData->sender == &s3CallbackManager::onUpdate)
         {
@@ -154,30 +190,6 @@ public:
         }
         else if (userData->sender == &s3CallbackManager::onBeginRender)
         {
-            ImGui::Begin("Sophia");
-            ImGui::Text("Camera");
-            ImGui::DragFloat("Speed", &cameraSpeed, 1.0f, 0.0f, 200.0f);
-            ImGui::DragFloat("Near Plane", &camera->nearClip, 1.0f, 0.1f, 10.0f);
-            ImGui::DragFloat("Far Plane", &camera->farClip, 1.0f, 0.0f, 100000.0f);
-            ImGui::DragFloat("FOV", &camera->fov, 1.0f, 1.0f, 180.0f);
-            ImGui::DragFloat3("Position", &camera->position.x, 1.0f, -10000.0f, 10000.0f);
-            ImGui::DragFloat3("Direction", &camera->direction.x, 1.0f, -1.0f, 1.0f);
-            ImGui::Separator();
-
-            ImGui::Text("Vertex Shader");
-            ImGui::Text(shader->getVertexSource().c_str());
-            ImGui::Separator();
-            ImGui::Text("Fragment Shader");
-            ImGui::Text(shader->getFragmentSource().c_str());
-
-            ImGui::Separator();
-
-            if (ImGui::Button("Print", ImVec2(ImGui::GetWindowSize().x, 0)))
-            {
-                shader->print();
-            }
-            ImGui::End();
-
             material->setTexture("texture0", texture0);
             material->setTexture("texture1", texture1);
 
@@ -212,6 +224,8 @@ public:
                 material->setMatrix4("model", model);
                 s3Renderer::drawMesh(*mesh, *material);
             }
+
+            gui();
         }
         else if (userData->sender == &s3CallbackManager::onEngineDeinit)
         {

@@ -29,6 +29,8 @@ void s3Renderer::drawMesh(const s3Mesh& mesh, const s3Material& material)
 
 	for (auto submesh : mesh.submeshes)
 	{
+		if (!submesh->visible) continue;
+
 		// update mesh's vertex stream with shader's inputlayout
 		submesh->updateVertexStream(shader.getInputLayoutHandle());
 
