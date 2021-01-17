@@ -14,6 +14,9 @@ public:
 	void clear();
 	void updateVertexStream(unsigned int inputLayoutHandle);
 
+	bool visible = true;
+	std::string name;
+
 	friend class s3ModelImporter;
 	friend class s3Renderer;
 private:
@@ -26,7 +29,8 @@ private:
 	unsigned int vertexStride = 0;
 	unsigned int vertexCount  = 0;
 	void* vertexStream        = nullptr;
-	bool bIsInited            = false;
+
+	bool bIsInited = false;
 
 	// vertex's buffer
 	std::vector<glm::vec4> positions;
@@ -40,7 +44,6 @@ private:
 
 	// opengl render data
 	unsigned int vao = 0, vbo = 0, ebo = 0;
-	std::string name;
 };
 
 class s3Mesh
