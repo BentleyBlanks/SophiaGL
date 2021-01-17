@@ -131,8 +131,6 @@ public:
             //mesh = s3ModelImporter::load("../../resources/models/cornellBox/CornellBox-Sphere.obj");
             //mesh = s3ModelImporter::load("../../resources/models/cornellBox/water.obj");
             mesh = s3ModelImporter::load("../../resources/models/cube/cube.obj");
-
-            s3Renderer::setDepthTest(true);
         }
         else if (userData->sender == &s3CallbackManager::onUpdate)
         {
@@ -203,7 +201,6 @@ public:
 			}
 
             // render boxes
-            s3Renderer::setDepthTest(true);
             for (int i = 0; i < 1; i++)
             {
                 float angle = 20.0f * i;

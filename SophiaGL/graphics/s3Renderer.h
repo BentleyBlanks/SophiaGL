@@ -10,17 +10,10 @@ class s3RenderTexture;
 class s3Renderer
 {
 public:
-    // moved into shader's properties in the future
-    static void setDepthTest(bool bDepthTest);
-    static bool isDepthTest() { return bDepthTest; }
-    
     static void clear(glm::vec4 clearColor, bool color = true, bool depth = true);
-    
     static void blit(s3Texture& src, s3RenderTexture& dst);
     static void blit(s3Texture& src, s3RenderTexture& dst, const s3Material& material);
     static void setRenderTarget(const s3RenderTexture& rt);
     static void drawMesh(const s3Mesh& mesh, const s3Material& material);
-
 private:
-    static bool bDepthTest;
 };

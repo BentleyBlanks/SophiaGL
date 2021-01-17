@@ -4,18 +4,6 @@
 #include <app/s3Window.h>
 #include <glad/glad.h>
 
-bool s3Renderer::bDepthTest = false;
-
-void s3Renderer::setDepthTest(bool _bDepthTest)
-{
-	bDepthTest = _bDepthTest;
-
-	if (bDepthTest)
-		glEnable(GL_DEPTH_TEST);
-	else
-		glDisable(GL_DEPTH_TEST);
-}
-
 void s3Renderer::clear(glm::vec4 clearColor, bool color, bool depth)
 {
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
