@@ -4,12 +4,6 @@
 #include <app/s3Window.h>
 #include <glad/glad.h>
 
-void s3Renderer::clear(glm::vec4 clearColor, bool color, bool depth)
-{
-	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
 void s3Renderer::blit(s3Texture& src, s3RenderTexture& dst)
 {
 }
@@ -18,8 +12,38 @@ void s3Renderer::blit(s3Texture& src, s3RenderTexture& dst, const s3Material& ma
 {
 }
 
-void s3Renderer::setRenderTarget(const s3RenderTexture& rt)
+void s3Renderer::setRenderTarget(s3RenderTexture& rt)
 {
+	if (!rt.isCreated()) rt.create();
+	if (!rt.isCreated()) return;
+	
+	glBindFramebuffer(GL_FRAMEBUFFER, rt.fbo);
+}
+
+void s3Renderer::setRenderTarget(s3RenderBuffer& colorBuffers, s3RenderBuffer& depthBuffer)
+{
+
+}
+
+void s3Renderer::setRenderTarget(std::vector<s3RenderBuffer>&colorBuffers, s3RenderBuffer & depthBuffer)
+{
+}
+
+void s3Renderer::clearRenderTarget(bool clearDepth, bool clearColor, glm::vec4 backgroundColor, float depth)
+{
+	unsigned int mask = 0;
+	if (clearColor)
+	{
+		glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
+		mask |= GL_COLOR_BUFFER_BIT;
+	}
+
+	if (clearDepth)
+	{
+		glClearDepth(depth);
+		mask |= GL_DEPTH_BUFFER_BIT;
+	}
+	glClear(mask);
 }
 
 void s3Renderer::drawMesh(const s3Mesh& mesh, const s3Material& material)
