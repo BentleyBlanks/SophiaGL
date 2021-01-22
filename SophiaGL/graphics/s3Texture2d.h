@@ -19,5 +19,5 @@ public:
 private:
 	bool bIsLoaded = false;
 
-	s3TextureFormat format;
+	//s3TextureFormat format;
 };
