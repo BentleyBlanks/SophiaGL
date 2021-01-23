@@ -21,4 +21,5 @@ public:
     
     static void drawMesh(const s3Mesh& mesh, const s3Material& material);
 private:
+    static bool checkRTAndCreated(s3RenderTexture& rt);
 };

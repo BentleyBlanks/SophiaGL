@@ -56,10 +56,12 @@ s3Enum(s3RenderTextureFormat,
 //	unsigned int width;
 //};
 
+class s3RenderTexture;
 class s3RenderBuffer
 {
 public:
 	unsigned int id = 0;
+	s3RenderTexture* rt = nullptr;
 };
 
 class s3RenderTexture : public s3Texture
@@ -71,6 +73,8 @@ public:
 	void release();
 
 	bool isCreated() const { return bIsCreated; }
+	bool isColorBufferCreated() const { return bIsColorBufferCreated; }
+	bool isDepthBufferCreated() const { return bIsDepthBufferCreated; }
 
 	s3RenderBuffer colorBuffer;
 	s3RenderBuffer depthBuffer;
@@ -81,5 +85,7 @@ public:
 	s3RenderTextureFormat format = s3RenderTextureFormat::Default;
 
 protected:
-	bool bIsCreated = false;
+	bool bIsCreated            = false;
+	bool bIsColorBufferCreated = false;
+	bool bIsDepthBufferCreated = false;
 };

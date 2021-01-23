@@ -14,8 +14,11 @@ bool s3RenderTexture::create()
 {
 	if (bIsCreated) return true;
 
+	colorBuffer.rt = this;
+	depthBuffer.rt = this;
+
 	glGenFramebuffers(1, &fbo);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	//glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
 	// generate color texture attachment
 	if (format != s3RenderTextureFormat::Depth ||
@@ -28,7 +31,7 @@ bool s3RenderTexture::create()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffer.id, 0);
+		bIsColorBufferCreated = true;
 	}
 
 	// generate depth texture attachment if needed
@@ -39,17 +42,19 @@ bool s3RenderTexture::create()
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthBuffer.id);
+		bIsDepthBufferCreated = true;
 	}
 
 	if (colorBuffer.id == 0 ||
 		depthBuffer.id == 0 ||
 		glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
+		bIsColorBufferCreated = false;
+		bIsDepthBufferCreated = false;
 		s3Log::error("s3RenderTexture: %s created failed", name.c_str());
 	}
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	bIsCreated = true;
 	return true;
 }
