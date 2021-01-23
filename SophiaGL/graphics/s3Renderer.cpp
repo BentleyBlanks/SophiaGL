@@ -12,17 +12,29 @@ void s3Renderer::blit(s3Texture& src, s3RenderTexture& dst, const s3Material& ma
 {
 }
 
-void s3Renderer::setRenderTarget(s3RenderTexture& rt)
+bool s3Renderer::checkRTAndCreated(s3RenderTexture& rt)
 {
 	if (!rt.isCreated()) rt.create();
-	if (!rt.isCreated()) return;
+	return rt.isCreated();
+}
+
+void s3Renderer::setRenderTarget(s3RenderTexture& rt)
+{
+	if (!checkRTAndCreated(rt)) return;
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, rt.fbo);
+	if(rt.isColorBufferCreated()) glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rt.colorBuffer.id, 0);
+	if(rt.isDepthBufferCreated()) glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rt.depthBuffer.id);
 }
 
 void s3Renderer::setRenderTarget(s3RenderBuffer& colorBuffers, s3RenderBuffer& depthBuffer)
 {
+	//if (!checkRTAndCreated(*colorBuffers.rt)) return;
+	//if (!checkRTAndCreated(*depthBuffer.rt)) return;
 
+	//glBindFramebuffer(GL_FRAMEBUFFER, colorBuffers.rt->fbo);
+	//if (rt.isColorBufferCreated()) glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rt.colorBuffer.id, 0);
+	//if (rt.isDepthBufferCreated()) glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rt.depthBuffer.id);
 }
 
 void s3Renderer::setRenderTarget(std::vector<s3RenderBuffer>&colorBuffers, s3RenderBuffer & depthBuffer)
