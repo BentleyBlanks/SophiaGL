@@ -6,9 +6,13 @@
 class s3Window;
 class s3Mesh;
 class s3Material;
-class s3Renderer
+class s3Graphics
 {
 public:
+    // use Renderer.clear instead of GL.clear()
+    static void clear(glm::vec4 clearColor, bool color = true, bool depth = true);
+
+    // submit a full viewport drawcall
     static void blit(s3Texture& src, s3RenderTexture& dst);
     static void blit(s3Texture& src, s3RenderTexture& dst, const s3Material& material);
 

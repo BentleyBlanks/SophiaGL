@@ -1,6 +1,36 @@
 #include <graphics/s3RenderTexture.h>
 #include <glad/glad.h>
 
+// -------------------------------------------s3FrameBuffer-------------------------------------------
+s3FrameBuffer::~s3FrameBuffer()
+{
+	release();
+}
+
+void s3FrameBuffer::create()
+{
+	glGenFramebuffers(1, &id);
+	bIsCreated = true;
+}
+
+void s3FrameBuffer::release()
+{
+	glDeleteFramebuffers(1, &id);
+	id = 0;
+	bIsCreated = false;
+}
+
+void s3FrameBuffer::bind()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, id);
+}
+
+void s3FrameBuffer::unbind()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+// -------------------------------------------s3RenderTexture-------------------------------------------
 //--! ref: https://docs.unity3d.com/ScriptReference/RenderTexture.html
 s3RenderTexture::s3RenderTexture(int width, int height, int depth, s3RenderTextureFormat format)
 {
@@ -10,15 +40,17 @@ s3RenderTexture::s3RenderTexture(int width, int height, int depth, s3RenderTextu
 	this->depthBufferBits = depth;
 }
 
+s3RenderTexture::~s3RenderTexture()
+{
+	release();
+}
+
 bool s3RenderTexture::create()
 {
 	if (bIsCreated) return true;
 
 	colorBuffer.rt = this;
 	depthBuffer.rt = this;
-
-	glGenFramebuffers(1, &fbo);
-	//glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
 	// generate color texture attachment
 	if (format != s3RenderTextureFormat::Depth ||
@@ -54,18 +86,15 @@ bool s3RenderTexture::create()
 		s3Log::error("s3RenderTexture: %s created failed", name.c_str());
 	}
 	
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	bIsCreated = true;
 	return true;
 }
 
 void s3RenderTexture::release()
 {
-	glDeleteFramebuffers(1, &fbo);
 	glDeleteTextures(1, &colorBuffer.id);
 	glDeleteRenderbuffers(1, &depthBuffer.id);
 
-	fbo            = 0;
 	colorBuffer.id = 0;
 	depthBuffer.id = 0;
 	bIsCreated     = false;

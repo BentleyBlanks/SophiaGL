@@ -18,6 +18,5 @@ public:
 
 private:
 	bool bIsLoaded = false;
-
-	//s3TextureFormat format;
+	int channels = -1;
 };

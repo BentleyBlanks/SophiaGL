@@ -64,10 +64,33 @@ public:
 	s3RenderTexture* rt = nullptr;
 };
 
+class s3FrameBuffer
+{
+public:
+	s3FrameBuffer() {}
+	~s3FrameBuffer();
+
+	void create();
+	void release();
+	bool isCreated() const { return bIsCreated; }
+
+	void bind();
+	void unbind();
+
+	void setAttachments(s3RenderTexture* _attachment) { attachment = _attachment; }
+
+private:
+	bool bIsCreated = false;
+	
+	unsigned int id = 0;
+	s3RenderTexture* attachment = nullptr;
+};
+
 class s3RenderTexture : public s3Texture
 {
 public:
 	s3RenderTexture(int width, int height, int depth, s3RenderTextureFormat format = s3RenderTextureFormat::Default);
+	~s3RenderTexture();
 
 	bool create();
 	void release();
@@ -78,7 +101,6 @@ public:
 
 	s3RenderBuffer colorBuffer;
 	s3RenderBuffer depthBuffer;
-	unsigned int fbo = 0;
 
 	// When 0 is used, then no Z buffer is created by a render texture.
 	unsigned int depthBufferBits = 0;

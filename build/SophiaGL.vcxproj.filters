@@ -84,9 +84,6 @@
     <ClCompile Include="..\SophiaGL\graphics\s3Material.cpp">
       <Filter>SophiaGL\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\SophiaGL\graphics\s3Renderer.cpp">
-      <Filter>SophiaGL\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\SophiaGL\graphics\s3RenderTexture.cpp">
       <Filter>SophiaGL\graphics</Filter>
     </ClCompile>
@@ -104,6 +101,15 @@
     </ClCompile>
     <ClCompile Include="..\SophiaGL\3d\s3VertexData.cpp">
       <Filter>SophiaGL\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SophiaGL\graphics\s3GfxContext.cpp">
+      <Filter>SophiaGL\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SophiaGL\graphics\s3GfxDevice.cpp">
+      <Filter>SophiaGL\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SophiaGL\graphics\s3Graphics.cpp">
+      <Filter>SophiaGL\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +167,6 @@
     <ClInclude Include="..\SophiaGL\graphics\s3Material.h">
       <Filter>SophiaGL\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\SophiaGL\graphics\s3Renderer.h">
-      <Filter>SophiaGL\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\SophiaGL\graphics\s3RenderTexture.h">
       <Filter>SophiaGL\graphics</Filter>
     </ClInclude>
@@ -214,6 +217,18 @@
     </ClInclude>
     <ClInclude Include="..\SophiaGL\test\filePathTest.h">
       <Filter>SophiaGL\test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SophiaGL\core\util\s3NonCopyable.h">
+      <Filter>SophiaGL\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SophiaGL\graphics\s3GfxContext.h">
+      <Filter>SophiaGL\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SophiaGL\graphics\s3GfxDevice.h">
+      <Filter>SophiaGL\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SophiaGL\graphics\s3Graphics.h">
+      <Filter>SophiaGL\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
