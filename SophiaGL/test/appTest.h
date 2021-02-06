@@ -7,7 +7,7 @@
 #include <3d/s3Camera.h>
 #include <3d/s3Mesh.h>
 #include <3d/s3ModelImporter.h>
-#include <graphics/s3Renderer.h>
+#include <graphics/s3Graphics.h>
 #include <graphics/s3Material.h>
 #include <graphics/s3Texture2d.h>
 
@@ -222,7 +222,7 @@ public:
                 model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 
                 material->setMatrix4("model", model);
-                s3Renderer::drawMesh(*mesh, *material);
+                s3Graphics::drawMesh(*mesh, *material);
             }
 
             gui();

@@ -23,7 +23,7 @@ s3Enum(s3TextureDimension,
 	   tex3D,		// 3D volume texture (Texture3D).
 	   cube,		// Cubemap texture.
 	   tex2DArray,	// 2D array texture (Texture2DArray).
-	   cubeArray,	// Cubemap array texture (CubemapArray).
+	   cubeArray	// Cubemap array texture (CubemapArray).
 );
 
 class s3Texture
@@ -32,19 +32,17 @@ public:
 	s3Texture() {}
 	~s3Texture() {}
 
-	//int getWidth() const { return width; }
-	//int getHeight() const { return height; }
+	int getWidth() const { return width; }
+	int getHeight() const { return height; }
 	//int getChannels() const { return channels; }
 	//int getMipCount() const { return mipCount; }
 
-	//s3WarpMode getWarpMode() const { return warpMode; }
-	//s3TextureFormat getTextureFormat() const { return format; }
+	s3TextureFilterMode getFilterMode() const { return filterMode; }
+	s3TextureWarpMode getWarpMode() const { return warpMode; }
+	s3TextureDimension getDimension() const { return dimension; }
 	unsigned int getTextureID() const { return textureID; }
+	//s3TextureFormat getTextureFormat() const { return format; }
 
-	// texture properties
-	int width       = -1;
-	int height      = -1;
-	//int channels    = -1;
 	//int mipmapCount = 0;
 	//int mipmapBias  = 0;
 
@@ -55,6 +53,10 @@ public:
 	s3TextureDimension dimension   = s3TextureDimension::tex2D;
 
 protected:
+	// texture properties
+	int width = -1;
+	int height = -1;
+
 	// opengl render data
 	unsigned int textureID = 0;
 };

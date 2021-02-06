@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 
 class s3ModelImporter;
-class s3Renderer;
+class s3Graphics;
 class s3Submesh
 {
 public:
@@ -18,7 +18,7 @@ public:
 	std::string name;
 
 	friend class s3ModelImporter;
-	friend class s3Renderer;
+	friend class s3Graphics;
 private:
 	unsigned int inputLayoutHandle;
 
@@ -91,7 +91,7 @@ public:
 	// Unity Mesh no need to called updateVertexStream() after changing properties
 	void updateVertexStream(unsigned int inputLayoutHandle);
 
-	friend class s3Renderer;
+	friend class s3Graphics;
 	friend class s3ModelImporter;
 
 //private:

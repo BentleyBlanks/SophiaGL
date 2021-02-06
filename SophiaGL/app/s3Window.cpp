@@ -3,7 +3,7 @@
 #include <core/s3Settings.h>
 #include <core/s3Event.h>
 #include <core/log/s3Log.h>
-#include <graphics/s3Renderer.h>
+#include <graphics/s3Graphics.h>
 #include <app/s3Gui.h>
 
 #include <glad/glad.h>
@@ -99,7 +99,7 @@ void s3Window::shutdown()
 
 void s3Window::render()
 {
-    s3Renderer::clear(clearColor);
+    s3Graphics::clear(clearColor);
 
     s3ImGuiBeginRender();
     s3CallbackManager::onBeginRender.trigger();

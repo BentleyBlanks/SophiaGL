@@ -37,8 +37,10 @@
     <ClCompile Include="..\SophiaGL\core\util\s3Utils.cpp" />
     <ClCompile Include="..\SophiaGL\core\util\s3UtilsIO.cpp" />
     <ClCompile Include="..\SophiaGL\core\util\s3UtilsString.cpp" />
+    <ClCompile Include="..\SophiaGL\graphics\s3GfxContext.cpp" />
+    <ClCompile Include="..\SophiaGL\graphics\s3GfxDevice.cpp" />
     <ClCompile Include="..\SophiaGL\graphics\s3Material.cpp" />
-    <ClCompile Include="..\SophiaGL\graphics\s3Renderer.cpp" />
+    <ClCompile Include="..\SophiaGL\graphics\s3Graphics.cpp" />
     <ClCompile Include="..\SophiaGL\graphics\s3RenderTexture.cpp" />
     <ClCompile Include="..\SophiaGL\graphics\s3Shader.cpp" />
     <ClCompile Include="..\SophiaGL\graphics\s3Texture.cpp" />
@@ -61,11 +63,14 @@
     <ClInclude Include="..\SophiaGL\core\s3Event.h" />
     <ClInclude Include="..\SophiaGL\core\s3Settings.h" />
     <ClInclude Include="..\SophiaGL\core\s3Timer.h" />
+    <ClInclude Include="..\SophiaGL\core\util\s3NonCopyable.h" />
     <ClInclude Include="..\SophiaGL\core\util\s3Utils.h" />
     <ClInclude Include="..\SophiaGL\core\util\s3UtilsIO.h" />
     <ClInclude Include="..\SophiaGL\core\util\s3UtilsString.h" />
+    <ClInclude Include="..\SophiaGL\graphics\s3GfxContext.h" />
+    <ClInclude Include="..\SophiaGL\graphics\s3GfxDevice.h" />
     <ClInclude Include="..\SophiaGL\graphics\s3Material.h" />
-    <ClInclude Include="..\SophiaGL\graphics\s3Renderer.h" />
+    <ClInclude Include="..\SophiaGL\graphics\s3Graphics.h" />
     <ClInclude Include="..\SophiaGL\graphics\s3RenderTexture.h" />
     <ClInclude Include="..\SophiaGL\graphics\s3Shader.h" />
     <ClInclude Include="..\SophiaGL\graphics\s3Texture.h" />
