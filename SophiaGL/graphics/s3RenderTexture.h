@@ -77,13 +77,16 @@ public:
 	void bind();
 	void unbind();
 
-	void setAttachments(s3RenderTexture* _attachment) { attachment = _attachment; }
+	void setAttachments(s3RenderTexture* attachment) { renderTextureAttachment = attachment; }
+	void setAttachments(s3RenderBuffer* attachment0, s3RenderBuffer* attachment1) { colorBufferAttachment = attachment0; depthBufferAttachment = attachment1; }
 
 private:
 	bool bIsCreated = false;
 	
 	unsigned int id = 0;
-	s3RenderTexture* attachment = nullptr;
+	s3RenderTexture* renderTextureAttachment = nullptr;
+	s3RenderBuffer* colorBufferAttachment    = nullptr;
+	s3RenderBuffer* depthBufferAttachment    = nullptr;
 };
 
 class s3RenderTexture : public s3Texture

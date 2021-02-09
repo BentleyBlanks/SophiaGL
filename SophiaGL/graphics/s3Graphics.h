@@ -9,6 +9,8 @@ class s3Material;
 class s3Graphics
 {
 public:
+    static const int MAX_RENDERTARGET_COUNT = 8;
+
     // use Renderer.clear instead of GL.clear()
     static void clear(glm::vec4 clearColor, bool color = true, bool depth = true);
 
@@ -18,8 +20,8 @@ public:
 
     // rt would be created if not created yet
     static void setRenderTarget(s3RenderTexture& rt);
-    static void setRenderTarget(s3RenderBuffer& colorBuffers, s3RenderBuffer& depthBuffer);
-    static void setRenderTarget(std::vector<s3RenderBuffer>& colorBuffers, s3RenderBuffer& depthBuffer);
+    static void setRenderTarget(s3RenderBuffer& colorBuffer, s3RenderBuffer& depthBuffer);
+    static void setRenderTargets(std::vector<s3RenderBuffer>& colorBuffers, s3RenderBuffer& depthBuffer);
 
     static void clearRenderTarget(bool clearDepth, bool clearColor, glm::vec4 backgroundColor, float depth = 1.0f);
     
