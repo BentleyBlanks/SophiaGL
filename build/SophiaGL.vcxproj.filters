@@ -179,9 +179,6 @@
     <ClInclude Include="..\SophiaGL\graphics\s3Texture2d.h">
       <Filter>SophiaGL\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\SophiaGL\test\appTest.h">
-      <Filter>SophiaGL\test</Filter>
-    </ClInclude>
     <ClInclude Include="..\SophiaGL\test\cameraTest.h">
       <Filter>SophiaGL\test</Filter>
     </ClInclude>
@@ -229,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="..\SophiaGL\graphics\s3Graphics.h">
       <Filter>SophiaGL\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SophiaGL\test\renderPipeline.h">
+      <Filter>SophiaGL\test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

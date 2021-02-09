@@ -21,76 +21,7 @@
 
 #include <imgui.h>
 
-float fov = 45.0f;
-float lastX = 400, lastY = 300;
-float yaw = -90.0f, pitch = 0.0f;
-
-// camera
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 cameraDirection = glm::vec3(0.0f, 0.0f, -1.0f);
-
-float vertices[] =
-{
-    // positions          // texture coords
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-};
-
-glm::vec3 cubePositions[] =
-{
-    glm::vec3(0.0f,  0.0f,  0.0f),
-    glm::vec3(2.0f,  5.0f, -15.0f),
-    glm::vec3(-1.5f, -2.2f, -2.5f),
-    glm::vec3(-3.8f, -2.0f, -12.3f),
-    glm::vec3(2.4f, -0.4f, -3.5f),
-    glm::vec3(-1.7f,  3.0f, -7.5f),
-    glm::vec3(1.3f, -2.0f, -2.5f),
-    glm::vec3(1.5f,  2.0f, -2.5f),
-    glm::vec3(1.5f,  0.2f, -1.5f),
-    glm::vec3(-1.3f,  1.0f, -1.5f)
-};
-
-class s3App : public s3CallbackHandle
+class s3RenderPipeline : public s3CallbackHandle
 {
 public:
     void gui()
@@ -132,17 +63,10 @@ public:
     void onHandle(const s3CallbackUserData* userData)
     {
         static auto bFirst = true;
-
         s3Window& window = s3Window::getInstance();
 
         if (userData->sender == &s3CallbackManager::onEngineInit)
         {
-            dirWatchPaths.push_back("../../thirdparty/fake_unity_shader/src/shader_parser");
-            dirWatchPaths.push_back("../../thirdparty/fake_unity_shader/src/shaders");
-            shaderDirWatch = new s3UtilsDirectoryWatch();
-            //shaderDirWatch->watch("../../thirdparty/fake_unity_shader/src/shader_parser", false);
-            shaderDirWatch->watch(dirWatchPaths, false);
-
             info.api = ShaderGraphicsAPI::OpenGL;
             info.root_path = "../../thirdparty/fake_unity_shader/src/";
             shader_init(info);
@@ -170,14 +94,6 @@ public:
         }
         else if (userData->sender == &s3CallbackManager::onUpdate)
         {
-            if (shaderDirWatch->hasChanged())
-            {
-                // hotreload
-                shader_init(info);
-                shader->reload();
-                printf("-----------------------------------------------------------------------\n");
-            }
-
             // time update
             float currentFrame = window.getTime();
             deltaTime = currentFrame - lastFrameTime;
@@ -212,18 +128,9 @@ public:
 				bFirst = false;
 			}
 
-            // render boxes
-            for (int i = 0; i < 1; i++)
-            {
-                float angle = 20.0f * i;
-
-                glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, cubePositions[i]);
-                model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-
-                material->setMatrix4("model", model);
-                s3Graphics::drawMesh(*mesh, *material);
-            }
+            // render boxes, indentity matrix
+            material->setMatrix4("model", glm::mat4(1.0f));
+            s3Graphics::drawMesh(*mesh, *material);
 
             gui();
         }
@@ -235,12 +142,9 @@ public:
             S3_SAFE_DELETE(material);
             S3_SAFE_DELETE(shader);
             S3_SAFE_DELETE(mesh);
-            S3_SAFE_DELETE(shaderDirWatch);
         }
         else if (userData->sender == &s3CallbackManager::onWindowFocused)
         {
-            if (shaderDirWatch->hasChanged())
-                shader->reload();
         }
     }
 
@@ -248,23 +152,21 @@ public:
     float lastFrameTime = 0.0f;
     float cameraSpeed   = 2.5f;
 
-    s3Texture2d* texture0                 = nullptr;
-    s3Texture2d *texture1                 = nullptr;
-    s3Shader *shader                      = nullptr;
-    s3Material* material                  = nullptr;
-    s3Camera *camera                      = nullptr;
-    s3Mesh* mesh                          = nullptr;
-    s3UtilsDirectoryWatch* shaderDirWatch = nullptr;
+    s3Texture2d* texture0 = nullptr;
+    s3Texture2d *texture1 = nullptr;
+    s3Shader *shader      = nullptr;
+    s3Material* material  = nullptr;
+    s3Camera *camera      = nullptr;
+    s3Mesh* mesh          = nullptr;
 
     ShaderInitInfo info;
-    std::vector<std::string> dirWatchPaths;
 
     unsigned int vao = 0, vbo = 0;
 };
 
 int main()
 {
-    s3App app;
+    s3RenderPipeline app;
     s3CallbackManager::onEngineInit    += app;
     s3CallbackManager::onUpdate        += app;
     s3CallbackManager::onBeginRender   += app;

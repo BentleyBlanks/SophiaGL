@@ -3,6 +3,7 @@
 #include <core/s3Settings.h>
 #include <core/s3Event.h>
 #include <core/log/s3Log.h>
+#include <graphics/s3Shader.h>
 #include <graphics/s3Graphics.h>
 #include <app/s3Gui.h>
 
@@ -79,8 +80,11 @@ bool s3Window::init(const char* title, int x, int y, int width, int height)
     glfwSetWindowFocusCallback(window, focusCB);
 
     s3ImGuiInit(window);
-    s3CallbackManager::onEngineInit.trigger();
 
+    // all shaders would reload if any changes triggered
+    s3ShaderManager::registerHandle();
+
+    s3CallbackManager::onEngineInit.trigger();
     bInit = true;
     return true;
 }
@@ -93,7 +97,7 @@ float s3Window::getTime()
 void s3Window::shutdown()
 {
     s3CallbackDeinit();
-    
+    s3ShaderManager::unregisterHandle();
     glfwSetWindowShouldClose(window, true);
 }
 

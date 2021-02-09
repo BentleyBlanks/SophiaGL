@@ -2,6 +2,7 @@
 #include <graphics/s3Texture.h>
 #include <core/log/s3Log.h>
 #include <core/util/s3UtilsString.h>
+#include <app/s3CallbackManager.h>
 
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -13,6 +14,70 @@
 
 #include <shader_parser_gl.h>
 
+// --------------------------------------------------s3ShaderPool--------------------------------------------------
+s3ShaderManager::s3ShaderDirWatchHandle s3ShaderManager::dirWatchHandle;
+std::vector<s3Shader*> s3ShaderManager::shaderList;
+
+void s3ShaderManager::s3ShaderDirWatchHandle::onHandle(const s3CallbackUserData* userData)
+{
+    if (userData->sender == &s3CallbackManager::onEngineInit)
+    {
+        watchPaths.push_back("../../thirdparty/fake_unity_shader/src/shader_parser");
+        watchPaths.push_back("../../thirdparty/fake_unity_shader/src/shaders");
+        
+        //dirWatch.watch("../../thirdparty/fake_unity_shader/src/shader_parser", false);
+        dirWatch.watch(watchPaths, false);
+    }
+    else if (userData->sender == &s3CallbackManager::onUpdate)
+    {
+        // hotreload
+        if (dirWatch.hasChanged())
+            s3ShaderManager::reloadAll();
+    }
+}
+
+bool s3ShaderManager::addShader(s3Shader* shader)
+{
+    auto result = std::find(shaderList.begin(), shaderList.end(), shader);
+    if (result == shaderList.end())
+    {
+        shaderList.push_back(shader);
+        return true;
+    }
+    return false;
+}
+
+bool s3ShaderManager::removeShader(s3Shader* shader)
+{
+    auto result = std::find(shaderList.begin(), shaderList.end(), shader);
+    if (result != shaderList.end())
+    {
+        shaderList.erase(result);
+        return true;
+    }
+    return false;
+}
+
+void s3ShaderManager::registerHandle()
+{
+    s3CallbackManager::onEngineInit += dirWatchHandle;
+    s3CallbackManager::onUpdate     += dirWatchHandle;
+}
+
+void s3ShaderManager::unregisterHandle()
+{
+    s3CallbackManager::onEngineInit -= dirWatchHandle;
+    s3CallbackManager::onUpdate     -= dirWatchHandle;
+}
+
+void s3ShaderManager::reloadAll()
+{
+    for (auto shader : shaderList)
+    {
+        if (shader->isLoaded())
+            shader->reload();
+    }
+}
 
 // --------------------------------------------------Just for simplify the code--------------------------------------------------
 #define S3_GET_VALUE(typeClassStr, typeNameStr) glm::typeClassStr value; \
@@ -33,15 +98,20 @@
 
 // --------------------------------------------------s3Shader--------------------------------------------------
 s3Shader::s3Shader()
-{}
+{
+    s3ShaderManager::addShader(this);
+}
 
 s3Shader::s3Shader(const char* filePath)
 {
+    s3ShaderManager::addShader(this);
     load(filePath);
 }
 
 s3Shader::~s3Shader()
-{}
+{
+    s3ShaderManager::removeShader(this);
+}
 
 glm::bvec1 s3Shader::getBool1(const std::string& name) const
 {
@@ -524,6 +594,7 @@ bool s3Shader::load(const char* _shaderFilePath)
     updateTextureMap(pass_list[0].texture_list);
 
     s3Log::success("Shader:%s build succeed\n", filePath.c_str());
+    s3Log::print("-----------------------------------------------------------------------\n");
 
     bIsLoaded = true;
 	return true;
