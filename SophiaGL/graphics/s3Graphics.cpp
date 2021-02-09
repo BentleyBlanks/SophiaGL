@@ -37,18 +37,33 @@ void s3Graphics::setRenderTarget(s3RenderTexture& rt)
 	if(rt.isDepthBufferCreated()) glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rt.depthBuffer.id);
 }
 
-void s3Graphics::setRenderTarget(s3RenderBuffer& colorBuffers, s3RenderBuffer& depthBuffer)
+void s3Graphics::setRenderTarget(s3RenderBuffer& colorBuffer, s3RenderBuffer& depthBuffer)
 {
-	//if (!checkRTAndCreated(*colorBuffers.rt)) return;
-	//if (!checkRTAndCreated(*depthBuffer.rt)) return;
+	if (!checkRTAndCreated(*colorBuffer.rt)) return;
+	if (!checkRTAndCreated(*depthBuffer.rt)) return;
+	
+	auto frameBuffer = s3GetContext().getFrameBuffer();
+	frameBuffer.bind();
+	frameBuffer.setAttachments(&colorBuffer, &depthBuffer);
 
-	//glBindFramebuffer(GL_FRAMEBUFFER, colorBuffers.rt->fbo);
-	//if (rt.isColorBufferCreated()) glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, rt.colorBuffer.id, 0);
-	//if (rt.isDepthBufferCreated()) glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rt.depthBuffer.id);
+	if (colorBuffer.rt->isColorBufferCreated()) glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffer.id, 0);
+	if (depthBuffer.rt->isDepthBufferCreated()) glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthBuffer.id);
 }
 
-void s3Graphics::setRenderTarget(std::vector<s3RenderBuffer>& colorBuffers, s3RenderBuffer & depthBuffer)
+void s3Graphics::setRenderTargets(std::vector<s3RenderBuffer>& colorBuffers, s3RenderBuffer& depthBuffer)
 {
+	for (auto& col : colorBuffers)
+		if (!checkRTAndCreated(*col.rt)) return;
+	if (!checkRTAndCreated(*depthBuffer.rt)) return;
+
+	for (int i = 0; i < colorBuffers.size(); i++)
+	{
+		auto& col = colorBuffers[i];
+		if (col.rt->isColorBufferCreated()) 
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, col.id, 0);
+	}
+
+	if (depthBuffer.rt->isDepthBufferCreated()) glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthBuffer.id);
 }
 
 void s3Graphics::clearRenderTarget(bool clearDepth, bool clearColor, glm::vec4 backgroundColor, float depth)
