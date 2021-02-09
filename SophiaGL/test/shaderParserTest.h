@@ -15,10 +15,10 @@
 #include <sstream>
 #include <iostream>
 
-class s3App : public s3CallbackHandle
+class s3RenderPipeline : public s3CallbackHandle
 {
 public:
-	s3App()
+	s3RenderPipeline()
 	{
 		std::vector<std::string> paths;
 		paths.push_back("../thirdparty/fake_unity_shader/src/shader_parser");
@@ -32,7 +32,7 @@ public:
 		info.shader_path = "../thirdparty/fake_unity_shader/src/";
 	}
 
-	~s3App()
+	~s3RenderPipeline()
 	{
 		S3_SAFE_DELETE(shaderDirWatch);
 	}
@@ -91,7 +91,7 @@ public:
 
 int main()
 {
-	s3App app;
+	s3RenderPipeline app;
 	s3CallbackManager::onEngineInit    += app;
 	s3CallbackManager::onEngineDeinit  += app;
 	s3CallbackManager::onUpdate        += app;

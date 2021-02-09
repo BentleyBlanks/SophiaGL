@@ -1,6 +1,8 @@
 #pragma once
 #include <core/s3Settings.h>
 #include <core/s3Enum.h>
+#include <core/s3Callback.h>
+#include <core/util/s3UtilsIO.h>
 #include <3d/s3VertexData.h>
 
 #include <glm/glm.hpp>
@@ -116,4 +118,29 @@ private:
     std::map<std::string, s3TextureGLInfo> textureMap;
     void* uniformData = nullptr;
     unsigned int ubo;
+};
+
+class s3ShaderManager
+{
+public:
+    static void registerHandle();
+    static void unregisterHandle();
+    static void reloadAll();
+    friend class s3Shader;
+
+    class s3ShaderDirWatchHandle : public s3CallbackHandle
+    {
+    public:
+        void onHandle(const s3CallbackUserData* userData);
+
+        s3UtilsDirectoryWatch dirWatch;
+        std::vector<std::string> watchPaths;
+    };
+
+private:
+    static bool addShader(s3Shader* shader);
+    static bool removeShader(s3Shader* shader);
+    static std::vector<s3Shader*> shaderList;
+
+    static s3ShaderDirWatchHandle dirWatchHandle;
 };

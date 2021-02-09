@@ -5,7 +5,7 @@
 //#include <test/cameraTest.h>
 //#include <test/enumTest.h>
 //#include <test/meshTest.h>
-#include <test/appTest.h>
+#include <test/renderPipeline.h>
 //#include <test/imguiTest.h>
 //#include <test/shaderParserTest.h>
 //#include <test/filePathTest.h>
